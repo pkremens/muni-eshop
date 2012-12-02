@@ -16,24 +16,23 @@
  */
 package cz.fi.muni.eshop.test;
 
+import cz.fi.muni.eshop.data.MemberListProducer;
+import cz.fi.muni.eshop.data.MemberRepository;
 import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.service.MemberRegistration;
 import cz.fi.muni.eshop.testpackage.Dummy;
 import cz.fi.muni.eshop.util.Resources;
-import static org.junit.Assert.assertNotNull;
-
 import java.util.logging.Logger;
-
 import javax.inject.Inject;
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-
-
+import org.jboss.arquillian.junit.InSequence;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Assert;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -42,7 +41,7 @@ public class MemberRegistrationTest {
    @Deployment
    public static Archive<?> createTestArchive() {
       return ShrinkWrap.create(WebArchive.class, "test.war")
-            .addClasses(Member.class, MemberRegistration.class, Resources.class, Dummy.class)
+            .addClasses(Member.class, MemberRegistration.class, Resources.class, Dummy.class, MemberListProducer.class, MemberRepository.class)
             .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
             // Deploy our test datasource
@@ -53,9 +52,19 @@ public class MemberRegistrationTest {
    MemberRegistration memberRegistration;
 
    @Inject
+   MemberListProducer memberListProducer;
+   
+   @Inject
    Logger log;
 
    @Test
+   @InSequence(1)
+   public void testListProducerBefore() {
+       Assert.assertTrue(memberListProducer.getMembers().isEmpty());
+   }
+   
+   @Test
+   @InSequence(2)
    public void testRegister() throws Exception {
       Member newMember = new Member();
       newMember.setName("Jane Doe");
@@ -64,6 +73,13 @@ public class MemberRegistrationTest {
       memberRegistration.register(newMember);
       assertNotNull(newMember.getId());
       log.info(newMember.getName() + " was persisted with id " + newMember.getId());
+   }
+   
+   @Test
+   @InSequence(3)
+   public void testListProducerAfter() {
+       Member member = memberListProducer.getMembers().get(0);
+       Assert.assertTrue(member.getName().equals("Jane Doe"));
    }
    
 }
