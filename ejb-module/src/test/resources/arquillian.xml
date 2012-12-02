@@ -14,16 +14,16 @@
    xsi:schemaLocation="http://jboss.org/schema/arquillian
         http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
 
-   <!-- Uncomment to have test archives exported to the file system for inspection -->
+<!-- Uncomment to have test archives exported to the file system for inspection -->
 <!--    <engine>  -->
 <!--       <property name="deploymentExportPath">target/</property>  -->
 <!--    </engine> -->
 
-   <!-- Force the use of the Servlet 3.0 protocol with all containers, as it is the most mature -->
-   <defaultProtocol type="Servlet 3.0" />
+<!-- Uncommet to enable debug mode in management mode -->
+<!--    <property name="javaVmArguments">-Xmx512m -XX:MaxPermSize=128m -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y</property>  -->
 
-   <!-- Example configuration for a remote JBoss AS 7 instance -->
-   <container qualifier="jboss" default="true">
+   <defaultProtocol type="Servlet 3.0" />
+   <container qualifier="jbossas-managed" default="true">
       <!-- If you want to use the JBOSS_HOME environment variable, just delete the jbossHome property -->
       <configuration>
          <property name="jbossHome">/home/pkremens/work/AS7_test/jboss-as/build/target/jboss-as-7.2.0.Alpha1-SNAPSHOT/</property>

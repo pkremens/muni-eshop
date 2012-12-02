@@ -1,0 +1,17 @@
+<arquillian xmlns="http://jboss.org/schema/arquillian"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://jboss.org/schema/arquillian
+        http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+    <container qualifier="jbossas-managed" default="true">
+        <configuration>
+            <property name="jbossHome">/home/pkremens/work/AS7_test/jboss-as/build/target/jboss-as-7.2.0.Alpha1-SNAPSHOT</property>
+<!--            <property name="javaVmArguments">-Xmx512m -XX:MaxPermSize=128m
+                -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y 	    
+            </property>  -->
+        </configuration>
+    </container>
+	<engine>
+	    <property name="deploymentExportPath">target/deployments</property>
+	</engine>
+</arquillian>
