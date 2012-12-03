@@ -16,8 +16,8 @@
  */
 package cz.fi.muni.eshop.controller;
 
-import cz.fi.muni.eshop.controller.test.Asynchronous;
-import cz.fi.muni.eshop.controller.test.PaymentProcessor;
+import cz.fi.muni.eshop.playground.paymentprocessor.Asynchronous;
+import cz.fi.muni.eshop.playground.paymentprocessor.PaymentProcessor;
 import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.service.MemberRegistration;
 import java.lang.annotation.Annotation;
@@ -48,27 +48,19 @@ public class MemberController {
     @Inject
     private MemberRegistration memberRegistration;
     private Member newMember;
-    @Inject
-    @Any
-    private Instance<PaymentProcessor> paymentProcessorSources;
+    
+    
 
     @Produces
     @Named
-    public String testString() {
-
-        for (PaymentProcessor payment : paymentProcessorSources) {
-            System.out.println(payment.process());
-
-        }
-
+    public String testString(@Any Instance<PaymentProcessor> paymentProcessorSources) {
         for (PaymentProcessor payment : paymentProcessorSources) {
             System.out.println(payment.process());
 
         }
         Annotation qualifier = new AsynchronousAnnotation();
         PaymentProcessor p = paymentProcessorSources.select(qualifier).get();
-        System.out.println("TOTO " + p.process());
-        return "x";
+        return "Say sth my fancy runtime type resolved bean: \n" + p.process();
     }
 
     @Produces

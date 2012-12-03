@@ -10,3 +10,5 @@ mvn <goal> -Parq-jbossas-remote: to run with remote instance of JBoss AS (DEFAUL
 
 run specific test: 
 mvn clean test -Parq-jbossas-managed -Dtest=cz.fi.muni.eshop.test.dummy.translate.TranslateTest -DfailIfNoTests=false
+
+mvn surefire-report:report
