@@ -16,8 +16,8 @@
  */
 package cz.fi.muni.eshop.test;
 
-import cz.fi.muni.eshop.data.MemberListProducer;
-import cz.fi.muni.eshop.data.MemberRepository;
+import cz.fi.muni.eshop.data.member.MemberListProducer;
+import cz.fi.muni.eshop.data.member.MemberRepository;
 import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.service.MemberRegistration;
 import cz.fi.muni.eshop.testpackage.Dummy;

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.eshop.model;
 
 import java.io.Serializable;
@@ -17,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+
 /**
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
@@ -26,12 +23,12 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "product.allProducts", query = "SELECT p FROM product p")
 })
-public class ProductBaseModelBean implements Serializable {
+public class ProductEntity implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID", nullable = false)
+    @Column(name = "EAN", nullable = false)
     @NotNull
     private Long ean;
     @Size(min = 1, max = 25)
@@ -43,21 +40,14 @@ public class ProductBaseModelBean implements Serializable {
     @Column(name = "BASEPRICE", nullable = false)
     private Long basePrice;
 
-    public ProductBaseModelBean() {
+    public ProductEntity() {
+        super();
     }
 
-    public ProductBaseModelBean(Long ean, String productName, Long basePrice) {
+    public ProductEntity(Long ean, String productName, Long basePrice) {
         this.ean = ean;
         this.productName = productName;
         this.basePrice = basePrice;
-    }
-
-    public Long getId() {
-        return ean;
-    }
-
-    public void setId(Long ean) {
-        this.ean = ean;
     }
 
     public Long getBasePrice() {
@@ -84,6 +74,8 @@ public class ProductBaseModelBean implements Serializable {
         this.productName = productName;
     }
 
+   
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -92,7 +84,7 @@ public class ProductBaseModelBean implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final ProductBaseModelBean other = (ProductBaseModelBean) obj;
+        final ProductEntity other = (ProductEntity) obj;
         if (this.ean != other.ean && (this.ean == null || !this.ean.equals(other.ean))) {
             return false;
         }

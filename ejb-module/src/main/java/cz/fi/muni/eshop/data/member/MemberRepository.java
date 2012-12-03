@@ -14,9 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cz.fi.muni.eshop.data;
+package cz.fi.muni.eshop.data.member;
 
 import cz.fi.muni.eshop.model.Member;
+import cz.fi.muni.eshop.util.Resources;
+import cz.fi.muni.eshop.util.quilifier.UserDatabase;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -31,7 +33,9 @@ import javax.persistence.criteria.Root;
 public class MemberRepository {
 
    @Inject
+   @UserDatabase
    private EntityManager em;
+   
 
    public Member findById(Long id) {
       return em.find(Member.class, id);

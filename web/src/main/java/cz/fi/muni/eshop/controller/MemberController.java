@@ -60,6 +60,16 @@ public class MemberController {
         }
         Annotation qualifier = new AsynchronousAnnotation();
         PaymentProcessor p = paymentProcessorSources.select(qualifier).get();
+        
+// Annonymous version        
+//        PaymentProcessor p = paymentProcessorSources.select(
+//				new AnnotationLiteral() {
+//					@Override
+//					public Class annotationType() {
+//						return Asynchronous.class;
+//					}
+//				}).get();
+        
         return "Say sth my fancy runtime type resolved bean: \n" + p.process();
     }
 
