@@ -80,7 +80,12 @@
             <artifactId>arquillian-protocol-servlet</artifactId>
             <scope>test</scope>               
         </dependency>
-
+        <dependency>
+            <groupId>org.picketlink.idm</groupId>
+            <artifactId>picketlink-idm-api</artifactId>
+            <version>1.5.0.Alpha02</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>
