@@ -16,21 +16,25 @@
  */
 package cz.fi.muni.eshop.controller;
 
+import cz.fi.muni.eshop.controller.test.Asynchronous;
+import cz.fi.muni.eshop.controller.test.PaymentProcessor;
 import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.service.MemberRegistration;
+import java.lang.annotation.Annotation;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
+import javax.enterprise.util.AnnotationLiteral;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-
-
 
 // The @Model stereotype is a convenience mechanism to make this a request-scoped bean that has an
 // EL name
@@ -39,28 +43,52 @@ import javax.persistence.EntityManager;
 @Model
 public class MemberController {
 
-   @Inject
-   private FacesContext facesContext;
+    @Inject
+    private FacesContext facesContext;
+    @Inject
+    private MemberRegistration memberRegistration;
+    private Member newMember;
+    @Inject
+    @Any
+    private Instance<PaymentProcessor> paymentProcessorSources;
 
-   @Inject
-   private MemberRegistration memberRegistration;
+    @Produces
+    @Named
+    public String testString() {
 
-   private Member newMember;
+        for (PaymentProcessor payment : paymentProcessorSources) {
+            System.out.println(payment.process());
 
-   @Produces
-   @Named
-   public Member getNewMember() {
-      return newMember;
-   }
+        }
 
-   public void register() throws Exception {
-      memberRegistration.register(newMember);
-      facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful"));
-      initNewMember();
-   }
+        for (PaymentProcessor payment : paymentProcessorSources) {
+            System.out.println(payment.process());
 
-   @PostConstruct
-   public void initNewMember() {
-      newMember = new Member();
-   }
+        }
+        Annotation qualifier = new AsynchronousAnnotation();
+        PaymentProcessor p = paymentProcessorSources.select(qualifier).get();
+        System.out.println("TOTO " + p.process());
+        return "x";
+    }
+
+    @Produces
+    @Named
+    public Member getNewMember() {
+        return newMember;
+    }
+
+    public void register() throws Exception {
+        memberRegistration.register(newMember);
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful"));
+        initNewMember();
+    }
+
+    @PostConstruct
+    public void initNewMember() {
+        newMember = new Member();
+    }
+
+    public class AsynchronousAnnotation extends AnnotationLiteral<Asynchronous>
+            implements Asynchronous {
+    }
 }

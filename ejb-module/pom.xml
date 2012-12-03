@@ -159,7 +159,7 @@
         </profile>
 
         <profile>
-            <id>arquillian-jbossas-remote</id>
+            <id>arq-jbossas-remote</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
