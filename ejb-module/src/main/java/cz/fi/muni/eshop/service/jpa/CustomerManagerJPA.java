@@ -72,7 +72,7 @@ public class CustomerManagerJPA implements CustomerManager {
     @Override
     public List<CustomerEntity> findCustomersOrderedByMail() {
         log.fine("Find customers ordered by mail");
-        return em.createNamedQuery("customer.findOrderedCustomersByMail", CustomerEntity.class).getResultList();
+        return em.createNamedQuery("customer.findCustomersOrderedByMail", CustomerEntity.class).getResultList();
 
     }
 }
