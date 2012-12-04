@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.fi.muni.eshop.test.jpa.Customer;
+package cz.fi.muni.eshop.test.jpa;
 
 import cz.fi.muni.eshop.model.CustomerEntity;
 import cz.fi.muni.eshop.service.CustomerManager;
@@ -45,7 +45,7 @@ public class CustomerManagerJPATest {
     @Deployment
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(WebArchive.class, "customer.war").addClasses(CustomerEntity.class, CustomerManager.class, Resources.class,
-                CustomerManagerJPA.class, User.class, IdentityType.class, MyLogger.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+                CustomerManagerJPA.class, User.class, IdentityType.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
     
