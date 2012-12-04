@@ -9,8 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -19,7 +22,16 @@ import javax.validation.constraints.NotNull;
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
-@Entity
+
+
+
+@Entity(name = "orderEntity")
+@Table(name = "orderEntity")
+@NamedQueries({
+    @NamedQuery(name = "order.getOrderById", query = "SELECT o FROM orderEntity o WHERE o.id = :id"),
+    @NamedQuery(name = "order.getOrders", query = "SELECT o FROM orderEntity o"),
+    @NamedQuery(name = "order.getOrdersByOpen", query = "SELECT o FROM orderEntity o WHERE o.open=:open ORDER BY o.customer,o.creationDate ASC"),
+    })
 public class OrderEntity implements Serializable {
 
     @Id

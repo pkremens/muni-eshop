@@ -21,7 +21,7 @@ import org.picketlink.idm.api.User;
 @Entity(name = "customer")
 @NamedQueries({
     @NamedQuery(name = "customer.getCustomers", query = "SELECT c FROM customer c"),
-    @NamedQuery(name = "customer.findAllCustomersOrderByMail", query = "select c from customer c ORDER BY c.email ASC"),
+    @NamedQuery(name = "customer.findCustomersOrderedByMail", query = "select c from customer c ORDER BY c.email ASC"),
     @NamedQuery(name = "customer.findByEmail", query = "SELECT c FROM customer c WHERE c.email = :email"),
     @NamedQuery(name = "customer.findByEmailAndPassword", query = "SELECT c FROM customer c WHERE c.email=:email AND c.password=:password")
 })

@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 @Entity(name = "orderLine")
 @Table(name = "orderLine")
 @NamedQueries({
-    @NamedQuery(name = "product.allOrderLines", query = "SELECT ol FROM orderLine ol")
+    @NamedQuery(name = "orderLine.getOrderLines", query = "SELECT ol FROM orderLine ol")
 })
 public class OrderLineEntity implements Serializable {
 

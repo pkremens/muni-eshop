@@ -23,5 +23,5 @@ public interface CustomerManager {
 
     List<CustomerEntity> getCustomers();
 
-    List<CustomerEntity> findAllCustomersOrderByMail();
+    List<CustomerEntity> findCustomersOrderedByMail();
 }
