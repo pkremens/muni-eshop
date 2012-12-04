@@ -21,16 +21,17 @@ import javax.validation.constraints.Size;
 @Entity(name = "product")
 @Table(name = "product")
 @NamedQueries({
-    @NamedQuery(name = "product.allProducts", query = "SELECT p FROM product p")
+    @NamedQuery(name = "product.getProducts", query = "SELECT p FROM product p"),
+    @NamedQuery(name = "product.findProductById", query = "SELECT p FROM product p WHERE p.id = :id")
 })
 public class ProductEntity implements Serializable {
 
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "EAN", nullable = false)
+    @Column(name = "ID", nullable = false)
     @NotNull
-    private Long ean;
+    private Long id;
     @Size(min = 1, max = 25)
     @Pattern(regexp = "[A-Za-z0-9 ]*", message = "must contain only letters ,spaces and numbers")
     @NotNull
@@ -57,12 +58,12 @@ public class ProductEntity implements Serializable {
         this.basePrice = basePrice;
     }
 
-    public Long getEan() {
-        return ean;
+    public Long getId() {
+        return id;
     }
 
-    public void setEan(Long ean) {
-        this.ean = ean;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getProductName() {
@@ -84,7 +85,7 @@ public class ProductEntity implements Serializable {
             return false;
         }
         final ProductEntity other = (ProductEntity) obj;
-        if (this.ean != other.ean && (this.ean == null || !this.ean.equals(other.ean))) {
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -93,12 +94,12 @@ public class ProductEntity implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 83 * hash + (this.ean != null ? this.ean.hashCode() : 0);
+        hash = 83 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
     @Override
     public String toString() {
-        return "ProductBaseModelBean{" + "ean=" + ean + ", productName=" + productName + ", basePrice=" + basePrice + '}';
+        return "ProductBaseModelBean{" + "id=" + id + ", productName=" + productName + ", basePrice=" + basePrice + '}';
     }
 }
