@@ -30,7 +30,7 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({
     @NamedQuery(name = "order.getOrderById", query = "SELECT o FROM orderEntity o WHERE o.id = :id"),
     @NamedQuery(name = "order.getOrders", query = "SELECT o FROM orderEntity o"),
-    @NamedQuery(name = "order.getOrdersByOpen", query = "SELECT o FROM orderEntity o WHERE o.open=:open ORDER BY o.customer,o.creationDate ASC"),
+    @NamedQuery(name = "order.getOrdersByOpen", query = "SELECT o FROM orderEntity o WHERE o.openOrder=:open ORDER BY o.customer,o.creationDate ASC"), 
     })
 public class OrderEntity implements Serializable {
 

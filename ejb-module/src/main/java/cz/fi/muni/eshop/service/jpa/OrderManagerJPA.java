@@ -85,7 +85,7 @@ public class OrderManagerJPA implements OrderManager{
 
     private List<OrderEntity> getOrdersByOpen(boolean open) {
         log.log(Level.FINER, "Get orders by open: {0}", open);
-        return em.createNamedQuery("SELECT o FROM orderEntity o WHERE o.open=:open ORDER BY o.customer,o.creationDate ASC", OrderEntity.class).getResultList();
+        return em.createNamedQuery("order.getOrdersByOpen", OrderEntity.class).setParameter("open", open).getResultList();
     }
 
 }

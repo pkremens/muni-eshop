@@ -44,8 +44,7 @@ public class ProductEntity implements Serializable {
         super();
     }
 
-    public ProductEntity(Long ean, String productName, Long basePrice) {
-        this.ean = ean;
+    public ProductEntity(String productName, Long basePrice) {
         this.productName = productName;
         this.basePrice = basePrice;
     }
