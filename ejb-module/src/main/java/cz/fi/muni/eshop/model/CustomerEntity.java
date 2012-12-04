@@ -8,6 +8,9 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -15,19 +18,25 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.picketlink.idm.api.User;
 
-@Entity
+@Entity(name = "customer")
+@NamedQueries({
+    @NamedQuery(name = "customer.getCustomers", query = "SELECT c FROM customer c"),
+    @NamedQuery(name = "customer.findAllCustomersOrderByMail", query = "select c from customer c ORDER BY c.email ASC"),
+    @NamedQuery(name = "customer.findByEmail", query = "SELECT c FROM customer c WHERE c.email = :email"),
+    @NamedQuery(name = "customer.findByEmailAndPassword", query = "SELECT c FROM customer c WHERE c.email=:email AND c.password=:password")
+})
+@Table(name = "customer")
 public class CustomerEntity implements User, Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
+
     @Id
     @Size(min = 1, max = 25)
     @Pattern(regexp = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", message = "not a valid email address")
     private String email;
+    
+    // allow also number to simplify creation of dummy data
     @Size(min = 1, max = 25)
-    @Pattern(regexp = "[A-Za-z ]*", message = "must contain only letters and spaces")
+    @Pattern(regexp = "[A-Za-z0-9 ]*", message = "must contain only letters, numbers and spaces")
     private String name;
     @NotEmpty
     @NotNull
@@ -36,8 +45,23 @@ public class CustomerEntity implements User, Serializable {
     @NotNull
     private String role;
 
+    public CustomerEntity() {
+    }
+
+    // TODO Role by mela byt ENUM!!!
+    public CustomerEntity(String email, String name, String password, String role) {
+        this.email = email;
+        this.name = name;
+        this.password = password;
+        this.role = role;
+    }
+    
     public String getPasswordSubstring() {
+        try {
         return password.substring(0, 10);
+        } catch (StringIndexOutOfBoundsException sioube) {
+            return password; // TODO just for test purposes
+        }
     }
 
     /**
@@ -90,6 +114,7 @@ public class CustomerEntity implements User, Serializable {
         this.role = role;
     }
 
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -119,8 +144,6 @@ public class CustomerEntity implements User, Serializable {
         hash = 37 * hash + (this.role != null ? this.role.hashCode() : 0);
         return hash;
     }
-
-   
 
     @Override
     public String toString() {
