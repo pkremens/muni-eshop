@@ -90,7 +90,7 @@ public class CustomerManagerJPATest {
         for (int i = 0; i < 10; i++) {
             customerManager.addCustomer(new CustomerEntity("jemail" + i + "@foogle.cz", "name" + i , "password" + i, "admin"));
         }
-        List<CustomerEntity> list = customerManager.findAllCustomersOrderByMail();
+        List<CustomerEntity> list = customerManager.findCustomersOrderedByMail();
         Assert.assertEquals("Steve Yzerman", list.get(0).getName());
         Assert.assertEquals("John Spartan", list.get(11).getName());
         
