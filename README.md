@@ -12,3 +12,5 @@ run specific test:
 mvn clean test -Parq-jbossas-managed -Dtest=cz.fi.muni.eshop.test.dummy.translate.TranslateTest -DfailIfNoTests=false
 
 mvn surefire-report:report
+
+mvn clean install package jboss-as:redeploy -PnoTest

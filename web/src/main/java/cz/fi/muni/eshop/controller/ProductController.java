@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
+import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
@@ -27,11 +28,15 @@ import javax.inject.Named;
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
-@Named("productController")
-@ViewScoped // TODO review   
-public class ProductController implements Serializable { // TODO co vse musi implementovat serializable???
+//TODO co vse musi implementovat serializable???
+@Model
+public class ProductController implements Serializable { 
 
-    @Inject
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 650851568081767180L;
+	@Inject
     @JPA // using interface thus can later change to another implementation thanks to runtime bean type resolution see dummy translate test
     private ProductManager productManager;
     @Inject
@@ -78,6 +83,7 @@ public class ProductController implements Serializable { // TODO co vse musi imp
 
     public void register() throws Exception {
         log.fine("Register new product");
+        System.out.println(newProduct.toString());
         productManager.addProduct(newProduct);
         productList.add(newProduct);
         facesContext.addMessage(null, new FacesMessage(
@@ -85,17 +91,18 @@ public class ProductController implements Serializable { // TODO co vse musi imp
         initNewProduct();
     }
 
-//    public void validateNumberRange(FacesContext context,
-//            UIComponent toValidate, Object value) {
-//        int input = (Integer) value;
-//
-//        if (input < 1 || input > 10000) {
-//            ((UIInput) toValidate).setValid(false);
-//
-//            FacesMessage message = new FacesMessage("Invalid number");
-//            context.addMessage(toValidate.getClientId(context), message);
-//        }
-//    }
+    // TODO jeste upravit, jen dummy
+    public void validatePriceRange(FacesContext context,
+            UIComponent toValidate, Object value) {
+        long input = (Long) value;
+
+        if (input < 1 || input > 10000) {
+            ((UIInput) toValidate).setValid(false);
+
+            FacesMessage message = new FacesMessage("Invalid number");
+            context.addMessage(toValidate.getClientId(context), message);
+        }
+    }
 //
 //    public void validateNumberRangeInBasket(FacesContext context,
 //            UIComponent toValidate, Object value) {

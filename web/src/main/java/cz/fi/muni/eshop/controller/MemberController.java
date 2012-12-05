@@ -21,10 +21,10 @@ import cz.fi.muni.eshop.playground.paymentprocessor.PaymentProcessor;
 import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.service.MemberRegistration;
 import java.lang.annotation.Annotation;
-import java.util.logging.Logger;
+
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.event.Event;
+
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Model;
@@ -34,7 +34,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
+
 
 // The @Model stereotype is a convenience mechanism to make this a request-scoped bean that has an
 // EL name
@@ -92,5 +92,10 @@ public class MemberController {
 
     public class AsynchronousAnnotation extends AnnotationLiteral<Asynchronous>
             implements Asynchronous {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 7063193284322241802L;
     }
 }
