@@ -9,10 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 
 /**
  *
@@ -26,7 +26,6 @@ import javax.validation.constraints.Size;
 })
 public class ProductEntity implements Serializable {
 
-    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
@@ -40,6 +39,8 @@ public class ProductEntity implements Serializable {
     @NotNull
     @Column(name = "BASEPRICE", nullable = false)
     private Long basePrice;
+    @Transient
+    boolean editable = false;
 
     public ProductEntity() {
         super();
@@ -74,8 +75,18 @@ public class ProductEntity implements Serializable {
         this.productName = productName;
     }
 
-   
-    
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
+    public void switchEditable() {
+        editable = !editable;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
