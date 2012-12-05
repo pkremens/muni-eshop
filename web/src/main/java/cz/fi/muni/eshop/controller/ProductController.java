@@ -59,16 +59,25 @@ public class ProductController implements Serializable { // TODO co vse musi imp
 //        retrieveAllProducts();
 //    }
 
+    @Produces
+    @Named
+    List<ProductEntity> getProductList() {
+        return productList;
+    }
+
     public void saveAction(ProductEntity product) {
+        log.fine("Save action");
         product.setEditable(false);
         productManager.update(product);
     }
 
     public void editAction(ProductEntity product) {
+        log.fine("Edit action");
         product.setEditable(true);
     }
 
     public void register() throws Exception {
+        log.fine("Register new product");
         productManager.addProduct(newProduct);
         productList.add(newProduct);
         facesContext.addMessage(null, new FacesMessage(
@@ -100,6 +109,7 @@ public class ProductController implements Serializable { // TODO co vse musi imp
 //        }
 //    }
     public void initNewProduct() {
+        log.fine("Init new product");
         newProduct = new ProductEntity();
     }
 }
