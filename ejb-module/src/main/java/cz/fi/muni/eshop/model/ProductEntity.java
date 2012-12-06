@@ -24,7 +24,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "product.getProducts", query = "SELECT p FROM product p"),
     @NamedQuery(name = "product.findProductById", query = "SELECT p FROM product p WHERE p.id = :id")
 })
-public class ProductEntity implements Serializable {
+public class ProductEntity implements Serializable, Comparable<ProductEntity> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -113,4 +113,10 @@ public class ProductEntity implements Serializable {
     public String toString() {
         return "ProductBaseModelBean{" + "id=" + id + ", productName=" + productName + ", basePrice=" + basePrice + '}';
     }
+
+    @Override
+    public int compareTo(ProductEntity product) {
+        return id.compareTo(product.id);
+    }
+
 }
