@@ -17,6 +17,13 @@ import javax.validation.ValidatorFactory;
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 public class EntityValidator<T> {
+    
+    /**
+     * 
+     * @param entity instance of some entity
+     * @return true if and only if the entity is valid
+     * @throws InvalidEntryException if there are some constraint violations
+     */
     public boolean validate(T entity) throws InvalidEntryException {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();

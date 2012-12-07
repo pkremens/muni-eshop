@@ -54,18 +54,10 @@ public class CustomerManagerJPA implements CustomerManager {
         em.merge(customer);
     }
 
-    // TODO NoResultExeption... catch?
-    @Override
-    public CustomerEntity verifyCustomer(String email, String password) throws NoEntryFoundExeption {
-        log.log(Level.INFO, "Verify customer - email: {0} password: {1}", new Object[]{email, password});
-        CustomerEntity customer = findByEmail(email);
-        return customer.getPassword().equals(password)? customer : null;
-    }
-
-    private CustomerEntity findByEmail(String email) throws NoEntryFoundExeption  {
+    private CustomerEntity findByEmail(String email) throws NoEntryFoundExeption {
         log.log(Level.INFO, "Find customer by email: {0}", email);
         try {
-        return em.createNamedQuery("customer.findByEmail", CustomerEntity.class).setParameter("email", email).getSingleResult();
+            return em.createNamedQuery("customer.findByEmail", CustomerEntity.class).setParameter("email", email).getSingleResult();
         } catch (NoResultException nre) {
             throw new NoEntryFoundExeption("Trying to verify non-existig customer", nre);
         }
@@ -83,18 +75,19 @@ public class CustomerManagerJPA implements CustomerManager {
         return em.createNamedQuery("customer.findCustomersOrderedByMail", CustomerEntity.class).getResultList();
     }
 
-    /**
-     * 
-     * @param email of customer
-     * @return Customer if registered else null
-     * @throws InvalidEntryException  if some contains invalid fields, prevent wasting resources
-     */
+    @Deprecated // loosing information about customers presence in DB
+    @Override
+    public CustomerEntity verifyCustomer(String email, String password) throws InvalidEntryException {
+        CustomerEntity customer = isRegistred(email);
+        return customer.getPassword().equals(password) ? customer : null;
+    }
+
     @Override
     public CustomerEntity isRegistred(String email) throws InvalidEntryException {
         EntityValidator<CustomerEntity> validator = new EntityValidator<CustomerEntity>();
         dummyCustomer.setEmail(email);
         boolean isValid = false;
-        validator.validate(dummyCustomer);
+        isValid = validator.validate(dummyCustomer);
         if (isValid) {
             try {
                 return findByEmail(email);
@@ -102,7 +95,7 @@ public class CustomerManagerJPA implements CustomerManager {
                 return null;
             }
         } else {
-            throw new IllegalStateException("FATAL: Never should get here, there is some bug"); // TODO remove, debugg reason only 
+            throw new IllegalStateException("FATAL: Never should get here, there is some bug!!!"); // TODO remove, debugg reasons only 
         }
     }
 }

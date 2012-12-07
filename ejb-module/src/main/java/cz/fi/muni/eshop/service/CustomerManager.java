@@ -20,22 +20,23 @@ public interface CustomerManager {
 
     void update(CustomerEntity customer);
 
-    /**
-     *
-     * @param email
-     * @param password
-     * @return instance of verified customer, return null if wrong password
-     * @throws NoResultException if no customer with given ID exists
-     */
-    CustomerEntity verifyCustomer(String email, String password) throws NoEntryFoundExeption; // TODO Co bude lepsi? nejaky dummy dotaz kterym zjistit jeslti v DB vubec je a az pak ho kdzytak vytahnu nebo ho rovnou vytahnout 
-
-    //CustomerEntity findByEmail(String email);
     List<CustomerEntity> getCustomers();
 
     List<CustomerEntity> findCustomersOrderedByMail();
-
+    
+    /**
+     * 
+     * @param email
+     * @param password
+     * @return instance of customer if existing in DB else null
+     * @throws InvalidEntryException InvalidEntryException  if entered invalid email, prevent wasting db connection resources
+     */
+    public CustomerEntity verifyCustomer(String email, String password) throws InvalidEntryException;
+/**
+ * 
+ * @param email
+ * @return instance of customer if existing in DB else null
+ * @throws InvalidEntryException  if entered invalid email, prevent wasting db connection resources
+ */
     CustomerEntity isRegistred(String email) throws InvalidEntryException;
-
-    
-    
 }

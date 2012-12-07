@@ -7,6 +7,8 @@ package cz.fi.muni.eshop.security;
 import cz.fi.muni.eshop.model.CustomerEntity;
 import cz.fi.muni.eshop.model.Role;
 import cz.fi.muni.eshop.service.CustomerManager;
+import cz.fi.muni.eshop.util.EntityValidator;
+import cz.fi.muni.eshop.util.InvalidEntryException;
 import cz.fi.muni.eshop.util.NoEntryFoundExeption;
 import cz.fi.muni.eshop.util.quilifier.JPA;
 import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
@@ -44,42 +46,35 @@ public class Authenticator extends BaseAuthenticator {
     // Don't look to DB until there is a chance that we will find something!
     @Override
     public void authenticate() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
         String email = credentials.getUsername();
-        CustomerEntity customer = new CustomerEntity(email, "name", "password", Role.BASIC);
-
-        Set<ConstraintViolation<CustomerEntity>> constraintViolations =
-                validator.validate(customer);
-        if (!constraintViolations.isEmpty()) {
+        CustomerEntity customer;
+        try {
+            customer = customerManager.isRegistred(email);
+        } catch (InvalidEntryException iex) {
             log.log(Level.INFO, "Invalid email trying to authenticate: {0}", email);
             setStatus(AuthenticationStatus.FAILURE);
             facesContext.addMessage("loginForm:username", new FacesMessage(
                     "Invalid email, unable to authenticate")); // TODO maybe add content of constraintViolations
+            return;
+        }
+        String password = ((PasswordCredential) credentials.getCredential()).getValue();
+        if (customer == null) {
+            log.log(Level.INFO, "Non-existing user trying to authenticate: {0}", email);
+            setStatus(AuthenticationStatus.FAILURE);
+            facesContext.addMessage("loginForm:username", new FacesMessage(
+                    "Non existing user"));
         } else {
-            String password = ((PasswordCredential) credentials.getCredential()).getValue();
-            try {
-                customer = customerManager.verifyCustomer(email, password);
-            } catch (NoEntryFoundExeption ncfe) {
-                log.log(Level.INFO, "Non-existing user trying to authenticate: {0}", email);
-                setStatus(AuthenticationStatus.FAILURE);
-                facesContext.addMessage("loginForm:username", new FacesMessage(
-                        "Non existing user"));
-                return;
-            }
-            if (customer == null) {
+            if (customer.getPassword().equals(password)) {
+                setStatus(AuthenticationStatus.SUCCESS);
+                setUser(customer);
+                log.log(Level.INFO, "Succesfully authenticate user: {0}", customer.toString());
+            } else {
                 setStatus(AuthenticationStatus.FAILURE);
                 log.log(Level.WARNING, "Wrong password for user: {0}", customer.getEmail());
                 FacesContext.getCurrentInstance().addMessage(
                         "loginForm:password",
                         new FacesMessage("Wrong Password"));
-            } else {
-                setStatus(AuthenticationStatus.SUCCESS);
-                setUser(customer);
-                log.log(Level.INFO, "Succesfully authenticate user: {0}", customer.toString());
             }
         }
-
-
     }
 }

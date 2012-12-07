@@ -81,7 +81,7 @@ public class CustomerController implements Serializable {
             facesContext.addMessage("addForm:password", new FacesMessage(
                     "Cannot have empty password"));
             log.info("Entered empty password");
-            initNewCustomer();
+            initNewCustomer(); // TODO really needed?
         } else {
             CustomerEntity customer = customerManager.isRegistred(newCustomer.getEmail());
             if (customer == null) {

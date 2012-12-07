@@ -67,7 +67,7 @@ public class CustomerManagerJPATest {
 
     @Test
     @InSequence(2)
-    public void updateTest() throws NoEntryFoundExeption {
+    public void updateTest() throws InvalidEntryException {
         Assert.assertTrue(customer.getEmail() == null);
         customer = customerManager.verifyCustomer("rambo.john@foogle.com", "phoenix");
         Assert.assertEquals("Rocky Balboa", customer.getName());
@@ -79,7 +79,7 @@ public class CustomerManagerJPATest {
 
     @Test
     @InSequence(3)
-    public void fetchAfterUpdateTest() throws NoEntryFoundExeption {
+    public void fetchAfterUpdateTest() throws InvalidEntryException {
         customer = customerManager.verifyCustomer("rambo.john@foogle.com", "phoenix");
         Assert.assertEquals("John Spartan", customer.getName());
 
@@ -107,24 +107,48 @@ public class CustomerManagerJPATest {
         Assert.assertTrue(list.get(1).getRole().equals(Role.BASIC));
     }
 
-    @Test(expected=NoEntryFoundExeption.class) // cannot use (expected=NoResultException.class), arquillian keep throwing java.lang.Exeption thus getting error Unexpected exception, expected<javax.persistence.NoResultException> but was<java.lang.Exception>
-    @InSequence(6)
-    public void verificationWrongUserTest() throws NoEntryFoundExeption {
-            customerManager.verifyCustomer("Dummy", "not-important");
+    @Test(expected = InvalidEntryException.class) // cannot use (expected=NoResultException.class), arquillian keep throwing java.lang.Exeption thus getting error Unexpected exception, expected<javax.persistence.NoResultException> but was<java.lang.Exception>
+    @InSequence(5)
+    public void verificationWrongUserTest() throws InvalidEntryException {
+        customerManager.verifyCustomer("Dummy", "not-important");
     }
 
     @Test
-    @InSequence(7)
-    public void verificationWrongPasswordTest() throws NoEntryFoundExeption {
+    @InSequence(5)
+    public void verificationWrongPasswordTest() throws InvalidEntryException {
         CustomerEntity nullCustomer = customerManager.verifyCustomer("hallOfFame@nhl.com", "hooray-gretzky");
         Assert.assertNull(nullCustomer);
     }
 
     @Test(expected = InvalidEntryException.class)
-    @InSequence(8)
+    @InSequence(5)
     public void addingCustomerWithInvalidEmailTest() throws InvalidEntryException {
         customer = new CustomerEntity("invalidMail", "name", "password", Role.ADMIN);
         EntityValidator<CustomerEntity> validator = new EntityValidator<CustomerEntity>();
         validator.validate(customer);
+    }
+
+    /*
+     * TEST ALL 3 possible scenarios: - 1: invalid mail - 2: valid mail of
+     * nonexisting user - 3: OK
+     */
+    @Test(expected = InvalidEntryException.class)
+    @InSequence(5)
+    public void invalidMailTest() throws InvalidEntryException {
+        customerManager.isRegistred("invalid-mail");
+    }
+
+    @Test
+    @InSequence(5)
+    public void nonexistigMailTest() throws InvalidEntryException {
+        customer = customerManager.isRegistred("steve.y@tiscali.cz");
+        Assert.assertNull(customer);
+    }
+    
+    @Test
+    @InSequence(5)
+    public void isRegistredTest() throws InvalidEntryException {
+        customer = customerManager.isRegistred("hallOfFame@nhl.com");
+        Assert.assertNotNull(customer);
     }
 }
