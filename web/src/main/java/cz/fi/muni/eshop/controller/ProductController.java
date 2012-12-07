@@ -10,6 +10,7 @@ import cz.fi.muni.eshop.util.quilifier.JPA;
 import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -57,7 +58,7 @@ public class ProductController implements Serializable {
     }
 
     public boolean isEmptyProductsList() {
-        log.info("Is list of products empty?");
+        log.log(Level.INFO, "Is list of products empty?: {0}", emptyProductsList);
         return emptyProductsList;
     }
     // TODO stejne, jde nejak udelat aby to JSF vyhodnotilo jen jednou?
@@ -79,7 +80,12 @@ public class ProductController implements Serializable {
 //            @Observes(notifyObserver = Reception.IF_EXISTS) final ProductEntity product) {
 //        retrieveAllProducts();
 //    }
-
+    
+    @Produces
+    @Named
+    List<ProductEntity> getProductList() {
+        return productList;
+    }
 
     public void saveAction(ProductEntity product) {
         log.info("Save action");
@@ -93,8 +99,8 @@ public class ProductController implements Serializable {
     }
 
     public void register() throws Exception {
-        log.info("Register new product");
-        System.out.println(newProduct.toString());
+        log.info("Register new product: " + newProduct);
+        emptyProductsList=false;
         productManager.addProduct(newProduct);
         productList.add(newProduct);
         facesContext.addMessage(null, new FacesMessage(
