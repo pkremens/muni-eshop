@@ -5,6 +5,7 @@
 package cz.fi.muni.eshop.test.jpa;
 
 import cz.fi.muni.eshop.model.CustomerEntity;
+import cz.fi.muni.eshop.model.Role;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.jpa.CustomerManagerJPA;
 import cz.fi.muni.eshop.util.Resources;
@@ -45,7 +46,7 @@ public class CustomerManagerJPATest {
     @Deployment
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(WebArchive.class, "customer.war").addClasses(CustomerEntity.class, CustomerManager.class, Resources.class,
-                CustomerManagerJPA.class, User.class, IdentityType.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+                CustomerManagerJPA.class, User.class, IdentityType.class, Role.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
     
@@ -57,7 +58,7 @@ public class CustomerManagerJPATest {
     @InSequence(1)
     public void addCustomerTest() {
         Assert.assertTrue(customerManager.getCustomers().isEmpty());
-        customer = new CustomerEntity("rambo.john@foogle.com", "Rocky Balboa", "phoenix", "admin");
+        customer = new CustomerEntity("rambo.john@foogle.com", "Rocky Balboa", "phoenix", Role.ADMIN);
         log.log(Level.INFO, "New Customer: {0}", customer.toLog());
         customerManager.addCustomer(customer);
     }
@@ -85,14 +86,22 @@ public class CustomerManagerJPATest {
     @Test
     @InSequence(4)
     public void emailOrderingTest() {
-        customer = new CustomerEntity("hallOfFame@nhl.com", "Steve Yzerman", "hattrick", "admin");
+        customer = new CustomerEntity("hallOfFame@nhl.com", "Steve Yzerman", "hattrick", Role.ADMIN);
         customerManager.addCustomer(customer);        
         for (int i = 0; i < 10; i++) {
-            customerManager.addCustomer(new CustomerEntity("jemail" + i + "@foogle.cz", "name" + i , "password" + i, "admin"));
+            customerManager.addCustomer(new CustomerEntity("jemail" + i + "@foogle.cz", "name" + i , "password" + i, Role.BASIC));
         }
         List<CustomerEntity> list = customerManager.findCustomersOrderedByMail();
         Assert.assertEquals("Steve Yzerman", list.get(0).getName());
         Assert.assertEquals("John Spartan", list.get(11).getName());
         
     }    
+    
+    @Test
+    @InSequence(5)
+    public void enumCompareTest() {
+        List<CustomerEntity> list = customerManager.findCustomersOrderedByMail();
+        Assert.assertTrue(list.get(0).getRole().equals(Role.ADMIN));
+        Assert.assertTrue(list.get(1).getRole().equals(Role.BASIC));
+    }
 }

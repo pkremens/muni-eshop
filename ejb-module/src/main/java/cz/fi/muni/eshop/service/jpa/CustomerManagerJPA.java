@@ -36,15 +36,15 @@ public class CustomerManagerJPA implements CustomerManager {
 
     @Override
     public void addCustomer(CustomerEntity customer) {
-        log.log(Level.INFO, "Add customer: {0}", customer);
+        log.log(Level.INFO, "Add customer: {0}", customer.toLog());
         em.persist(customer);
-        log.log(Level.INFO, "Customer added: {0}", customer);
+        log.log(Level.INFO, "Customer added: {0}", customer.toLog());
         customerEventSrc.fire(customer);
     }
 
     @Override
     public void update(CustomerEntity customer) {
-        log.log(Level.INFO, "Update customer: {0}", customer);
+        log.log(Level.INFO, "Update customer: {0}", customer.toLog());
         em.merge(customer);
     }
 

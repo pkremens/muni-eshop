@@ -6,6 +6,8 @@ package cz.fi.muni.eshop.model;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,12 +28,10 @@ import org.picketlink.idm.api.User;
 @Table(name = "customer")
 public class CustomerEntity implements User, Serializable {
 
-
     @Id
     @Size(min = 1, max = 25)
     @Pattern(regexp = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", message = "not a valid email address")
     private String email;
-    
     // allow also number to simplify creation of dummy data
     @Size(min = 1, max = 25)
     @Pattern(regexp = "[A-Za-z0-9 ]*", message = "must contain only letters, numbers and spaces")
@@ -39,24 +39,22 @@ public class CustomerEntity implements User, Serializable {
     @NotEmpty
     @NotNull
     private String password;
-    @NotEmpty
-    @NotNull
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public CustomerEntity() {
     }
 
-    // TODO Role by mela byt ENUM!!!
-    public CustomerEntity(String email, String name, String password, String role) {
+    public CustomerEntity(String email, String name, String password, Role role) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.role = role;
     }
-    
+
     public String getPasswordSubstring() {
         try {
-        return password.substring(0, 10);
+            return password.substring(0, 10);
         } catch (StringIndexOutOfBoundsException sioube) {
             return password; // TODO just for test purposes
         }
@@ -104,15 +102,14 @@ public class CustomerEntity implements User, Serializable {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
