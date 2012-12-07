@@ -9,7 +9,6 @@ import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.util.quilifier.JPA;
 import cz.fi.muni.eshop.util.quilifier.MyLogger;
 import java.io.Serializable;
-//import org.jboss.seam.security.Identity;
 import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;

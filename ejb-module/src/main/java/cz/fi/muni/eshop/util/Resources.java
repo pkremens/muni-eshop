@@ -14,10 +14,9 @@ package cz.fi.muni.eshop.util;
  * OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-import cz.fi.muni.eshop.util.quilifier.UserDatabase;
 import cz.fi.muni.eshop.util.quilifier.MyLogger;
+import cz.fi.muni.eshop.util.quilifier.UserDatabase;
 import java.util.logging.Logger;
-import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.persistence.EntityManager;

@@ -9,7 +9,6 @@ import cz.fi.muni.eshop.util.quilifier.MyLogger;
 import java.util.logging.Logger;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 /**
  *

@@ -16,15 +16,12 @@
  */
 package cz.fi.muni.eshop.controller;
 
+import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.playground.paymentprocessor.Asynchronous;
 import cz.fi.muni.eshop.playground.paymentprocessor.PaymentProcessor;
-import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.service.MemberRegistration;
 import java.lang.annotation.Annotation;
-
-
 import javax.annotation.PostConstruct;
-
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Model;
