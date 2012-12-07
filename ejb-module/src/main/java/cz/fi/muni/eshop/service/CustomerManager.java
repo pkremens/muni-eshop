@@ -5,6 +5,7 @@
 package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.CustomerEntity;
+import cz.fi.muni.eshop.util.InvalidEntryException;
 import cz.fi.muni.eshop.util.NoCustomerFoundExeption;
 import java.util.List;
 
@@ -31,4 +32,8 @@ public interface CustomerManager {
     List<CustomerEntity> getCustomers();
 
     List<CustomerEntity> findCustomersOrderedByMail();
+
+    CustomerEntity isRegistred(String email);
+
+    boolean validateCustomer(CustomerEntity customer) throws InvalidEntryException;
 }

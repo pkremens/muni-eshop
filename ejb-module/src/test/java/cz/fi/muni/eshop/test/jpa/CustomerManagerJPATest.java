@@ -8,6 +8,8 @@ import cz.fi.muni.eshop.model.CustomerEntity;
 import cz.fi.muni.eshop.model.Role;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.jpa.CustomerManagerJPA;
+import cz.fi.muni.eshop.util.EntityValidator;
+import cz.fi.muni.eshop.util.InvalidEntryException;
 import cz.fi.muni.eshop.util.NoCustomerFoundExeption;
 import cz.fi.muni.eshop.util.Resources;
 
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
 import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -46,7 +49,7 @@ public class CustomerManagerJPATest {
     @Deployment
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(WebArchive.class, "customer.war").addClasses(CustomerEntity.class, CustomerManager.class, Resources.class,
-                CustomerManagerJPA.class, User.class, IdentityType.class, Role.class, NoCustomerFoundExeption.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+                CustomerManagerJPA.class, User.class, InvalidEntryException.class, IdentityType.class, EntityValidator.class, Role.class, NoCustomerFoundExeption.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
     @Inject
@@ -116,5 +119,15 @@ public class CustomerManagerJPATest {
         CustomerEntity nullCustomer = customerManager.verifyCustomer("hallOfFame@nhl.com", "hooray-gretzky");
         Assert.assertNull(nullCustomer);
     }
+    
+    @Test(expected=InvalidEntryException.class)
+    @InSequence(8)
+    public void addingCustomerWithInvalidEmailTest()  throws InvalidEntryException {
+        CustomerEntity customer = new CustomerEntity("invalidMail", "name", "password", Role.ADMIN);
+        EntityValidator<CustomerEntity> validator = new EntityValidator<CustomerEntity>();
+        validator.validate(customer);
+    }
+    
+    
 
 }

@@ -6,6 +6,8 @@ package cz.fi.muni.eshop.service.jpa;
 
 import cz.fi.muni.eshop.model.CustomerEntity;
 import cz.fi.muni.eshop.service.CustomerManager;
+import cz.fi.muni.eshop.util.EntityValidator;
+import cz.fi.muni.eshop.util.InvalidEntryException;
 import cz.fi.muni.eshop.util.NoCustomerFoundExeption;
 import cz.fi.muni.eshop.util.quilifier.JPA;
 import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
@@ -79,5 +81,16 @@ public class CustomerManagerJPA implements CustomerManager {
         log.info("Find customers ordered by mail");
         return em.createNamedQuery("customer.findCustomersOrderedByMail", CustomerEntity.class).getResultList();
 
+    }
+
+    @Override
+    public CustomerEntity isRegistred(String email) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean validateCustomer(CustomerEntity customer) throws InvalidEntryException {
+        EntityValidator<CustomerEntity> validator = new EntityValidator<CustomerEntity>();
+            return validator.validate(customer);
     }
 }
