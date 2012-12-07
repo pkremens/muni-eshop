@@ -5,7 +5,7 @@
 package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.ProductEntity;
-import cz.fi.muni.eshop.util.quilifier.MyLogger;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
@@ -26,7 +26,7 @@ import javax.inject.Named;
 public class BasketBean implements BasketManager {
 
     @Inject
-    @MyLogger
+    @MuniEshopLogger
     private Logger log;
     private Map<ProductEntity, Integer> basket;
     

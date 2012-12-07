@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.fi.muni.eshop.security.qualifier;
+package cz.fi.muni.eshop.security.permissions;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

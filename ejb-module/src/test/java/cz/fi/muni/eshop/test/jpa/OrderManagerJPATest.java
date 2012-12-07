@@ -4,7 +4,7 @@
  */
 package cz.fi.muni.eshop.test.jpa;
 
-import cz.fi.muni.eshop.util.quilifier.MyLogger;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import org.jboss.arquillian.junit.Arquillian;
@@ -20,7 +20,7 @@ import org.junit.runner.RunWith;
 public class OrderManagerJPATest {
 
     @Inject
-    @MyLogger
+    @MuniEshopLogger
     Logger log;
     
     @Test

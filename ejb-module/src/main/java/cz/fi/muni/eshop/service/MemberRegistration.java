@@ -20,8 +20,8 @@ package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.testpackage.Dummy;
-import cz.fi.muni.eshop.util.quilifier.MyLogger;
-import cz.fi.muni.eshop.util.quilifier.UserDatabase;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopDatabase;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
@@ -39,11 +39,11 @@ public class MemberRegistration {
 private Dummy dummy;
 
    @Inject
-   @MyLogger
+   @MuniEshopLogger
    private Logger log;
    
    @Inject
-   @UserDatabase
+   @MuniEshopDatabase
    private EntityManager em;
 
    @Inject

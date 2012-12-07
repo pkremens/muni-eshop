@@ -10,7 +10,7 @@ import cz.fi.muni.eshop.service.jpa.CustomerManagerJPA;
 import cz.fi.muni.eshop.util.Resources;
 
 import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MyLogger;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,7 +36,7 @@ import org.picketlink.idm.api.User;
 public class CustomerManagerJPATest {
 
     @Inject
-    @MyLogger
+    @MuniEshopLogger
     Logger log;
 
     @Inject

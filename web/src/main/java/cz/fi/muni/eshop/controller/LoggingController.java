@@ -5,7 +5,7 @@
 
 package cz.fi.muni.eshop.controller;
 
-import cz.fi.muni.eshop.util.quilifier.MyLogger;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import java.util.logging.Logger;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -17,7 +17,7 @@ import javax.inject.Inject;
 @Model
 public class LoggingController {
     @Inject
-    @MyLogger
+    @MuniEshopLogger
     Logger log;
     
   

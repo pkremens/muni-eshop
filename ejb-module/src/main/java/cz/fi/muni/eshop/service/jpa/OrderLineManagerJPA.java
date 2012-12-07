@@ -7,8 +7,8 @@ package cz.fi.muni.eshop.service.jpa;
 import cz.fi.muni.eshop.model.OrderLineEntity;
 import cz.fi.muni.eshop.service.OrderLineManager;
 import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MyLogger;
-import cz.fi.muni.eshop.util.quilifier.UserDatabase;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopDatabase;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -24,11 +24,11 @@ import javax.persistence.EntityManager;
 public class OrderLineManagerJPA implements OrderLineManager {
 
     @Inject
-    @UserDatabase
+    @MuniEshopDatabase
     private EntityManager em;
     
     @Inject
-    @MyLogger
+    @MuniEshopLogger
     private Logger log;
 
     @Override

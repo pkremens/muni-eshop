@@ -7,7 +7,7 @@ package cz.fi.muni.eshop.controller;
 import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MyLogger;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
@@ -38,7 +38,7 @@ public class ProductController implements Serializable {
     @JPA // using interface thus can later change to another implementation thanks to runtime bean type resolution see dummy translate test
     private ProductManager productManager;
     @Inject
-    @MyLogger
+    @MuniEshopLogger
     Logger log;
     private ProductEntity newProduct;
     @Inject

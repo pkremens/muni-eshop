@@ -14,8 +14,8 @@ package cz.fi.muni.eshop.util;
  * OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-import cz.fi.muni.eshop.util.quilifier.MyLogger;
-import cz.fi.muni.eshop.util.quilifier.UserDatabase;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopDatabase;
 import java.util.logging.Logger;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
@@ -41,25 +41,25 @@ public class Resources {
 //   private EntityManager em;
 
     @Produces
-    @MyLogger
+    @MuniEshopLogger
     public Logger produceLog(InjectionPoint injectionPoint) {
         return Logger.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
     }
     
     @PersistenceContext
     @Produces
-    @UserDatabase
+    @MuniEshopDatabase
     private EntityManager em;
 
     
     // This doesn't have sense as entity manager lifecycle is controled by container (throws exeptions)
 //    @Produces
-//    @UserDatabase
+//    @MuniEshopDatabase
 //    public EntityManager create() {
 //        return em;
 //    }
 //
-//    public void close(@Disposes @UserDatabase EntityManager em) {
+//    public void close(@Disposes @MuniEshopDatabase EntityManager em) {
 //        em.close();
 //    }
 }

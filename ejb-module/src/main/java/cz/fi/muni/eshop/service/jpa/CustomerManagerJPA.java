@@ -7,8 +7,8 @@ package cz.fi.muni.eshop.service.jpa;
 import cz.fi.muni.eshop.model.CustomerEntity;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MyLogger;
-import cz.fi.muni.eshop.util.quilifier.UserDatabase;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopDatabase;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,10 +26,10 @@ import javax.persistence.EntityManager;
 public class CustomerManagerJPA implements CustomerManager {
 
     @Inject
-    @MyLogger
+    @MuniEshopLogger
     private Logger log;
     @Inject
-    @UserDatabase
+    @MuniEshopDatabase
     private EntityManager em;
     @Inject
     private Event<CustomerEntity> customerEventSrc; //TODO will be needed?

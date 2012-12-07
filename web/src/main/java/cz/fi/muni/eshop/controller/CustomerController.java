@@ -7,7 +7,7 @@ package cz.fi.muni.eshop.controller;
 
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MyLogger;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import java.io.Serializable;
 import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
@@ -26,7 +26,7 @@ public class CustomerController implements Serializable {
     private CustomerManager manager;
     
     @Inject
-    @MyLogger
+    @MuniEshopLogger
     private Logger log;
     
 //    @Inject

@@ -19,7 +19,7 @@ package cz.fi.muni.eshop.rest;
 import cz.fi.muni.eshop.data.member.MemberRepository;
 import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.service.MemberRegistration;
-import cz.fi.muni.eshop.util.quilifier.MyLogger;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -55,7 +55,7 @@ import javax.ws.rs.core.Response;
 @RequestScoped
 public class MemberResourceRESTService {
     @Inject
-    @MyLogger
+    @MuniEshopLogger
     private Logger log;
 
     @Inject

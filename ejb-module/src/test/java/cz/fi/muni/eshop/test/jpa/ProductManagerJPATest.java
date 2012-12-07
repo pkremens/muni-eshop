@@ -11,7 +11,7 @@ import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.service.jpa.ProductManagerJPA;
 import cz.fi.muni.eshop.util.Resources;
 import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MyLogger;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
 public class ProductManagerJPATest {
 
     @Inject
-    @MyLogger
+    @MuniEshopLogger
     Logger log;
 
     @Deployment

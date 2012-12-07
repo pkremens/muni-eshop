@@ -22,7 +22,7 @@ import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.service.MemberRegistration;
 import cz.fi.muni.eshop.testpackage.Dummy;
 import cz.fi.muni.eshop.util.Resources;
-import cz.fi.muni.eshop.util.quilifier.MyLogger;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -42,7 +42,7 @@ public class MemberRegistrationTest {
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "test.war").addClasses(Member.class, MyLogger.class, MemberRegistration.class, Resources.class, Dummy.class, MemberListProducer.class, MemberRepository.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+        return ShrinkWrap.create(WebArchive.class, "test.war").addClasses(Member.class, MuniEshopLogger.class, MemberRegistration.class, Resources.class, Dummy.class, MemberListProducer.class, MemberRepository.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
     @Inject
@@ -50,7 +50,7 @@ public class MemberRegistrationTest {
     @Inject
     MemberListProducer memberListProducer;
     @Inject
-    @MyLogger
+    @MuniEshopLogger
     Logger log;
 
     @Test

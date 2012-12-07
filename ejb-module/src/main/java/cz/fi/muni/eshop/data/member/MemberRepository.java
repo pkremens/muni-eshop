@@ -18,7 +18,7 @@ package cz.fi.muni.eshop.data.member;
 
 import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.util.Resources;
-import cz.fi.muni.eshop.util.quilifier.UserDatabase;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopDatabase;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -33,7 +33,7 @@ import javax.persistence.criteria.Root;
 public class MemberRepository {
 
    @Inject
-   @UserDatabase
+   @MuniEshopDatabase
    private EntityManager em;
    
 

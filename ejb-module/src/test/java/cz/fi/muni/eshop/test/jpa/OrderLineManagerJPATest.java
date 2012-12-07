@@ -12,8 +12,8 @@ import cz.fi.muni.eshop.service.jpa.OrderLineManagerJPA;
 import cz.fi.muni.eshop.service.jpa.ProductManagerJPA;
 import cz.fi.muni.eshop.util.Resources;
 import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MyLogger;
-import cz.fi.muni.eshop.util.quilifier.UserDatabase;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopDatabase;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -39,7 +39,7 @@ import org.junit.runner.RunWith;
 public class OrderLineManagerJPATest {
 
     @Inject
-    @MyLogger
+    @MuniEshopLogger
     Logger log;
     @Inject
     @JPA
@@ -59,7 +59,7 @@ public class OrderLineManagerJPATest {
     @Deployment
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(WebArchive.class, "orderLine.war").addClasses(ProductEntity.class, ProductManagerJPA.class, ProductManager.class, OrderLineEntity.class, OrderLineManager.class, Resources.class,
-                OrderLineManagerJPA.class, UserDatabase.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+                OrderLineManagerJPA.class, MuniEshopDatabase.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
 
