@@ -6,6 +6,7 @@ package cz.fi.muni.eshop.service.jpa;
 
 import cz.fi.muni.eshop.model.CustomerEntity;
 import cz.fi.muni.eshop.service.CustomerManager;
+import cz.fi.muni.eshop.util.NoCustomerFoundExeption;
 import cz.fi.muni.eshop.util.quilifier.JPA;
 import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import cz.fi.muni.eshop.util.quilifier.MuniEshopDatabase;
@@ -16,6 +17,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 /**
  *
@@ -50,15 +52,20 @@ public class CustomerManagerJPA implements CustomerManager {
 
     // TODO NoResultExeption... catch?
     @Override
-    public CustomerEntity verifyCustomer(String email, String password) {
+    public CustomerEntity verifyCustomer(String email, String password) throws NoCustomerFoundExeption {
         log.log(Level.INFO, "Verify customer - email: {0} password: {1}", new Object[]{email, password});
-        return em.createNamedQuery("customer.findByEmailAndPassword", CustomerEntity.class).setParameter("email", email).setParameter("password", password).getSingleResult();
+        CustomerEntity customer = findByEmail(email);
+        return customer.getPassword().equals(password)? customer : null;        
     }
 
-    @Override
-    public CustomerEntity findByEmail(String email) {
+
+    private CustomerEntity findByEmail(String email) throws NoCustomerFoundExeption {
         log.log(Level.INFO, "Find customer by email: {0}", email);
-        return em.createNamedQuery("customer.findByEmail", CustomerEntity.class).setParameter("email", email).getSingleResult(); //TODO Test jestli vraci null kdyz neexistuje
+        try {
+        return em.createNamedQuery("customer.findByEmail", CustomerEntity.class).setParameter("email", email).getSingleResult(); 
+        } catch (NoResultException nre) {
+            throw new NoCustomerFoundExeption("Trying to verify non-existig user", nre);
+        }
     }
 
     @Override

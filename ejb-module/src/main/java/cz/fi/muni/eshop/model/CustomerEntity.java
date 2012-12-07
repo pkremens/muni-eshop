@@ -22,8 +22,7 @@ import org.picketlink.idm.api.User;
 @NamedQueries({
     @NamedQuery(name = "customer.getCustomers", query = "SELECT c FROM customer c"),
     @NamedQuery(name = "customer.findCustomersOrderedByMail", query = "select c from customer c ORDER BY c.email ASC"),
-    @NamedQuery(name = "customer.findByEmail", query = "SELECT c FROM customer c WHERE c.email = :email"),
-    @NamedQuery(name = "customer.findByEmailAndPassword", query = "SELECT c FROM customer c WHERE c.email=:email AND c.password=:password")
+    @NamedQuery(name = "customer.findByEmail", query = "SELECT c FROM customer c WHERE c.email = :email")
 })
 @Table(name = "customer")
 public class CustomerEntity implements User, Serializable {

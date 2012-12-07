@@ -5,6 +5,7 @@
 package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.CustomerEntity;
+import cz.fi.muni.eshop.util.NoCustomerFoundExeption;
 import java.util.List;
 
 /**
@@ -17,10 +18,16 @@ public interface CustomerManager {
 
     void update(CustomerEntity customer);
 
-    CustomerEntity verifyCustomer(String email, String password); // TODO Co bude lepsi? nejaky dummy dotaz kterym zjistit jeslti v DB vubec je a az pak ho kdzytak vytahnu nebo ho rovnou vytahnout 
+    /**
+     *
+     * @param email
+     * @param password
+     * @return instance of verified customer, return null if wrong password
+     * @throws NoCustomerFoundExeption if no customer with given ID exists
+     */
+    CustomerEntity verifyCustomer(String email, String password) throws NoCustomerFoundExeption; // TODO Co bude lepsi? nejaky dummy dotaz kterym zjistit jeslti v DB vubec je a az pak ho kdzytak vytahnu nebo ho rovnou vytahnout 
 
-    CustomerEntity findByEmail(String email);
-
+    //CustomerEntity findByEmail(String email);
     List<CustomerEntity> getCustomers();
 
     List<CustomerEntity> findCustomersOrderedByMail();

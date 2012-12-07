@@ -8,6 +8,7 @@ import cz.fi.muni.eshop.model.CustomerEntity;
 import cz.fi.muni.eshop.model.Role;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.jpa.CustomerManagerJPA;
+import cz.fi.muni.eshop.util.NoCustomerFoundExeption;
 import cz.fi.muni.eshop.util.Resources;
 
 import cz.fi.muni.eshop.util.quilifier.JPA;
@@ -39,17 +40,15 @@ public class CustomerManagerJPATest {
     @Inject
     @MuniEshopLogger
     Logger log;
-
     @Inject
     private CustomerEntity customer;
 
     @Deployment
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(WebArchive.class, "customer.war").addClasses(CustomerEntity.class, CustomerManager.class, Resources.class,
-                CustomerManagerJPA.class, User.class, IdentityType.class, Role.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+                CustomerManagerJPA.class, User.class, IdentityType.class, Role.class, NoCustomerFoundExeption.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
-    
     @Inject
     @JPA
     CustomerManager customerManager;
@@ -62,41 +61,41 @@ public class CustomerManagerJPATest {
         log.log(Level.INFO, "New Customer: {0}", customer.toLog());
         customerManager.addCustomer(customer);
     }
-    
+
     @Test
     @InSequence(2)
-    public void updateTest() {
+    public void updateTest() throws NoCustomerFoundExeption {
         Assert.assertTrue(customer.getEmail() == null);
-        customer = customerManager.findByEmail("rambo.john@foogle.com");
+        customer = customerManager.verifyCustomer("rambo.john@foogle.com", "phoenix");
         Assert.assertEquals("Rocky Balboa", customer.getName());
         log.info(customer.toLog());
         customer.setName("John Spartan");
         customerManager.update(customer);
         log.info(customer.toLog());
     }
-    
+
     @Test
     @InSequence(3)
-    public void fetchAfterUpdateTest() {
+    public void fetchAfterUpdateTest() throws NoCustomerFoundExeption {
         customer = customerManager.verifyCustomer("rambo.john@foogle.com", "phoenix");
         Assert.assertEquals("John Spartan", customer.getName());
-        
+
     }
-    
+
     @Test
     @InSequence(4)
     public void emailOrderingTest() {
         customer = new CustomerEntity("hallOfFame@nhl.com", "Steve Yzerman", "hattrick", Role.ADMIN);
-        customerManager.addCustomer(customer);        
+        customerManager.addCustomer(customer);
         for (int i = 0; i < 10; i++) {
-            customerManager.addCustomer(new CustomerEntity("jemail" + i + "@foogle.cz", "name" + i , "password" + i, Role.BASIC));
+            customerManager.addCustomer(new CustomerEntity("jemail" + i + "@foogle.cz", "name" + i, "password" + i, Role.BASIC));
         }
         List<CustomerEntity> list = customerManager.findCustomersOrderedByMail();
         Assert.assertEquals("Steve Yzerman", list.get(0).getName());
         Assert.assertEquals("John Spartan", list.get(11).getName());
-        
-    }    
-    
+
+    }
+
     @Test
     @InSequence(5)
     public void enumCompareTest() {
@@ -104,4 +103,18 @@ public class CustomerManagerJPATest {
         Assert.assertTrue(list.get(0).getRole().equals(Role.ADMIN));
         Assert.assertTrue(list.get(1).getRole().equals(Role.BASIC));
     }
+
+    @Test(expected=NoCustomerFoundExeption.class)
+    @InSequence(6)
+    public void verificationWrongUserTest() throws NoCustomerFoundExeption {
+       customerManager.verifyCustomer("Dummy", "not-important");
+    }
+
+    @Test
+    @InSequence(7)
+    public void verificationWrongPasswordTest() throws NoCustomerFoundExeption {
+        CustomerEntity nullCustomer = customerManager.verifyCustomer("hallOfFame@nhl.com", "hooray-gretzky");
+        Assert.assertNull(nullCustomer);
+    }
+
 }
