@@ -7,11 +7,11 @@
     <ui:define name="content">
 
         <h2>Product List:</h2>
-        <h:panelGroup rendered="#{empty productList}" id="noProducts">
+        <h:panelGroup rendered="#{productController.emptyProductsList}" id="noProducts">
             <em>No products!</em>
         </h:panelGroup>
         <h:dataTable value="#{productList}" var="_product" border="1" id="productList"
-                     rendered="#{not empty productList}">
+                     rendered="#{not productController.emptyProductsList}">
             <h:column>
                 <f:facet name="header">
                     <h:outputText value="ID" />

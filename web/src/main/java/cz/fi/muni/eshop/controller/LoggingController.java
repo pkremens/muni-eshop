@@ -24,7 +24,7 @@ public class LoggingController {
   
     public void makeLog() {
         System.out.println("Making log");
-        log.fine("Fine log");
+        log.info("Fine log");
         log.info("Info log");
         log.warning("Warning log");
     }

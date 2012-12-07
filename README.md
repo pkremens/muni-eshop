@@ -14,3 +14,7 @@ mvn clean test -Parq-jbossas-managed -Dtest=cz.fi.muni.eshop.test.dummy.translat
 mvn surefire-report:report
 
 mvn clean install package jboss-as:redeploy -PnoTest
+
+changing log level globaly: 
+for FILE in $(find . | grep "\.java") ; do sed -i 's/FINE/INFO/g' $FILE; done
+for FILE in $(find . | grep "\.java") ; do sed -i 's/log.fine/log.info/g' $FILE; done

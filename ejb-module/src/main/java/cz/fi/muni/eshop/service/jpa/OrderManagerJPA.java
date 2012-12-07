@@ -38,13 +38,14 @@ public class OrderManagerJPA implements OrderManager{
 
     @Override
     public void addOrder(OrderEntity order) {
-        log.log(Level.FINE, "Adding new order: {0}", order);
+        log.log(Level.INFO, "Adding new order: {0}", order);
         em.persist(order);
+        log.log(Level.INFO, "Order added: {0}", order);
     }
   
     @Override
     public void switchOrderOpen(Long id) {
-        log.log(Level.FINE, "Switching open for order with id: {0}", id);
+        log.log(Level.INFO, "Switching open for order with id: {0}", id);
         OrderEntity order = getOrderById(id);
         if (order.isOpenOrder()) {
             order.setOpenOrder(false);
@@ -57,13 +58,13 @@ public class OrderManagerJPA implements OrderManager{
 
     @Override
     public OrderEntity getOrderById(Long id) {
-        log.log(Level.FINE, "Get order by id: {0}", id);
+        log.log(Level.INFO, "Get order by id: {0}", id);
         return em.createNamedQuery("order.getOrderById", OrderEntity.class).getSingleResult();
     }
 
     @Override
     public List<OrderEntity> getOrders() {
-        log.fine("Get orders");
+        log.info("Get orders");
         return em.createNamedQuery("order.getOrders", OrderEntity.class).getResultList();
     }
 
@@ -71,7 +72,7 @@ public class OrderManagerJPA implements OrderManager{
     @Produces
     @Named("activeOrders")
     public List<OrderEntity> getActiveOrders() {
-        log.fine("Get active orders");
+        log.info("Get active orders");
         return getOrdersByOpen(true);
     }
 
@@ -79,12 +80,12 @@ public class OrderManagerJPA implements OrderManager{
     @Produces
     @Named("closedOrders")
     public List<OrderEntity> getClosedOrders() {
-        log.fine("Get closed orders");
+        log.info("Get closed orders");
         return getOrdersByOpen(false);
     }
 
     private List<OrderEntity> getOrdersByOpen(boolean open) {
-        log.log(Level.FINER, "Get orders by open: {0}", open);
+        log.log(Level.INFO, "Get orders by open: {0}", open);
         return em.createNamedQuery("order.getOrdersByOpen", OrderEntity.class).setParameter("open", open).getResultList();
     }
 

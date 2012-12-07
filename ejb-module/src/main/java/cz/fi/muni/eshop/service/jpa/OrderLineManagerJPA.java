@@ -34,13 +34,14 @@ public class OrderLineManagerJPA implements OrderLineManager {
 
     @Override
     public void addOrderLine(OrderLineEntity orderLine) {
-        log.fine("Add order line");
+        log.info("Add order line");
         em.persist(orderLine);
+        log.info("Order line added");
     }
 
     @Override
     public List<OrderLineEntity> getOrderLines() {
-        log.fine("Get order lines");
+        log.info("Get order lines");
         return em.createNamedQuery("orderLine.getOrderLines", OrderLineEntity.class).getResultList();
     }
 }

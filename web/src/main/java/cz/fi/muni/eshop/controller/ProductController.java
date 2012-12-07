@@ -12,12 +12,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.enterprise.event.Observes;
-import javax.enterprise.event.Reception;
-import javax.enterprise.inject.Model;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -29,14 +27,15 @@ import javax.inject.Named;
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 //TODO co vse musi implementovat serializable???
-@Model
-public class ProductController implements Serializable { 
+@Named
+@SessionScoped
+public class ProductController implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 650851568081767180L;
-	@Inject
+     *
+     */
+    private static final long serialVersionUID = 650851568081767180L;
+    @Inject
     @JPA // using interface thus can later change to another implementation thanks to runtime bean type resolution see dummy translate test
     private ProductManager productManager;
     @Inject
@@ -46,16 +45,34 @@ public class ProductController implements Serializable {
     @Inject
     private FacesContext facesContext;
     private static List<ProductEntity> productList; // should be static???
+    @Produces
+    private static boolean emptyProductsList; // potencialni misto k nejake chybe s vlakny, konzultovat!
 
     @PostConstruct
     public void retrieveAllProducts() {
+        log.info("POST CONSTRUCT");
+        log.info("Get all products");
         productList = productManager.getProducts();
+        emptyProductsList = productList.isEmpty(); // isEmpty is calling to often to acces whole list all the time
         initNewProduct();
     }
+
+    public boolean isEmptyProductsList() {
+        log.info("Is list of products empty?");
+        return emptyProductsList;
+    }
+    // TODO stejne, jde nejak udelat aby to JSF vyhodnotilo jen jednou?
+//    @Produces
+//    @Named("emptyProducts") // to be able to recognize which method is called not only 10x get product list
+//    public boolean isProductListEmpty() {
+//        log.info("Is product list empty");
+//        return isEmpty;
+//    }
 
     @Produces
     @Named
     public ProductEntity getNewProduct() {
+        log.info("Get new product");
         return newProduct;
     }
 //    // TODO bude potreba?
@@ -64,25 +81,20 @@ public class ProductController implements Serializable {
 //        retrieveAllProducts();
 //    }
 
-    @Produces
-    @Named
-    List<ProductEntity> getProductList() {
-        return productList;
-    }
 
     public void saveAction(ProductEntity product) {
-        log.fine("Save action");
+        log.info("Save action");
         product.setEditable(false);
         productManager.update(product);
     }
 
     public void editAction(ProductEntity product) {
-        log.fine("Edit action");
+        log.info("Edit action");
         product.setEditable(true);
     }
 
     public void register() throws Exception {
-        log.fine("Register new product");
+        log.info("Register new product");
         System.out.println(newProduct.toString());
         productManager.addProduct(newProduct);
         productList.add(newProduct);
@@ -94,6 +106,7 @@ public class ProductController implements Serializable {
     // TODO jeste upravit, jen dummy
     public void validatePriceRange(FacesContext context,
             UIComponent toValidate, Object value) {
+        log.info("Validate price range");
         long input = (Long) value;
 
         if (input < 1 || input > 10000) {
@@ -115,8 +128,9 @@ public class ProductController implements Serializable {
 //            context.addMessage(toValidate.getClientId(context), message);
 //        }
 //    }
+
     public void initNewProduct() {
-        log.fine("Init new product");
+        log.info("Init new product");
         newProduct = new ProductEntity();
     }
 }

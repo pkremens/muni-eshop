@@ -23,6 +23,7 @@ import javax.persistence.EntityManager;
 @JPA
 @Stateless
 public class ProductManagerJPA implements ProductManager {
+    
 
     @Inject
     @UserDatabase
@@ -33,26 +34,28 @@ public class ProductManagerJPA implements ProductManager {
 
     @Override
     public void addProduct(ProductEntity product) {
-        log.log(Level.FINE, "Add product: {0}", product);
+        log.log(Level.INFO, "Add product: {0}", product);
         em.persist(product);
+        log.log(Level.INFO, "Product added: {0}", product);
+        
     }
 
     @Override
     public void update(ProductEntity product) {
-        log.log(Level.FINE, "Update product: {0}", product);
+        log.log(Level.INFO, "Update product: {0}", product);
         em.merge(product);
     }
 
     @Override
     public ProductEntity findProductById(long id) {
-        log.log(Level.FINE, "Find product by id: {0}", id);
+        log.log(Level.INFO, "Find product by id: {0}", id);
         return em.createNamedQuery("product.findProductById", ProductEntity.class).setParameter("id", id).getSingleResult();
 
     }
 
     @Override
     public List<ProductEntity> getProducts() {
-        log.fine("Get all products");
+        log.info("Get all products");
         return em.createNamedQuery("product.getProducts", ProductEntity.class).getResultList();
     }
 }
