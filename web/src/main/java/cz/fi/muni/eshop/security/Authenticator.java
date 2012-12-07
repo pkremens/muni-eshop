@@ -7,7 +7,7 @@ package cz.fi.muni.eshop.security;
 import cz.fi.muni.eshop.model.CustomerEntity;
 import cz.fi.muni.eshop.model.Role;
 import cz.fi.muni.eshop.service.CustomerManager;
-import cz.fi.muni.eshop.util.NoCustomerFoundExeption;
+import cz.fi.muni.eshop.util.NoEntryFoundExeption;
 import cz.fi.muni.eshop.util.quilifier.JPA;
 import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import java.util.Set;
@@ -60,7 +60,7 @@ public class Authenticator extends BaseAuthenticator {
             String password = ((PasswordCredential) credentials.getCredential()).getValue();
             try {
                 customer = customerManager.verifyCustomer(email, password);
-            } catch (NoCustomerFoundExeption ncfe) {
+            } catch (NoEntryFoundExeption ncfe) {
                 log.log(Level.INFO, "Non-existing user trying to authenticate: {0}", email);
                 setStatus(AuthenticationStatus.FAILURE);
                 facesContext.addMessage("loginForm:username", new FacesMessage(

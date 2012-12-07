@@ -73,11 +73,11 @@ public class CustomerController implements Serializable {
     }
 
     public void register() throws Exception {
-        if (!identity.isLoggedIn()) { // TODO ?
+        if (!identity.isLoggedIn()) { // pokud vytvari noveho uzivatele neregistrovany clovek = BASIC
             newCustomer.setRole(Role.BASIC);
         }
 
-        if (newCustomer.getPassword() == null || newCustomer.getPassword().equals("")) {
+        if (newCustomer.getPassword() == null || newCustomer.getPassword().equals("")) { // TODO to by meli resit JSFka
             facesContext.addMessage("addForm:password", new FacesMessage(
                     "Cannot have empty password"));
             log.info("Entered empty password");

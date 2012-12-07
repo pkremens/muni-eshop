@@ -24,22 +24,17 @@ public class AuthenticationValidatorTest {
 
     private static Validator validator;
 
-    @BeforeClass
-    public static void setUp() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
-    }
     
     @Test
     public void invalidEmailTest() {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
         CustomerEntity customer = new CustomerEntity("", "name", "password", Role.BASIC);
         Set<ConstraintViolation<CustomerEntity>> constraintViolations =
             validator.validate(customer);
         Assert.assertEquals(2, constraintViolations.size());
-        for (ConstraintViolation<CustomerEntity> constraintViolation : constraintViolations) {
-            System.out.println(constraintViolation);
-        }
-        
-        
+//        for (ConstraintViolation<CustomerEntity> constraintViolation : constraintViolations) {
+//            System.out.println(constraintViolation);
+//        }                
     }
 }

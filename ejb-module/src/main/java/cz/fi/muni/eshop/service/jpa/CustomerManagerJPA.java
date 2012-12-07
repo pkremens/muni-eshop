@@ -5,13 +5,14 @@
 package cz.fi.muni.eshop.service.jpa;
 
 import cz.fi.muni.eshop.model.CustomerEntity;
+import cz.fi.muni.eshop.model.Role;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.util.EntityValidator;
 import cz.fi.muni.eshop.util.InvalidEntryException;
-import cz.fi.muni.eshop.util.NoCustomerFoundExeption;
+import cz.fi.muni.eshop.util.NoEntryFoundExeption;
 import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import cz.fi.muni.eshop.util.quilifier.MuniEshopDatabase;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +30,7 @@ import javax.persistence.NoResultException;
 @Stateless
 public class CustomerManagerJPA implements CustomerManager {
 
+    private CustomerEntity dummyCustomer = new CustomerEntity("email", "dummyName", "dummyPassowrd", Role.BASIC);
     @Inject
     @MuniEshopLogger
     private Logger log;
@@ -54,19 +56,18 @@ public class CustomerManagerJPA implements CustomerManager {
 
     // TODO NoResultExeption... catch?
     @Override
-    public CustomerEntity verifyCustomer(String email, String password) throws NoCustomerFoundExeption {
+    public CustomerEntity verifyCustomer(String email, String password) throws NoEntryFoundExeption {
         log.log(Level.INFO, "Verify customer - email: {0} password: {1}", new Object[]{email, password});
         CustomerEntity customer = findByEmail(email);
-        return customer.getPassword().equals(password)? customer : null;        
+        return customer.getPassword().equals(password)? customer : null;
     }
 
-
-    private CustomerEntity findByEmail(String email) throws NoCustomerFoundExeption {
+    private CustomerEntity findByEmail(String email) throws NoEntryFoundExeption  {
         log.log(Level.INFO, "Find customer by email: {0}", email);
         try {
-        return em.createNamedQuery("customer.findByEmail", CustomerEntity.class).setParameter("email", email).getSingleResult(); 
+        return em.createNamedQuery("customer.findByEmail", CustomerEntity.class).setParameter("email", email).getSingleResult();
         } catch (NoResultException nre) {
-            throw new NoCustomerFoundExeption("Trying to verify non-existig user", nre);
+            throw new NoEntryFoundExeption("Trying to verify non-existig customer", nre);
         }
     }
 
@@ -80,17 +81,28 @@ public class CustomerManagerJPA implements CustomerManager {
     public List<CustomerEntity> findCustomersOrderedByMail() {
         log.info("Find customers ordered by mail");
         return em.createNamedQuery("customer.findCustomersOrderedByMail", CustomerEntity.class).getResultList();
-
     }
 
+    /**
+     * 
+     * @param email of customer
+     * @return Customer if registered else null
+     * @throws InvalidEntryException  if some contains invalid fields, prevent wasting resources
+     */
     @Override
-    public CustomerEntity isRegistred(String email) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public boolean validateCustomer(CustomerEntity customer) throws InvalidEntryException {
+    public CustomerEntity isRegistred(String email) throws InvalidEntryException {
         EntityValidator<CustomerEntity> validator = new EntityValidator<CustomerEntity>();
-            return validator.validate(customer);
+        dummyCustomer.setEmail(email);
+        boolean isValid = false;
+        validator.validate(dummyCustomer);
+        if (isValid) {
+            try {
+                return findByEmail(email);
+            } catch (NoEntryFoundExeption nre) {
+                return null;
+            }
+        } else {
+            throw new IllegalStateException("FATAL: Never should get here, there is some bug"); // TODO remove, debugg reason only 
+        }
     }
 }
