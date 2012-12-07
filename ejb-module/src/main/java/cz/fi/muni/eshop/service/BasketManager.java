@@ -29,5 +29,7 @@ public interface BasketManager {
     boolean isEmpty();
 
     void initNewBasket();
+    
+    Long getTotalPrice();
 //List<ProductEntity> getAllMessages() throws Exception;
 }

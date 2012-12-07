@@ -91,4 +91,10 @@ public class BasketBean implements BasketManager {
         log.info("Initializing new basket");
         basket = new TreeMap<ProductEntity, Integer>();
     }
+
+    // TODO
+    @Override
+    public Long getTotalPrice() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

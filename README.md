@@ -18,3 +18,8 @@ mvn clean install package jboss-as:redeploy -PnoTest
 changing log level globaly: 
 for FILE in $(find . | grep "\.java") ; do sed -i 's/FINE/INFO/g' $FILE; done
 for FILE in $(find . | grep "\.java") ; do sed -i 's/log.fine/log.info/g' $FILE; done
+
+
+PROBLEM SOLVING:
+WELD-000072 Managed bean declaring a passivating scope must be passivation capable
+solution = missing: implements Serializable
