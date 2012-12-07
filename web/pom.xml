@@ -73,6 +73,34 @@
          <artifactId>dummy-ear-test</artifactId>
          <version>${project.version}</version>
       </dependency>
+      <dependency>
+         <groupId>org.jboss.seam.security</groupId>
+         <artifactId>seam-security</artifactId>
+         <version>3.1.0.Final</version>
+         <type>jar</type>
+      </dependency>
+      
+      <dependency>
+          <groupId>org.jboss.seam.international</groupId>
+          <artifactId>seam-international</artifactId>
+          <version>3.1.0.Final</version>
+          <type>jar</type>
+      </dependency>
+      
+      <dependency>
+          <groupId>joda-time</groupId>
+          <artifactId>joda-time</artifactId>
+          <version>2.1</version>
+          <type>jar</type>
+      </dependency>
+      <dependency>
+	<groupId>org.drools</groupId>
+	<artifactId>knowledge-api</artifactId>
+	<version>5.4.0.Final</version>
+        <type>jar</type>
+</dependency>
+            
+      
    </dependencies>
 
    <build>

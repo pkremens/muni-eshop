@@ -9,16 +9,13 @@ import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.util.quilifier.JPA;
 import cz.fi.muni.eshop.util.quilifier.MyLogger;
 import cz.fi.muni.eshop.util.quilifier.UserDatabase;
-
 import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQuery;
 
 /**
  *

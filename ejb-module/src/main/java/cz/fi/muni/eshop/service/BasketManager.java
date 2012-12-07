@@ -5,7 +5,6 @@
 package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.ProductEntity;
-import java.util.List;
 import java.util.Map;
 
 /**

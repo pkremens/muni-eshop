@@ -10,8 +10,8 @@
     OF ANY KIND, either express or implied. See the License for the specific 
     language governing permissions and limitations under the License. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-   <name>Eshop:</name>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <name>Eshop:</name>
     <modelVersion>4.0.0</modelVersion>
     <groupId>cz.fi.mumi</groupId>
     <artifactId>eshop</artifactId>
@@ -22,7 +22,7 @@
         <module>ejb-module</module>
         <module>web</module>
         <module>application</module>
-	<module>dummy-test-module</module>
+        <module>dummy-test-module</module>
 	
     </modules>
 
@@ -37,7 +37,7 @@
         <version.surefire.plugin>2.4.3</version.surefire.plugin>
         <version.war.plugin>2.1.1</version.war.plugin>
         <maven.compiler.target>1.6</maven.compiler.target>
-        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.source>1.6</maven.compiler.source>        
     </properties>
 
     <dependencyManagement>
@@ -50,7 +50,7 @@
                 <type>ejb</type>
             </dependency>
 
-	    <dependency>
+            <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>dummy-test-module</artifactId>
                 <version>${project.version}</version>
@@ -80,7 +80,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+              
         </dependencies>
     </dependencyManagement>
 
