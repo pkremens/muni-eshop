@@ -33,8 +33,8 @@ public class OrderController implements Serializable{
     @Inject
     private Identity identity;
     
-    @Inject
-    private BasketManager basket;
+//    @Inject
+//    private BasketManager basket;
     
     
 }

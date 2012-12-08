@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
+import javax.transaction.UserTransaction;
 import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -27,6 +27,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,7 +44,7 @@ public class OrderLineManagerJPATest {
     Logger log;
     @Inject
     @JPA
-    OrderLineManager manager;
+    OrderLineManager orderLineManager;
     @Inject
     OrderLineEntity orderLine;
     @Inject
@@ -51,6 +52,10 @@ public class OrderLineManagerJPATest {
     @Inject
     @JPA
     ProductManager productManager;
+    @PersistenceContext
+    EntityManager em;
+    @Inject
+    UserTransaction utx;
 
     /*
      * TRY @PersistenceContext(unitName = "jeelabPU") @Produces @Default
@@ -63,22 +68,23 @@ public class OrderLineManagerJPATest {
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
 
-    @Test
-    @InSequence(1)
-    @Ignore("??? JAK NA TO TUDUDUDU")
-    public void addOrderLineTest() {
-        product = new ProductEntity("tool", 3L);
-        productManager.addProduct(product);
-        System.out.println(product.getId());
-        
+    @Before
+    public void setUp() throws Exception {
+        product.setBasePrice(44L);
+        product.setProductName("Product");
+        product.setEditable(false);
+        utx.begin();
+        em.joinTransaction();
+        em.persist(product);
+        orderLine = new OrderLineEntity(product, 6L);
+        em.persist(orderLine);
+        utx.commit();
     }
-    
-    
-
     @Test
-    @InSequence(2)
-    @Ignore("Need Product manager first")
-    public void getOrderlinesTest() {
-        Assert.assertFalse(manager.getOrderLines().isEmpty());
+    public void orderLineTest() {
+        orderLine = orderLineManager.getOrderLines().get(0);
+        Assert.assertEquals((Long) 44L, orderLine.getProduct().getBasePrice());
+        Assert.assertEquals("Product", orderLine.getProduct().getProductName());
+        Assert.assertEquals((Long) 6L, orderLine.getQuantity());
     }
 }

@@ -41,6 +41,8 @@ public class ProductEntity implements Serializable, Comparable<ProductEntity> {
     private Long basePrice;
     @Transient
     boolean editable = false;
+    @Transient
+    Long quantityInBasket = 0L;
 
     public ProductEntity() {
         super();
@@ -87,6 +89,16 @@ public class ProductEntity implements Serializable, Comparable<ProductEntity> {
         editable = !editable;
     }
 
+    public Long getQuantityInBasket() {
+        return quantityInBasket;
+    }
+
+    public void setQuantityInBasket(Long quantityInBasket) {
+        this.quantityInBasket = quantityInBasket;
+    }
+    
+    
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -105,9 +117,13 @@ public class ProductEntity implements Serializable, Comparable<ProductEntity> {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 83 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 71 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 71 * hash + (this.productName != null ? this.productName.hashCode() : 0);
+        hash = 71 * hash + (this.basePrice != null ? this.basePrice.hashCode() : 0);
         return hash;
     }
+
+ 
 
     @Override
     public String toString() {
@@ -116,7 +132,7 @@ public class ProductEntity implements Serializable, Comparable<ProductEntity> {
 
     @Override
     public int compareTo(ProductEntity product) {
-        return id.compareTo(product.id);
+        return this.id.compareTo(product.id);
     }
 
 }
