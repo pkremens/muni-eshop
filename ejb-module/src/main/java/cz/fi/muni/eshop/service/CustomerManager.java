@@ -38,5 +38,5 @@ public interface CustomerManager {
  * @return instance of customer if existing in DB else null
  * @throws InvalidEntryException  if entered invalid email, prevent wasting db connection resources
  */
-    CustomerEntity isRegistred(String email) throws InvalidEntryException;
+    CustomerEntity isRegistered(String email) throws InvalidEntryException;
 }

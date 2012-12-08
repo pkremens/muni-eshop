@@ -49,7 +49,7 @@ public class Authenticator extends BaseAuthenticator {
         String email = credentials.getUsername();
         CustomerEntity customer;
         try {
-            customer = customerManager.isRegistred(email);
+            customer = customerManager.isRegistered(email);
         } catch (InvalidEntryException iex) {
             log.log(Level.INFO, "Invalid email trying to authenticate: {0}", email);
             setStatus(AuthenticationStatus.FAILURE);

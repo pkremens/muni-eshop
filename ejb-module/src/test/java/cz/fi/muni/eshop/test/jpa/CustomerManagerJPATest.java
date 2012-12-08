@@ -135,20 +135,20 @@ public class CustomerManagerJPATest {
     @Test(expected = InvalidEntryException.class)
     @InSequence(5)
     public void invalidMailTest() throws InvalidEntryException {
-        customerManager.isRegistred("invalid-mail");
+        customerManager.isRegistered("invalid-mail");
     }
 
     @Test
     @InSequence(5)
     public void nonexistigMailTest() throws InvalidEntryException {
-        customer = customerManager.isRegistred("steve.y@tiscali.cz");
+        customer = customerManager.isRegistered("steve.y@tiscali.cz");
         Assert.assertNull(customer);
     }
     
     @Test
     @InSequence(5)
-    public void isRegistredTest() throws InvalidEntryException {
-        customer = customerManager.isRegistred("hallOfFame@nhl.com");
+    public void isRegisteredTest() throws InvalidEntryException {
+        customer = customerManager.isRegistered("hallOfFame@nhl.com");
         Assert.assertNotNull(customer);
     }
 }

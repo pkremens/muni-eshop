@@ -82,13 +82,13 @@ public class CustomerManagerJPA implements CustomerManager {
     @Deprecated // loosing information about customers presence in DB
     @Override
     public CustomerEntity verifyCustomer(String email, String password) throws InvalidEntryException {
-        CustomerEntity customer = isRegistred(email);
+        CustomerEntity customer = isRegistered(email);
         return customer.getPassword().equals(password) ? customer : null;
     }
 
     @Override
-    public CustomerEntity isRegistred(String email) throws InvalidEntryException {
-    	log.warning("Is customer with email: " + email + " registred?");
+    public CustomerEntity isRegistered(String email) throws InvalidEntryException {
+    	log.warning("Is customer with email: " + email + " registered?");
         EntityValidator<CustomerEntity> validator = new EntityValidator<CustomerEntity>();
         dummyCustomer.setEmail(email);
         boolean isValid = false;

@@ -88,7 +88,7 @@ public class InitServlet extends HttpServlet {
 			authenticator.setStatus(AuthenticationStatus.SUCCESS);
 			CustomerEntity customer = null;
 			try {
-				customer = customerManager.isRegistred("admin0@admin.cz");
+				customer = customerManager.isRegistered("admin0@admin.cz");
 			} catch (InvalidEntryException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

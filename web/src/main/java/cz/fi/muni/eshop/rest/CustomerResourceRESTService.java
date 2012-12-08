@@ -53,7 +53,7 @@ public class CustomerResourceRESTService {
         log.info("lookupProductById");
         CustomerEntity customer;
         try {
-            customer = customerManager.isRegistred(email);
+            customer = customerManager.isRegistered(email);
             if (customer == null) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }

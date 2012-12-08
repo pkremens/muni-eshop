@@ -21,7 +21,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.jboss.seam.security.Credentials;
 import org.jboss.seam.security.Identity;
+import org.picketlink.idm.impl.api.PasswordCredential;
 
 /**
  *
@@ -44,6 +47,9 @@ public class CustomerController implements Serializable {
     private FacesContext facesContext;
     private static List<CustomerEntity> customerList;
     private static boolean emptyCustomersList;
+    
+    @Inject
+    private Credentials credentials;
 
     @PostConstruct
     public void retrieveAllCustomers() {
@@ -98,19 +104,25 @@ public class CustomerController implements Serializable {
             log.info("Entered empty password");
             initNewCustomer(); // TODO really needed?
         } else {
-            CustomerEntity customer = customerManager.isRegistred(newCustomer.getEmail());
+            CustomerEntity customer = customerManager.isRegistered(newCustomer.getEmail());
             if (customer == null) {
                 customerManager.addCustomer(newCustomer);
                 log.log(Level.INFO, "Registration: adding new customer {0}", newCustomer.toString());
                 facesContext.addMessage("addCustomerForm:registerButton",
-                        new FacesMessage("Customer was added"));
+                        new FacesMessage("Customer was registered"));
                 customerList.add(newCustomer);
                 emptyCustomersList=false;
+                // log in new customer after registration
+    			credentials.setUsername(newCustomer.getEmail());
+    			PasswordCredential pc = new PasswordCredential(newCustomer.getPassword());
+    			credentials.setCredential(pc);
+    			identity.login();       
+    			
                 initNewCustomer();
             } else {
-                log.info("Registration: trying to use already registred email");
+                log.info("Registration: trying to use already registered email");
                 facesContext.addMessage("addCustomerForm:registerButton",
-                        new FacesMessage("User with this email is already registred"));
+                        new FacesMessage("User with this email is already registered"));
                 initNewCustomer();
             }
 
