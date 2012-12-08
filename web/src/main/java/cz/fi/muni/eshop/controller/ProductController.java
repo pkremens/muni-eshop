@@ -58,7 +58,7 @@ public class ProductController implements Serializable {
     }
 
     public boolean isEmptyProductsList() {
-        log.log(Level.INFO, "Is list of products empty?: {0}", emptyProductsList);
+        //log.log(Level.INFO, "Is list of products empty?: {0}", emptyProductsList);
         return emptyProductsList;
     }
     // TODO stejne, jde nejak udelat aby to JSF vyhodnotilo jen jednou?
@@ -86,7 +86,7 @@ public class ProductController implements Serializable {
     List<ProductEntity> getProductList() {
         return productList;
     }
-
+    
     public void saveAction(ProductEntity product) {
         log.info("Save action");
         product.setEditable(false);
@@ -133,9 +133,19 @@ public class ProductController implements Serializable {
 //            context.addMessage(toValidate.getClientId(context), message);
 //        }
 //    }
+    
+    public void setStore() {
+    	for (ProductEntity product : productList) {
+			if (product.getOnStore() < 100L) {
+				product.setOnStore(1000L);
+				productManager.update(product);
+			}
+		}
+    }
 
     public void initNewProduct() {
         log.info("Init new product");
         newProduct = new ProductEntity();
+        
     }
 }
