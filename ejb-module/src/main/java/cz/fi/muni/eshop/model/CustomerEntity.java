@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -40,6 +41,8 @@ public class CustomerEntity implements User, Serializable {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Transient
+    boolean editable = false;
 
     public CustomerEntity() {
     }
@@ -109,6 +112,14 @@ public class CustomerEntity implements User, Serializable {
         this.role = role;
     }
 
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

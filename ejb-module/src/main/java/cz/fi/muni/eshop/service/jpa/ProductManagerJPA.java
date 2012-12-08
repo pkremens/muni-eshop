@@ -34,28 +34,32 @@ public class ProductManagerJPA implements ProductManager {
 
     @Override
     public void addProduct(ProductEntity product) {
-        log.log(Level.INFO, "Add product: {0}", product);
+        log.log(Level.WARNING, "Add product: {0}", product);
+        log.warning("accessing DB");
         em.persist(product);
-        log.log(Level.INFO, "Product added: {0}", product);
+        log.log(Level.WARNING, "Product added: {0}", product);
         
     }
 
     @Override
     public void update(ProductEntity product) {
-        log.log(Level.INFO, "Update product: {0}", product);
+        log.log(Level.WARNING, "Update product: {0}", product);
+        log.warning("accessing DB");
         em.merge(product);
     }
 
     @Override
     public ProductEntity findProductById(long id) {
-        log.log(Level.INFO, "Find product by id: {0}", id);
+        log.log(Level.WARNING, "Find product by id: {0}", id);
+        log.warning("accessing DB");
         return em.createNamedQuery("product.findProductById", ProductEntity.class).setParameter("id", id).getSingleResult();
 
     }
 
     @Override
     public List<ProductEntity> getProducts() {
-        log.info("Get all products");
+        log.warning("Get all products");
+        log.warning("accessing DB");
         return em.createNamedQuery("product.getProducts", ProductEntity.class).getResultList();
     }
 }

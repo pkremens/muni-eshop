@@ -5,6 +5,7 @@
 package cz.fi.muni.eshop.controller;
 
 import cz.fi.muni.eshop.model.CustomerEntity;
+import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.model.Role;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.util.quilifier.JPA;
@@ -53,12 +54,19 @@ public class CustomerController implements Serializable {
         initNewCustomer();
     }
 
-    public void updateAction(CustomerEntity customer) {
+    public void saveAction(CustomerEntity customer) {
+        log.info("Save action");
+        customer.setEditable(false);
         customerManager.update(customer);
     }
 
-    public boolean isEmptyProductsList() {
-        log.log(Level.INFO, "Is list of customers empty?: {0}", emptyCustomersList);
+    public void editAction(CustomerEntity customer) {
+        log.info("Edit action");
+        customer.setEditable(true);
+    }
+
+    public boolean isEmptyCustomerList() {
+        //log.log(Level.INFO, "Is list of customers empty?: {0}", emptyCustomersList);
         return emptyCustomersList;
     }
 
@@ -67,18 +75,24 @@ public class CustomerController implements Serializable {
     public CustomerEntity getNewCustomer() {
         return newCustomer;
     }
+    @Produces
+    @Named
+    List<CustomerEntity> getCustomerList() {
+        return customerList;
+    }
 
     public void initNewCustomer() {
         newCustomer = new CustomerEntity();
     }
 
     public void register() throws Exception {
+    	log.info("Is logged in?: " + identity.isLoggedIn());
         if (!identity.isLoggedIn()) { // pokud vytvari noveho uzivatele neregistrovany clovek = BASIC
             newCustomer.setRole(Role.BASIC);
         }
 
         if (newCustomer.getPassword() == null || newCustomer.getPassword().equals("")) { // TODO to by meli resit JSFka
-            facesContext.addMessage("addForm:password", new FacesMessage(
+            facesContext.addMessage("addCustomerForm:password", new FacesMessage(
                     "Cannot have empty password"));
             log.info("Entered empty password");
             initNewCustomer(); // TODO really needed?
@@ -87,13 +101,15 @@ public class CustomerController implements Serializable {
             if (customer == null) {
                 customerManager.addCustomer(newCustomer);
                 log.log(Level.INFO, "Registration: adding new customer {0}", newCustomer.toString());
-                facesContext.addMessage("addForm:registerButton",
+                facesContext.addMessage("addCustomerForm:registerButton",
                         new FacesMessage("Customer was added"));
+                customerList.add(newCustomer);
+                emptyCustomersList=false;
                 initNewCustomer();
             } else {
                 log.info("Registration: trying to use already registred email");
-                facesContext.addMessage("addForm:registerButton",
-                        new FacesMessage("User is already registered"));
+                facesContext.addMessage("addCustomerForm:registerButton",
+                        new FacesMessage("User with this email is already registred"));
                 initNewCustomer();
             }
 

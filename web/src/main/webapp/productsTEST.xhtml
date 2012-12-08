@@ -8,8 +8,7 @@
 
 		<h2>Product List:</h2>
 		<h:form id="productsForm">
-			<h:panelGroup rendered="#{productController.emptyProductsList}"
-				id="noProducts">
+			<h:panelGroup rendered="#{productController.emptyProductsList}">
 				<em>No products!</em>
 			</h:panelGroup>
 			<h:dataTable value="#{productList}" var="_product" id="productList"
@@ -24,10 +23,9 @@
 					<f:facet name="header">
 						<h:outputText value="NAME" />
 					</f:facet>
-					<h:outputText value="#{_product.productName}"
-						rendered="#{!_product.editable}" />
+					
 					<h:inputText id="productNameInput" value="#{_product.productName}"
-						rendered="#{_product.editable}" />
+						disabled="#{!_product.editable}" />
 					<f:attribute name="width" value="50" />
 				</h:column>
 				<h:column>
@@ -61,9 +59,11 @@
 					<h:message for="productNameInput" errorClass="invalid" />
 				</h:column>
 			</h:dataTable>
-		<h:commandButton action="#{productController.setStore()}" value="Fill the store" rendered="#{not productController.emptyProductsList}" >
-			<f:ajax execute="@form" render=":productsForm" />
-		</h:commandButton>
+			<h:commandButton action="#{productController.setStore()}"
+				value="Fill the store"
+				rendered="#{not productController.emptyProductsList}">
+				<f:ajax execute="@form" render=":productsForm" />
+			</h:commandButton>
 		</h:form>
 
 

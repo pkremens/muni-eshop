@@ -42,20 +42,22 @@ public class CustomerManagerJPA implements CustomerManager {
 
     @Override
     public void addCustomer(CustomerEntity customer) {
-        log.log(Level.INFO, "Add customer: {0}", customer.toLog());
+        log.log(Level.WARNING, "Add customer: {0}", customer.toLog());
+        log.warning("accessing DB");
         em.persist(customer);
-        log.log(Level.INFO, "Customer added: {0}", customer.toLog());
+        log.log(Level.WARNING, "Customer added: {0}", customer.toLog());
         customerEventSrc.fire(customer);
     }
 
     @Override
     public void update(CustomerEntity customer) {
-        log.log(Level.INFO, "Update customer: {0}", customer.toLog());
+        log.log(Level.WARNING, "Update customer: {0}", customer.toLog());
+        log.warning("accessing DB");
         em.merge(customer);
     }
 
     private CustomerEntity findByEmail(String email) throws NoEntryFoundExeption {
-        log.log(Level.INFO, "Find customer by email: {0}", email);
+        log.log(Level.WARNING, "Find customer by email: {0}", email);
         try {
             return em.createNamedQuery("customer.findByEmail", CustomerEntity.class).setParameter("email", email).getSingleResult();
         } catch (NoResultException nre) {
@@ -65,13 +67,15 @@ public class CustomerManagerJPA implements CustomerManager {
 
     @Override
     public List<CustomerEntity> getCustomers() {
-        log.info("Get customers");
+        log.warning("Get customers");
+        log.warning("accessing DB");
         return em.createNamedQuery("customer.getCustomers", CustomerEntity.class).getResultList();
     }
 
     @Override
     public List<CustomerEntity> findCustomersOrderedByMail() {
-        log.info("Find customers ordered by mail");
+        log.warning("Find customers ordered by mail");
+        log.warning("accessing DB");
         return em.createNamedQuery("customer.findCustomersOrderedByMail", CustomerEntity.class).getResultList();
     }
 
@@ -84,6 +88,7 @@ public class CustomerManagerJPA implements CustomerManager {
 
     @Override
     public CustomerEntity isRegistred(String email) throws InvalidEntryException {
+    	log.warning("Is customer with email: " + email + " registred?");
         EntityValidator<CustomerEntity> validator = new EntityValidator<CustomerEntity>();
         dummyCustomer.setEmail(email);
         boolean isValid = false;
