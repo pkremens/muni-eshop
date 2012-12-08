@@ -58,7 +58,7 @@ public class MemberController {
         Annotation qualifier = new AsynchronousAnnotation();
         PaymentProcessor p = paymentProcessorSources.select(qualifier).get();
         
-// Annonymous version        
+// Anonymous version        
 //        PaymentProcessor p = paymentProcessorSources.select(
 //				new AnnotationLiteral() {
 //					@Override

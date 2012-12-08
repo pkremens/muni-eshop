@@ -15,7 +15,7 @@ import javax.inject.Inject;
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Model
-public class LoggingController {
+public class LoggingController { // TODO Remove, just dummy
     @Inject
     @MuniEshopLogger
     Logger log;

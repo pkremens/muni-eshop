@@ -4,16 +4,11 @@
  */
 package cz.fi.muni.eshop.controller;
 
-import cz.fi.muni.eshop.model.CustomerEntity;
-import cz.fi.muni.eshop.model.ProductEntity;
-import cz.fi.muni.eshop.model.Role;
-import cz.fi.muni.eshop.service.CustomerManager;
-import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
@@ -26,6 +21,13 @@ import org.jboss.seam.security.Credentials;
 import org.jboss.seam.security.Identity;
 import org.picketlink.idm.impl.api.PasswordCredential;
 
+import cz.fi.muni.eshop.model.CustomerEntity;
+import cz.fi.muni.eshop.model.Role;
+import cz.fi.muni.eshop.service.CustomerManager;
+import cz.fi.muni.eshop.util.InvalidEntryException;
+import cz.fi.muni.eshop.util.quilifier.JPA;
+import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+
 /**
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
@@ -34,7 +36,11 @@ import org.picketlink.idm.impl.api.PasswordCredential;
 @SessionScoped
 public class CustomerController implements Serializable {
 
-    @Inject
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3100276829805233710L; // TODO Are those mandatory?
+	@Inject
     @JPA
     private CustomerManager customerManager;
     @Inject
@@ -91,14 +97,19 @@ public class CustomerController implements Serializable {
         newCustomer = new CustomerEntity();
     }
 
-    public void register() throws Exception {
+    
+    /**
+     * Register new Customer. Should be used only by unauthorized user. New customer is automatically logged in after registration and is given Basic permission.
+     * @throws InvalidEntryException if trying to register customer with invalid email.
+     */
+    public void register() throws InvalidEntryException  {
     	log.info("Is logged in?: " + identity.isLoggedIn());
         if (!identity.isLoggedIn()) { // TODO BEWARE!!! not allowing to create user with higher role than BASIC for non-logged user!
         	log.warning("User not logged in, setting role to BASIC"); // TODO remove when ready, this could confuse me sometimes in near future (where are my lost permissions)
             newCustomer.setRole(Role.BASIC);
         }
 
-        if (newCustomer.getPassword() == null || newCustomer.getPassword().equals("")) { // TODO to by meli resit JSFka
+        if (newCustomer.getPassword() == null || newCustomer.getPassword().equals("")) { // TODO JSF should take care
             facesContext.addMessage("addCustomerForm:password", new FacesMessage(
                     "Cannot have empty password"));
             log.info("Entered empty password");

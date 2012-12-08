@@ -26,7 +26,7 @@ import javax.inject.Named;
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
-//TODO co vse musi implementovat serializable???
+//TODO what needs to implement Serializable except Entities where I am sure they have to??? WELD-000072 : DefinitionException be my guide :)
 @Named
 @SessionScoped
 public class ProductController implements Serializable {
@@ -46,14 +46,14 @@ public class ProductController implements Serializable {
     private FacesContext facesContext;
     private static List<ProductEntity> productList; // should be static???
     @Produces
-    private static boolean emptyProductsList; // potencialni misto k nejake chybe s vlakny, konzultovat!
+    private static boolean emptyProductsList; // TODO could lead to some concurrency errors, ask!
 
     @PostConstruct
     public void retrieveAllProducts() {
         log.info("POST CONSTRUCT");
         log.info("Get all products");
         productList = productManager.getProducts();
-        emptyProductsList = productList.isEmpty(); // isEmpty is calling to often to acces whole list all the time
+        emptyProductsList = productList.isEmpty(); // isEmpty is calling to often to access whole list all the time
         initNewProduct();
     }
 
@@ -61,7 +61,7 @@ public class ProductController implements Serializable {
         //log.log(Level.INFO, "Is list of products empty?: {0}", emptyProductsList);
         return emptyProductsList;
     }
-    // TODO stejne, jde nejak udelat aby to JSF vyhodnotilo jen jednou?
+    // TODO is it possible for JSF to evaluate this variable only once per rendering the page?
 //    @Produces
 //    @Named("emptyProducts") // to be able to recognize which method is called not only 10x get product list
 //    public boolean isProductListEmpty() {
@@ -75,7 +75,7 @@ public class ProductController implements Serializable {
         log.info("Get new product");
         return newProduct;
     }
-//    // TODO bude potreba?
+//    // TODO shall I use Events?
 //    public void onProductListChanged(
 //            @Observes(notifyObserver = Reception.IF_EXISTS) final ProductEntity product) {
 //        retrieveAllProducts();
@@ -108,7 +108,7 @@ public class ProductController implements Serializable {
         initNewProduct();
     }
 
-    // TODO jeste upravit, jen dummy
+    // TODO just dummy, repair!
     public void validatePriceRange(FacesContext context,
             UIComponent toValidate, Object value) {
         log.info("Validate price range");
