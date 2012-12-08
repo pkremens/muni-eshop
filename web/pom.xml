@@ -88,8 +88,18 @@
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>knowledge-api</artifactId>
-            <version>${version.org.drools.knowledge-api}</version>
+            <version>${version.org.drools}</version>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-core</artifactId>
+            <version>${version.org.drools}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-compiler</artifactId>
+            <version>${version.org.drools}</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>

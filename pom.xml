@@ -28,7 +28,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.org.drools.knowledge-api>5.4.0.Final</version.org.drools.knowledge-api>
+        <version.org.drools>5.4.0.Final</version.org.drools>
         <version.org.jboss.as>7.2.0.Alpha1-SNAPSHOT</version.org.jboss.as>
         <version.org.jboss.as.plugins.maven.plugin>7.3.Final</version.org.jboss.as.plugins.maven.plugin>
         <version.org.jboss.bom>1.0.0.Final</version.org.jboss.bom>
