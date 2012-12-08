@@ -94,7 +94,7 @@
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
-            <version>6.0</version>
+            <version>${version.javax.javaee.web.api}</version>
             <type>jar</type> 
         </dependency>
     </dependencies>

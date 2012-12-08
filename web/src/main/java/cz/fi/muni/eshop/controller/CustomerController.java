@@ -47,11 +47,6 @@ public class CustomerController implements Serializable {
 
     @PostConstruct
     public void retrieveAllCustomers() {
-    	customerManager.addCustomer(new CustomerEntity("admin@admin.cz", "Admin", "admin", Role.ADMIN));
-    	customerManager.addCustomer(new CustomerEntity("seller@seller.cz", "Seller", "seler", Role.SELLER));
-    	customerManager.addCustomer(new CustomerEntity("basic@basic.cz", "Basic", "basic", Role.BASIC));
-    	
-    	
         log.info("POST CONSTRUCT");
         log.info("Get all customers");
         customerList = customerManager.getCustomers();
@@ -92,7 +87,8 @@ public class CustomerController implements Serializable {
 
     public void register() throws Exception {
     	log.info("Is logged in?: " + identity.isLoggedIn());
-        if (!identity.isLoggedIn()) { // pokud vytvari noveho uzivatele neregistrovany clovek = BASIC
+        if (!identity.isLoggedIn()) { // TODO BEWARE!!! not allowing to create user with higher role than BASIC for non-logged user!
+        	log.warning("User not logged in, setting role to BASIC"); // TODO remove when ready, this could confuse me sometimes in near future (where are my lost permissions)
             newCustomer.setRole(Role.BASIC);
         }
 
