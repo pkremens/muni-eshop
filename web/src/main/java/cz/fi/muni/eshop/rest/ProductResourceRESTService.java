@@ -30,7 +30,7 @@ public class ProductResourceRESTService {
 	
 	@Inject
 	@JPA
-	ProductManager productManager;
+	private ProductManager productManager;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -42,7 +42,7 @@ public class ProductResourceRESTService {
 	@GET
 	@Path("/{id:[0-9][0-9]*}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ProductEntity lookupMemberById(@PathParam("id") long id) {
+	public ProductEntity lookupProductById(@PathParam("id") long id) {
 		log.info("lookupProductById");
 		ProductEntity product;
 		try {
