@@ -47,3 +47,18 @@ Tady byla chyba v tom, ze sem @Injektoval do OrderControlleru primo BasketBeanu 
 Nepouzivat -PnoTest , hodi chybu pri kompilaci, NoClassFound user transaction v OrderLineJPATest, musel bych zmenit scope user transakce a to nechci, pouzij misto toho surefireri argument -DskipTests=true
 mvn clean install package jboss-as:deploy -DskipTests=true
 
+
+web.xml was automaticali created, but I delete it, there it is if needed:
+[pkremens@dhcp-4-200 ~/Dropbox/muni-eshop]$ cat web/src/main/webapp/WEB-INF/web.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  <display-name>web</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+
