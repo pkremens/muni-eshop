@@ -38,9 +38,8 @@ public class InitServlet extends HttpServlet {
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public InitServlet() {
-
 		super();
-		generateData();
+		//generateData();
 
 	}
 
