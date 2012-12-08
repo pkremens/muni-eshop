@@ -17,6 +17,10 @@
 				<h:outputLabel value="#{identity.user.name}"
 					rendered="#{identity.loggedIn}" />
 				<h:outputText value="Not logged in" rendered="#{!identity.loggedIn}" />
+				<h:form id="logoutForm">
+					<h:commandButton id="logout" value="Logout"
+						action="#{identity.logout}" rendered="#{identity.loggedIn}" />
+				</h:form>
 			</h1>
 			<li>Dummy pages:</li> <a href="#{request.contextPath}/InitServlet">Servlet
 				for generating dummy data</a> <br /> <a
