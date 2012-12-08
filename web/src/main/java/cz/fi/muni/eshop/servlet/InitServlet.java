@@ -11,11 +11,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jboss.seam.security.Authenticator.AuthenticationStatus;
+import org.jboss.seam.security.Credentials;
+import org.jboss.seam.security.Identity;
+import org.picketlink.idm.impl.api.PasswordCredential;
+
 import cz.fi.muni.eshop.model.CustomerEntity;
 import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.model.Role;
+import cz.fi.muni.eshop.security.Authenticator;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.ProductManager;
+import cz.fi.muni.eshop.util.InvalidEntryException;
 import cz.fi.muni.eshop.util.quilifier.JPA;
 import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 
@@ -44,18 +51,28 @@ public class InitServlet extends HttpServlet {
 	private Logger log;
 
 	@Inject
+	private Credentials credentials;
+
+	@Inject
 	@JPA
 	private ProductManager productManager;
 
 	@Inject
 	@JPA
 	private CustomerManager customerManager;
+
+	@Inject
+	private Identity identity;
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public InitServlet() {
 		super();
 	}
+
+	@Inject
+	private Authenticator authenticator;
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -66,8 +83,33 @@ public class InitServlet extends HttpServlet {
 		String location = request.getContextPath() + "/index.jsf";
 		if (!generated) {
 			generateData();
+
+			// TODO REMOVE, little security hack
+			authenticator.setStatus(AuthenticationStatus.SUCCESS);
+			CustomerEntity customer = null;
+			try {
+				customer = customerManager.isRegistred("admin0@admin.cz");
+			} catch (InvalidEntryException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			credentials.setUsername(customer.getEmail());
+			PasswordCredential pc = new PasswordCredential("admin0");
+			credentials.setCredential(pc);
+			authenticator.authenticate();
+			try {
+
+				identity.login();
+			} catch (Exception ex) { // TODO my little security hack throws
+										// exceptions, hope it'll be OK in
+										// project and I don't missing sth,
+				// log.warning(ex.getMessage()); // this hack will be removed
+				// and is used only for debugging so I can carelessly swallow
+				// this exception
+
+			}
+			System.out.println(identity.isLoggedIn());
 		}
-		generated = true;
 		response.sendRedirect(location);
 	}
 
@@ -84,6 +126,7 @@ public class InitServlet extends HttpServlet {
 		generateProducts();
 		generateCustomers();
 		generateOrders();
+		generated = true;
 	}
 
 	private void generateProducts() {
@@ -110,24 +153,24 @@ public class InitServlet extends HttpServlet {
 			String base;
 			switch (role) {
 			case ADMIN:
-				base = "admin" +i;
-				customer.setEmail(base +"@admin.cz"); 
+				base = "admin" + i;
+				customer.setEmail(base + "@admin.cz");
 				customer.setName(base);
 				customer.setPassword(base);
 				customer.setRole(Role.ADMIN);
 				break;
 
 			case SELLER:
-				base = "seller" +i;
-				customer.setEmail(base +"@seller.cz"); 
+				base = "seller" + i;
+				customer.setEmail(base + "@seller.cz");
 				customer.setName(base);
 				customer.setPassword(base);
 				customer.setRole(Role.SELLER);
 				break;
 
 			case BASIC:
-				base = "basic" +i;
-				customer.setEmail(base +"@basic.cz"); 
+				base = "basic" + i;
+				customer.setEmail(base + "@basic.cz");
 				customer.setName(base);
 				customer.setPassword(base);
 				customer.setRole(Role.BASIC);
