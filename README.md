@@ -43,3 +43,7 @@ Caused by: org.jboss.weld.exceptions.DeploymentException: WELD-001408 Unsatisfie
 	at org.jboss.msc.service.ServiceControllerImpl$StartTask.run(ServiceControllerImpl.java:1746) [jboss-msc-1.0.2.GA.jar:1.0.2.GA]
 	... 3 more
 Tady byla chyba v tom, ze sem @Injektoval do OrderControlleru primo BasketBeanu a ne jen jeji rozhrani BasketManager. Ale sou pripady kdy fakt nevim proc to 1408-cku vyhodi, tak snad me to ze sem to aspon jednou vyresil pomuze..
+
+Nepouzivat -PnoTest , hodi chybu pri kompilaci, NoClassFound user transaction v OrderLineJPATest, musel bych zmenit scope user transakce a to nechci, pouzij misto toho surefireri argument -DskipTests=true
+mvn clean install package jboss-as:deploy -DskipTests=true
+
