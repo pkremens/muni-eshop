@@ -47,6 +47,11 @@ public class CustomerController implements Serializable {
 
     @PostConstruct
     public void retrieveAllCustomers() {
+    	customerManager.addCustomer(new CustomerEntity("admin@admin.cz", "Admin", "admin", Role.ADMIN));
+    	customerManager.addCustomer(new CustomerEntity("seller@seller.cz", "Seller", "seler", Role.SELLER));
+    	customerManager.addCustomer(new CustomerEntity("basic@basic.cz", "Basic", "basic", Role.BASIC));
+    	
+    	
         log.info("POST CONSTRUCT");
         log.info("Get all customers");
         customerList = customerManager.getCustomers();

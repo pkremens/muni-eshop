@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 /**
  *
@@ -49,7 +50,7 @@ public class ProductManagerJPA implements ProductManager {
     }
 
     @Override
-    public ProductEntity findProductById(long id) {
+    public ProductEntity findProductById(long id) throws NoResultException {
         log.log(Level.WARNING, "Find product by id: {0}", id);
         log.warning("accessing DB");
         return em.createNamedQuery("product.findProductById", ProductEntity.class).setParameter("id", id).getSingleResult();

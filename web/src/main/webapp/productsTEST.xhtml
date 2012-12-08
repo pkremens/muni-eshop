@@ -56,14 +56,24 @@
 					</h:commandButton>
 				</h:column>
 				<h:column>
+				<f:facet name="header">REST URL</f:facet>
+				<a href="#{request.contextPath}/rest/products/#{_product.id}">/rest/products/#{_product.id}</a>
+			</h:column>
+				<h:column>
 					<h:message for="productNameInput" errorClass="invalid" />
 				</h:column>
 			</h:dataTable>
+			<p>
 			<h:commandButton action="#{productController.setStore()}"
 				value="Fill the store"
 				rendered="#{not productController.emptyProductsList}">
 				<f:ajax execute="@form" render=":productsForm" />
-			</h:commandButton>
+			</h:commandButton><br />
+			</p>
+			<h:panelGroup rendered="#{!productController.emptyProductsList}">
+			REST URL for all products<a href="#{request.contextPath}/rest/products">/rest/products</a>
+			</h:panelGroup>
+						
 		</h:form>
 
 

@@ -70,6 +70,7 @@ public class MemberResourceRESTService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Member> listAllMembers() {
+    	log.info("FindAllMembers");
         return repository.findAllOrderedByName();
     }
 
@@ -77,6 +78,7 @@ public class MemberResourceRESTService {
     @Path("/{id:[0-9][0-9]*}")
     @Produces(MediaType.APPLICATION_JSON)
     public Member lookupMemberById(@PathParam("id") long id) {
+    	log.info("lookupMemberById");
         Member member = repository.findById(id);
         if (member == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
@@ -92,7 +94,7 @@ public class MemberResourceRESTService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createMember(Member member) {
-
+log.info("createMember");
         Response.ResponseBuilder builder = null;
 
         try {
@@ -134,6 +136,7 @@ public class MemberResourceRESTService {
      * @throws ValidationException          If member with the same email already exists
      */
     private void validateMember(Member member) throws ConstraintViolationException, ValidationException {
+    	log.info("validateMember");
         //Create a bean validator and check for issues.
         Set<ConstraintViolation<Member>> violations = validator.validate(member);
 
@@ -174,6 +177,7 @@ public class MemberResourceRESTService {
      * @return True if the email already exists, and false otherwise
      */
     public boolean emailAlreadyExists(String email) {
+    	log.info("emailAlreadyExists");
         Member member = null;
         try {
             member = repository.findByEmail(email);

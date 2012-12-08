@@ -13,11 +13,13 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
+@XmlRootElement
 @Entity(name = "product")
 @Table(name = "product")
 @NamedQueries({
