@@ -44,6 +44,7 @@ public class ProductEntity implements Serializable, Comparable<ProductEntity> {
     @Transient
     boolean editable = false;
     @Transient
+    @Deprecated // used in early versions of basket
     Long quantityInBasket = 1L;
     @NotNull
     private Long onStore = 0L;

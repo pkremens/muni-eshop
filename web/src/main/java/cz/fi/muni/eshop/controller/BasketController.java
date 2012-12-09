@@ -24,7 +24,7 @@ public class BasketController implements Serializable {
 	private Logger log;
 
     @Inject
-    @SetWithProducts // TODO move type resolution to Resources class
+    @TypeResolved
     private BasketManager basket;
     @Inject
     @TypeResolved

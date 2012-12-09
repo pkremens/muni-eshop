@@ -14,7 +14,6 @@ import cz.fi.muni.eshop.util.qualifier.MapWithProducts;
 import cz.fi.muni.eshop.util.qualifier.SetWithProducts;
 
 @MapWithProducts
-@SetWithProducts
 @Stateful
 @SessionScoped
 @Named
