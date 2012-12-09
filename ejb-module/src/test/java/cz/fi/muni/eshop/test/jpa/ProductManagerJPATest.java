@@ -40,7 +40,7 @@ public class ProductManagerJPATest {
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "customer.war").addClasses(ProductEntity.class, ProductManager.class, Resources.class,
+        return ShrinkWrap.create(WebArchive.class, "customer.war").addClasses(ProductEntity.class, ProductManager.class, JpaTestResources.class,
                 ProductManagerJPA.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }

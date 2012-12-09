@@ -52,7 +52,9 @@ public class OrderLineManagerJPATest {
     @Inject
     @JPA
     ProductManager productManager;
-    @PersistenceContext
+    
+    @Inject
+    @MuniEshopDatabase
     EntityManager em;
     @Inject
     UserTransaction utx;
@@ -63,8 +65,8 @@ public class OrderLineManagerJPATest {
      */
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "orderLine.war").addClasses(ProductEntity.class, ProductManagerJPA.class, ProductManager.class, OrderLineEntity.class, OrderLineManager.class, Resources.class,
-                OrderLineManagerJPA.class, MuniEshopDatabase.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+        return ShrinkWrap.create(WebArchive.class, "orderLine.war").addClasses(ProductEntity.class, ProductManagerJPA.class, ProductManager.class, OrderLineEntity.class, OrderLineManager.class, 
+                OrderLineManagerJPA.class, MuniEshopDatabase.class, JpaTestResources.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
 
