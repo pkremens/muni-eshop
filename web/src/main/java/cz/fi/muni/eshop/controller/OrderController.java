@@ -38,27 +38,20 @@ public class OrderController implements Serializable {
     private OrderManager orderManager;
     @Inject
     private Identity identity;
-    @Inject
-    @TypeResolved
-    private BasketManager basket;
+
     private OrderEntity newOrder;
     private static List<OrderEntity> activeOrders;
     private static List<OrderEntity> closedOrders;
 
-    @Produces
-    @Named
-    public OrderEntity getNewOrder() {
-        return newOrder;
-    }
+
 
     @PostConstruct
-    public void retrieveAllCustomers() {
+    public void retrieveAllOrders() {
         log.info("POST CONSTRUCT");
         log.info("Get all orders");
         activeOrders = orderManager.getActiveOrders();
         closedOrders = orderManager.getClosedOrders();
-        initNewOrder();
-    }
+      }
 
     @Produces
     @Named("allActiveOrders")
@@ -70,13 +63,6 @@ public class OrderController implements Serializable {
     @Named("allClosedOrders")
     public List<OrderEntity> getClosedOrders() {
         return closedOrders;
-    }
-
-    public void initNewOrder() {
-        newOrder = new OrderEntity();
-    }
-
-    public void makeOrder() { // TODO }
     }
 
     public void getOrderDetails() { //TODO

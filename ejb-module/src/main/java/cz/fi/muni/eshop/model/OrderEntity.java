@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -51,19 +52,17 @@ public class OrderEntity implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATIONDATE", nullable = false)
     private Date creationDate;
-    @Column(name = "TOTALPRICE" , nullable = false)
-    @NotNull
+    @Transient
     private Long totalPrice;
 
     public OrderEntity() {
         super();
     }
 
-    public OrderEntity(CustomerEntity customer, boolean openOrder, List<OrderLineEntity> orderLines, Date creationDate, Long totalPrice) {
+    public OrderEntity(CustomerEntity customer, List<OrderLineEntity> orderLines, Long totalPrice) {
         this.customer = customer;
-        this.openOrder = openOrder;
-        this.orderLines = orderLines;
-        this.creationDate = creationDate;
+        this.openOrder = true;
+        this.orderLines = orderLines;        
         this.totalPrice = totalPrice;
     }
 

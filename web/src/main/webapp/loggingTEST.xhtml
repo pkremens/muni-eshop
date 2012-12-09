@@ -6,34 +6,30 @@
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
 
+		<h1>
+			<h:outputLabel value="Login" rendered="#{!identity.loggedIn}" />
+		</h1>
+		<h2>
+			<h:outputLabel value="Please insert your credentials"
+				rendered="#{!identity.loggedIn}" />
+		</h2>
+		<h:form id="loginForm" rendered="#{!identity.loggedIn}">
+			<h:message for="loginButton" />
+			<h:panelGrid columns="3">
 
+				<h:outputLabel value="Email" for="username" />
+				<h:inputText id="username" value="#{credentials.username}" />
+				<h:message for="username" errorClass="invalid" />
 
-		<div id="login_div">
-			<h1>
-				<h:outputLabel value="Login" rendered="#{!identity.loggedIn}" />
-			</h1>
-			<h2>
-				<h:outputLabel value="Please insert your credentials"
-					rendered="#{!identity.loggedIn}" />
-			</h2>
-			<h:form id="loginForm" rendered="#{!identity.loggedIn}">
-				<h:message for="loginButton" />
-				<h:panelGrid columns="3">
+				<h:outputLabel value="Password" for="password" />
+				<h:inputSecret id="password" value="#{credentials.password}" />
+				<h:message for="password" errorClass="invalid" />
 
-					<h:outputLabel value="Email" for="username" />
-					<h:inputText id="username" value="#{credentials.username}" />
-					<h:message for="username" errorClass="invalid" />
+			</h:panelGrid>
+			<h:commandButton id="loginButton" action="#{identity.login}"
+				value="Login" rendered="#{!identity.loggedIn}" />
+		</h:form>
 
-					<h:outputLabel value="Password" for="password" />
-					<h:inputSecret id="password" value="#{credentials.password}" />
-					<h:message for="password" errorClass="invalid" />
-
-				</h:panelGrid>
-				<h:commandButton id="loginButton" action="#{identity.login}"
-					value="Login" rendered="#{!identity.loggedIn}" />
-			</h:form>
-		</div>
-		<div id="register_div">
 			<h1>
 				<h:outputLabel value="
 			Register" rendered="#{!identity.loggedIn}" />
@@ -45,6 +41,7 @@
 			<h:form id="addForm" rendered="#{!identity.loggedIn}">
 				<h:message for="registerButton" />
 				<h:panelGrid columns="3">
+				
 					<h:outputLabel value="Email" for="email" />
 					<h:inputText id="email" value="#{newCustomer.email}" />
 					<h:message for="email" errorClass="invalid" />
@@ -58,12 +55,6 @@
 				<h:commandButton id="registerButton"
 					action="#{customerController.register()}" value="Register" />
 			</h:form>
-		</div>
-
-
-
-
-
 
 	</ui:define>
 </ui:composition>

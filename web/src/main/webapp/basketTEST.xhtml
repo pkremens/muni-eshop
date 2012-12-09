@@ -5,10 +5,13 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
-		<form id="onEmptyBasket" rendered="#{isBasketEmpty}">
-			<h1>
-				<em>Empty basket</em>
-			</h1>
+		<form id="basketHeader">
+			<h3>Basket content:</h3>
+			<h:panelGroup rendered="#{isBasketEmpty}">
+				<h1>
+					<em>Empty basket</em>
+				</h1>
+			</h:panelGroup>
 		</form>
 		<form id="basketForm">
 			<h:dataTable id="basketTable" value="#{basketContent}" var="_product"
@@ -25,19 +28,32 @@
 					</f:facet>
 					<h:outputText value="#{_product.basePrice}" />
 				</h:column>
+
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="ACTION" />&#160;&#160;
 					</f:facet>
-					<h:commandButton value="Add" />
-					<h:commandButton value="Remove" />
+					<h:form id="basketOperations">
+						<h:commandButton id="addProductToBasket"
+							action="#{basketController.addToBasket(_product)}" value="add">
+							<f:ajax render="@all" execute="@all" />
+						</h:commandButton>
+						<h:commandButton id="removeFromBasketButton"
+							action="#{basketController.removeFromBasket(_product)}"
+							value="Remove" disabled="#{basketController.basketEmpty}">
+							<f:ajax render="@all" execute="@all" />
+						</h:commandButton>
+					</h:form>
 				</h:column>
+
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="IN BASKET" />&#160;&#160;
 					</f:facet>
-					<h:outputText id="basketPrice"
-						value="#{basketController.getQuantityOfProduct(_product)}" />
+					<h:form id="xxbasketOperations">
+						<h:outputText id="basketPrice"
+							value="#{basketController.getQuantityOfProduct(_product)}" />
+					</h:form>
 				</h:column>
 				<h:column>
 					<f:facet name="header">
@@ -48,24 +64,14 @@
 				</h:column>
 			</h:dataTable>
 			<p>
-			TOTAL PRICE: <h:outputLabel id="totalPriceOutput" value="#{basketTotalPrice}" />
+				TOTAL PRICE:
+				<h:outputLabel id="totalPriceOutput" value="#{basketTotalPrice}" />
 			</p>
-			<h:commandButton value="CLEAR BASKET DUMMY" />&#160;&#160;
-			<h:commandButton value="FINISH ORDER DUMMY" />
+			<h:commandButton action="#{basketController.clearBasket()}"
+				value="CLEAR BASKET DUMMY" disabled="#{isBasketEmpty}" />
+			&#160;&#160;
+			<h:commandButton action="#{basketController.makeOrder()}"
+				value="FINISH ORDER DUMMY" disabled="#{isBasketEmpty}" />
 		</form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	</ui:define>
 </ui:composition>
