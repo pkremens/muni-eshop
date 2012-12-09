@@ -14,25 +14,25 @@
                          rendered="#{not customerController.emptyCustomerList}" cellspacing="5" >
                 <h:column>
                     <f:facet name="header">
-                        <h:outputText value="EMAIL" />
+                        <h:outputText value="EMAIL" />&#160;&#160;
                     </f:facet>
                     <h:outputText value="#{_customer.email}" />
                 </h:column>
                 <h:column>
                     <f:facet name="header">
-                        <h:outputText value="NAME" />
+                        <h:outputText value="NAME" />&#160;&#160;
                     </f:facet>
                     <h:outputText value="#{_customer.name}" />
                 </h:column>
                 <h:column>
                     <f:facet name="header">
-                        <h:outputText value="PASSWORD" />
+                        <h:outputText value="PASSWORD" />&#160;&#160;
                     </f:facet>
                     <h:outputText value="#{_customer.password}" />
                 </h:column>
                 <h:column>
                     <f:facet name="header">
-                        <h:outputText value="ROLE" />
+                        <h:outputText value="ROLE" />&#160;&#160;
                     </f:facet>
                     <h:selectOneMenu value="#{_customer.role}" id="role"
                                      disabled="#{!_customer.editable}">
@@ -45,7 +45,7 @@
 
                 <h:column>
                     <f:facet name="header">
-                        ACTION
+                        <h:outputText value="ACTION" />&#160;&#160;
                     </f:facet>
                     <h:commandButton id="editB" value="Edit"
                     				 action="#{customerController.editAction(_customer)}"
@@ -60,7 +60,9 @@
 
                 </h:column>
                 <h:column>
-                    <f:facet name="header">REST URL</f:facet>
+                    <f:facet name="header">
+                    	<h:outputText value="REST URL" />&#160;&#160;
+                    </f:facet>
                     <a href="#{request.contextPath}/rest/customers/#{_customer.email}">/rest/customers/#{_customer.email}</a>
                 </h:column>
             </h:dataTable>
@@ -110,8 +112,7 @@
             <h:message for="registerButton" />
 
         </h:form>
-        <br />
-        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
 
     </ui:define>
 </ui:composition>

@@ -1,6 +1,8 @@
 package cz.fi.muni.eshop.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -13,13 +15,13 @@ import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.service.basket.BasketManager;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
-import cz.fi.muni.eshop.util.qualifier.SetWithProducts;
+
 import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 
 @Named
 @SessionScoped
 public class BasketController implements Serializable {
-	private boolean empty;
+	
 	
 	@Inject
 	@MuniEshopLogger
@@ -36,36 +38,45 @@ public class BasketController implements Serializable {
     public void initNewProduct() {
     	log.warning("init");
         // basket.initNewBasket(); init methot of basket is called in baskets PostConstruct!!!
-        empty = basket.isEmpty();
+        
+    }
+    @Produces
+    @Named("basketContent")
+    public Collection<ProductEntity> getBasketContent() {
+    	log.warning("getBasketContent");
+    	return new ArrayList<ProductEntity>(basket.getAllProductsInBasket()); // TODO create local List in BasketBean????
     }
     
     @Produces
     @Named("isBasketEmpty")
     public boolean isBasketEmpty() {
-    	return empty;
+    	log.warning("isEmpty");
+    	return basket.isEmpty();
     }
     
     @Produces
     @Named("basketTotalPrice") 
     public Long basketTotalPrice() {
+    	log.warning("basketTotalPrice");
         return basket.getTotalPrice();
     }
     
     public void addToBasket(ProductEntity product) {
+    	log.warning("addToBasket");
     	basket.addToBasket(product);
-    	empty = basket.isEmpty();
+    	
     }
     
-    public void addMoreToBasket(ProductEntity product, String value) {
-    	System.out.println("product = " + product);
-    	System.out.println("value = " + value);
-    	basket.addToBasket(product, Long.parseLong(value));
+    public void addMoreToBasket(ProductEntity product, Long quantity) {
+    	log.warning("addMoreToBasket");
+    	basket.addToBasket(product, quantity);
     	
     }  
     
     public void removeFromBasket(ProductEntity product) {
+    	log.warning("removeFromBasket");
     	basket.removeFromBasker(product);
-    	empty = basket.isEmpty();
+    	
     }
     
     public boolean isInBasket(ProductEntity product) {
@@ -84,11 +95,13 @@ public class BasketController implements Serializable {
     }
     
     public void clearBasket() {
+    	log.warning("clearBasket");
     	basket.clearBasket();
-    	empty=basket.isEmpty();
+    	
     }
     
     public Long getQuantityOfProduct(ProductEntity product) {
+    	log.warning("getQuantityOfProduct");
     	return basket.getQuantityOfProduct(product); 
     }
     

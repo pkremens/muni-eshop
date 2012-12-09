@@ -15,13 +15,13 @@
 				rendered="#{not productController.emptyProductsList}"  cellspacing="5" >
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="ID" />
+						<h:outputText value="ID" />&#160;&#160;
 					</f:facet>
 					<h:outputText value="#{_product.id}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="NAME" />
+						<h:outputText value="NAME" />&#160;&#160;
 					</f:facet>
 
 					<h:inputText id="productNameInput" value="#{_product.productName}"
@@ -29,19 +29,19 @@
 				</h:column>
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="PRICE   " />
+						<h:outputText value="PRICE" />&#160;&#160;
 					</f:facet>
 					<h:outputText value="#{_product.basePrice}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="ON STORE   " />
+						<h:outputText value="ON STORE" />&#160;&#160;
 					</f:facet>
 					<h:outputText id="productsOnStore" value="#{_product.onStore}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="ACTION" />
+						<h:outputText value="ACTION" />&#160;&#160;
 					</f:facet>
 					<h:commandButton id="editButton" value="Edit"
 						action="#{productController.editAction(_product)}"
@@ -57,7 +57,9 @@
 					</h:commandButton>
 				</h:column>
 				<h:column>
-					<f:facet name="header">REST URL</f:facet>
+					<f:facet name="header">
+						<h:outputText value="REST URL" />&#160;&#160;
+					</f:facet>
 					<a href="#{request.contextPath}/rest/products/#{_product.id}">/rest/products/#{_product.id}</a>
 				</h:column>
 				<h:column>

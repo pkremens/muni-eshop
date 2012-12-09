@@ -1,56 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html"
-                template="/WEB-INF/templates/default.xhtml">
-    <ui:define name="content">
-    <form id="totalPriceForm">
-    	<h:outputText id="basketPrice" value="#{basketController.basketTotalPrice()}" />
-    </form>
-    <form id=basketForm>
-    
-    
-    
-    
-    </form>
-    
-    
-    <h:column >
-								<f:facet name="header">
-     <h:outputText value="IN BASKET" />
-        </f:facet>
-				<h:form id="productCountLabel" rendered="#{basketController.isInBasket(_product)}">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<form id="onEmptyBasket" rendered="#{isBasketEmpty}">
+			<h1>
+				<em>Empty basket</em>
+			</h1>
+		</form>
+		<form id="basketForm">
+			<h:dataTable id="basketTable" value="#{basketContent}" var="_product"
+				rendered="#{!isBasketEmpty}" cellspacing="5">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="NAME" />&#160;&#160;
+					</f:facet>
+					<h:outputText value="#{_product.productName}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="PRICE" />&#160;&#160;
+					</f:facet>
+					<h:outputText value="#{_product.basePrice}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="ACTION" />&#160;&#160;
+					</f:facet>
+					<h:commandButton value="Add" />
+					<h:commandButton value="Remove" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="IN BASKET" />&#160;&#160;
+					</f:facet>
+					<h:outputText id="basketPrice"
+						value="#{basketController.getQuantityOfProduct(_product)}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="PRODUCTS PRICE" />&#160;&#160;
+					</f:facet>
+					<h:outputText
+						value="#{_product.basePrice * basketController.getQuantityOfProduct(_product) }" />
+				</h:column>
+			</h:dataTable>
+			<p>
+			TOTAL PRICE: <h:outputLabel id="totalPriceOutput" value="#{basketTotalPrice}" />
+			</p>
+			<h:commandButton value="CLEAR BASKET DUMMY" />&#160;&#160;
+			<h:commandButton value="FINISH ORDER DUMMY" />
+		</form>
 
-				<h:outputText value="#{basketController.getQuantityOfProduct(_product)}" />
-				</h:form>
-				</h:column>
-				<h:column >
-				<h:form id="productIsInBasketWithoutInput" rendered="#{basketController.isInBasket(_product)}" >
-								
-				<h:commandButton action="#{basketController.removeMore(_product,5)}" value="XX" />
-				<h:commandButton action="#{basketController.removeMore(_product,1)}" value="X" />
-				<h:outputLabel value="#{basketController.getQuantityOfProduct(_product)}" />
-				<h:commandButton action="#{basketController.addMore(_product,1)}" value=">" />
-				<h:commandButton action="#{basketController.addMore(_product,5)}" value=">>" />
-				<h:commandButton action="#{basketController.removeFromBasket(_product)}" value="Remove" />
-				<h:commandButton action="#{basketController.addMore(_product,1)}" value=">" />
-				<h:commandButton action="#{basketController.addMore(_product,5)}" value=">>" />
-				</h:form>
-				</h:column>
-				<h:column >
-				<h:form id="productIsInBasketWithInput" rendered="#{basketController.isInBasket(_product)}" >
-						
-				
-				<h:inputText id="quantity" value="1" binding="#{input1}"
-							validator="#{productController.validateQuantity}" />
-						<h:message for="quantity" errorClass="invalid" />
-						<h:commandButton id="addProductToBasket" value="add"
-							action="#{basketController.addMoreToBasket(_product, input1.value)}" />  
 
-				</h:form>
-				</h:column>
-    
-    
-    </ui:define>
+
+
+
+
+
+
+
+
+
+
+
+
+	</ui:define>
 </ui:composition>

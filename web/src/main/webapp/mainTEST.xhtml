@@ -7,7 +7,7 @@
 	<ui:define name="content">
 		<h:form id="catalogHeader">
 			<h:panelGroup rendered="#{not isBasketEmpty}">
-				<a href="#{request.contextPath}/basketTEST.jsf">GO TO BASKET</a>
+				<a href="#{request.contextPath}/basketTEST.jsf">GO TO BASKET FIX label</a>
 				<h:commandButton action="#{basketController.clearBasket()}"
 					value="Clear basket">
 					<f:ajax execute="@form" render="@form :catalogForm:productList:basketOperations " />
@@ -26,25 +26,25 @@
 				rendered="#{not productController.emptyProductsList}" cellspacing="5">
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="NAME" />
+						<h:outputText value="NAME" />&#160;&#160;
 					</f:facet>
 					<h:outputText value="#{_product.productName}" />				
 				</h:column>
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="PRICE" />
+						<h:outputText value="PRICE" />&#160;&#160;
 					</f:facet>
 					<h:outputText value="#{_product.basePrice}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="ON STORE" />
+						<h:outputText value="ON STORE" />&#160;&#160;
 					</f:facet>
 					<h:outputText value="#{_product.onStore}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="ACTION" />
+						<h:outputText value="ACTION" />&#160;&#160;
 					</f:facet>
 				<h:form id="basketOperations">
 				<h:commandButton id="addProductToBasket"
