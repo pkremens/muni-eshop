@@ -1,106 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html"
-                template="/WEB-INF/templates/default.xhtml">
-    <ui:define name="content">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
 
-        <h2>Product List:</h2>
-        <h:form id="productsForm">
-            <h:panelGroup rendered="#{productController.emptyProductsList}">
-                <em>No products!</em>
-            </h:panelGroup>
-            <h:dataTable value="#{productList}" var="_product" id="productList"
-                         rendered="#{not productController.emptyProductsList}">
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="ID" />
-                    </f:facet>
-                    <h:outputText value="#{_product.id}" />
-                </h:column>
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="NAME" />
-                    </f:facet>
+		<h2>Product List:</h2>
+		<h:form id="productsForm">
+			<h:panelGroup rendered="#{productController.emptyProductsList}">
+				<em>No products!</em>
+			</h:panelGroup>
+			<h:dataTable value="#{productList}" var="_product" id="productList"
+				rendered="#{not productController.emptyProductsList}">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="ID" />
+					</f:facet>
+					<h:outputText value="#{_product.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="NAME" />
+					</f:facet>
 
-                    <h:inputText id="productNameInput" value="#{_product.productName}"
-                                 disabled="#{!_product.editable}" />
-                </h:column>
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="PRICE" />
-                    </f:facet>
-                    <h:outputText value="#{_product.basePrice}" />
-                </h:column>
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="ON STORE" />
-                    </f:facet>
-                    <h:outputText value="#{_product.onStore}" />
-                </h:column>
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="ACTION" />
-                    </f:facet>
-                    <h:commandButton id="editButton" value="Edit"
-                                     action="#{productController.editAction(_product)}"
-                                     rendered="#{!_product.editable}">
-                        <f:ajax execute="productNameInput" render="@form :addProduct:addProductMessage" />
-                    </h:commandButton>
-                    <h:commandButton id="saveButton" value="Save"
-                                     action="#{productController.saveAction(_product)}"
-                                     rendered="#{_product.editable}">
-                        <f:ajax execute="productNameInput" render="@form :addProduct:addProductMessage" />
-                    </h:commandButton>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">REST URL</f:facet>
-                    <a href="#{request.contextPath}/rest/products/#{_product.id}">/rest/products/#{_product.id}</a>
-                </h:column>
-                <h:column>
-                    <h:message for="productNameInput" errorClass="invalid" />
-                </h:column>
-            </h:dataTable>
-            <p>
-                <h:commandButton action="#{productController.setStore()}"
-                                 value="Fill the store"
-                                 rendered="#{not productController.emptyProductsList}">
-                    <f:ajax render=":productsForm" />
-                </h:commandButton><br />
-            </p>
-            <h:panelGroup rendered="#{!productController.emptyProductsList}">
-                REST URL for all products<a href="#{request.contextPath}/rest/products">/rest/products</a>
-            </h:panelGroup>
+					<h:inputText id="productNameInput" value="#{_product.productName}"
+						disabled="#{!_product.editable}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="PRICE" />
+					</f:facet>
+					<h:outputText value="#{_product.basePrice}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="ON STORE" />
+					</f:facet>
+					<h:outputText id="productsOnStore" value="#{_product.onStore}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="ACTION" />
+					</f:facet>
+					<h:commandButton id="editButton" value="Edit"
+						action="#{productController.editAction(_product)}"
+						disabled="#{_product.editable}">
+						<f:ajax execute="productNameInput"
+							render="editButton saveButton productNameInput :addProduct:addProductMessage" />
+					</h:commandButton>
+					<h:commandButton id="saveButton" value="Save"
+						action="#{productController.saveAction(_product)}"
+						disabled="#{!_product.editable}">
+						<f:ajax execute="productNameInput"
+							render="editButton saveButton productNameInput :addProduct:addProductMessage" />
+					</h:commandButton>
+				</h:column>
+				<h:column>
+					<f:facet name="header">REST URL</f:facet>
+					<a href="#{request.contextPath}/rest/products/#{_product.id}">/rest/products/#{_product.id}</a>
+				</h:column>
+				<h:column>
+					<h:message for="productNameInput" errorClass="invalid" />
+				</h:column>
+			</h:dataTable>
+			<p>
+				<h:commandButton action="#{productController.setStore()}"
+					value="Fill the store">
 
-        </h:form>
+					<f:ajax render=":productsForm :addProduct:addProductMessage" />
+				</h:commandButton>
+				<br />
+			</p>
+			<h:panelGroup rendered="#{!productController.emptyProductsList}">
+                REST URL for all products<a
+					href="#{request.contextPath}/rest/products">/rest/products</a>
+			</h:panelGroup>
+
+		</h:form>
 
 
-        <h:form id="addProduct">
-            <h2>Add Products</h2>
-            <p>Enforces annotation-based constraints defined on the model
-                class.</p>
-            <h:panelGrid columns="3" columnClasses="titleCell">
-                <h:outputLabel for="productName" value="Name:" />
-                <h:inputText id="productName" value="#{newProduct.productName}" />
-                <h:message id="productNameMessage" for="productName" errorClass="invalid" />
+		<h:form id="addProduct">
+			<h2>Add Products</h2>
+			<p>Enforces annotation-based constraints defined on the model
+				class.</p>
+			<h:panelGrid columns="3" columnClasses="titleCell">
+				<h:outputLabel for="productName" value="Name:" />
+				<h:inputText id="productName" value="#{newProduct.productName}" />
+				<h:message id="productNameMessage" for="productName"
+					errorClass="invalid" />
 
-                <h:outputLabel for="basePrice" value="Price:" />
-                <h:inputText id="basePrice" value="#{newProduct.basePrice}" />
-                <h:message id="basePriceMessage" for="basePrice" errorClass="invalid" />
-            </h:panelGrid>
+				<h:outputLabel for="basePrice" value="Price:" />
+				<h:inputText id="basePrice" value="#{newProduct.basePrice}" />
+				<h:message id="basePriceMessage" for="basePrice"
+					errorClass="invalid" />
+			</h:panelGrid>
 
-            <p>
-                <h:panelGrid columns="2">
-                    <h:commandButton id="register"
-                                     action="#{productController.register}" value="Add product">
-<f:ajax execute="@form" render=":productsForm basePrice addProduct addProduct:basePriceMessage addProduct:productNameMessage addProductMessage"  />
-                    </h:commandButton>
-                    <h:messages id="addProductMessage" styleClass="messages" errorClass="invalid"
-                                infoClass="valid" warnClass="warning" globalOnly="true" />
-                </h:panelGrid>
+			<p>
+				<h:panelGrid columns="2">
+					<h:commandButton id="register"
+						action="#{productController.register}" value="Add product">
+						<f:ajax execute="@form" render=":productsForm @form" />
+					</h:commandButton>
+					<h:messages id="addProductMessage" styleClass="messages"
+						errorClass="invalid" infoClass="valid" warnClass="warning"
+						globalOnly="true" />
+				</h:panelGrid>
 
-            </p>
-        </h:form>
-    </ui:define>
+			</p>
+		</h:form>
+	</ui:define>
 </ui:composition>

@@ -47,15 +47,15 @@
                     <f:facet name="header">
                         ACTION
                     </f:facet>
-                    <h:commandButton value="Edit"
-                                     action="#{customerController.editAction(_customer)}"
-                                     rendered="#{!_customer.editable}">
-                        <f:ajax execute="@form" render=":customersForm" />
-                    </h:commandButton>
-                    <h:commandButton value="Save"
+                    <h:commandButton id="editB" value="Edit"
+                    				 action="#{customerController.editAction(_customer)}"
+                                     disabled="#{_customer.editable}">
+						<f:ajax execute="role" render="editB saveB role" />
+					</h:commandButton>
+                    <h:commandButton id="saveB" value="Save"
                                      action="#{customerController.saveAction(_customer)}"
-                                     rendered="#{_customer.editable}">
-                        <f:ajax execute="@form" render=":customersForm" />
+                                     disabled="#{!_customer.editable}">
+                        <f:ajax execute="role" render="editB saveB role" />
                     </h:commandButton>
 
                 </h:column>
@@ -98,7 +98,7 @@
                         <h:selectOneMenu value="#{newCustomer.role}" id="role">
                             <f:selectItem itemValue="BASIC" itemLabel="User" />
                             <f:selectItem itemValue="SELLER" itemLabel="Seller" />
-                            <f:selectItem itemValue="ADNS" itemLabel="Administrator" />
+                            <f:selectItem itemValue="ADMIN" itemLabel="Administrator" />
                         </h:selectOneMenu>
                     </h:column>
                 </h:panelGrid>
@@ -106,11 +106,15 @@
 
             </h:panelGrid>
             <h:commandButton id="registerButton"
-                             action="#{customerController.register()}" value="Add User" />
+                             action="#{customerController.register()}" value="Add User">
+                             <f:ajax execute="@form" render="@form :customersForm" />
+                             </h:commandButton>
             <br />
             <h:message for="registerButton" />
 
         </h:form>
+        <br />
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 
     </ui:define>
 </ui:composition>
