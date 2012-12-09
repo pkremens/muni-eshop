@@ -27,7 +27,12 @@
 				</h:column>
 				<h:column >
 				<h:form id="productIsInBasketWithoutInput" rendered="#{basketController.isInBasket(_product)}" >
-				
+								
+				<h:commandButton action="#{basketController.removeMore(_product,5)}" value="XX" />
+				<h:commandButton action="#{basketController.removeMore(_product,1)}" value="X" />
+				<h:outputLabel value="#{basketController.getQuantityOfProduct(_product)}" />
+				<h:commandButton action="#{basketController.addMore(_product,1)}" value=">" />
+				<h:commandButton action="#{basketController.addMore(_product,5)}" value=">>" />
 				<h:commandButton action="#{basketController.removeFromBasket(_product)}" value="Remove" />
 				<h:commandButton action="#{basketController.addMore(_product,1)}" value=">" />
 				<h:commandButton action="#{basketController.addMore(_product,5)}" value=">>" />

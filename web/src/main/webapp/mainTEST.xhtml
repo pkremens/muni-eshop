@@ -9,26 +9,26 @@
 			<h:panelGroup rendered="#{not isBasketEmpty}">
 				<a href="#{request.contextPath}/basketTEST.jsf">GO TO BASKET</a>
 				<h:commandButton action="#{basketController.clearBasket()}"
-					value="Clear basket" />
+					value="Clear basket">
+					<f:ajax execute="@form" render="@form :catalogForm:productList:basketOperations " />
+					</h:commandButton>
 				basket total price: <h:outputText value="#{basketTotalPrice}" />
 				<br />
 			</h:panelGroup>
 			<h:outputText value="basket is empty" rendered="#{isBasketEmpty}" />
-			
 		</h:form>
-
 		<h1>Catalog</h1>
 		<h:form id="catalogForm">
 			<h:panelGroup rendered="#{productController.emptyProductsList}">
 				<em>Empty catalog!</em>
 			</h:panelGroup>
 			<h:dataTable value="#{productList}" var="_product" id="productList"
-				rendered="#{not productController.emptyProductsList}">
+				rendered="#{not productController.emptyProductsList}" cellspacing="5">
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="NAME" />
 					</f:facet>
-					<h:outputText value="#{_product.id}" />
+					<h:outputText value="#{_product.productName}" />				
 				</h:column>
 				<h:column>
 					<f:facet name="header">
@@ -46,31 +46,20 @@
 					<f:facet name="header">
 						<h:outputText value="ACTION" />
 					</f:facet>
-				<h:form>
-				
+				<h:form id="basketOperations">
 				<h:commandButton id="addProductToBasket"
 							action="#{basketController.addToBasket(_product)}" value="add">
 							<f:ajax render=":catalogHeader inBasketCount removeFromBasketButton" execute="removeFromBasketButton" />
 						</h:commandButton>
-				<h:outputLabel id="inBasketCount" value="#{basketController.getQuantityOfProduct(_product)}" />
-				
 				<h:commandButton id="removeFromBasketButton" action="#{basketController.removeFromBasket(_product)}" value="Remove" disabled="#{basketController.basketEmpty}">
-				 <f:ajax render=":catalogHeader inBasketCount @this" />
+					<f:ajax render=":catalogHeader inBasketCount @this" />
 				</h:commandButton>
-				
-				
-				<h:commandButton action="#{basketController.removeMore(_product,5)}" value="XX" />
-				<h:commandButton action="#{basketController.removeMore(_product,1)}" value="X" />
-				<h:outputLabel value="#{basketController.getQuantityOfProduct(_product)}" />
-				<h:commandButton action="#{basketController.addMore(_product,1)}" value=">" />
-				<h:commandButton action="#{basketController.addMore(_product,5)}" value=">>" />
-										
-				
+				<h:outputLabel value="" />	
+				<h:outputLabel value="in basket:" />		
+				<h:outputLabel id="inBasketCount" value="#{basketController.getQuantityOfProduct(_product)}" />
 					</h:form>
 				</h:column>
 			</h:dataTable>
 			</h:form>
-
-		
 	</ui:define>
 </ui:composition>
