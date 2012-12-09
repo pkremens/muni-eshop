@@ -43,15 +43,15 @@
                     <f:facet name="header">
                         <h:outputText value="ACTION" />
                     </f:facet>
-                    <h:commandButton value="Edit"
+                    <h:commandButton id="editButton" value="Edit"
                                      action="#{productController.editAction(_product)}"
                                      rendered="#{!_product.editable}">
-                        <f:ajax execute="@form" render=":productsForm" />
+                        <f:ajax execute="productNameInput" render="@form :addProduct:addProductMessage" />
                     </h:commandButton>
-                    <h:commandButton value="Save"
+                    <h:commandButton id="saveButton" value="Save"
                                      action="#{productController.saveAction(_product)}"
                                      rendered="#{_product.editable}">
-                        <f:ajax execute="@form" render=":productsForm" />
+                        <f:ajax execute="productNameInput" render="@form :addProduct:addProductMessage" />
                     </h:commandButton>
                 </h:column>
                 <h:column>
@@ -66,7 +66,7 @@
                 <h:commandButton action="#{productController.setStore()}"
                                  value="Fill the store"
                                  rendered="#{not productController.emptyProductsList}">
-                    <f:ajax execute="@form" render=":productsForm" />
+                    <f:ajax render=":productsForm" />
                 </h:commandButton><br />
             </p>
             <h:panelGroup rendered="#{!productController.emptyProductsList}">
@@ -83,84 +83,24 @@
             <h:panelGrid columns="3" columnClasses="titleCell">
                 <h:outputLabel for="productName" value="Name:" />
                 <h:inputText id="productName" value="#{newProduct.productName}" />
-                <h:message for="productName" errorClass="invalid" />
+                <h:message id="productNameMessage" for="productName" errorClass="invalid" />
 
                 <h:outputLabel for="basePrice" value="Price:" />
                 <h:inputText id="basePrice" value="#{newProduct.basePrice}" />
-                <h:message for="basePrice" errorClass="invalid" />
+                <h:message id="basePriceMessage" for="basePrice" errorClass="invalid" />
             </h:panelGrid>
 
             <p>
                 <h:panelGrid columns="2">
                     <h:commandButton id="register"
                                      action="#{productController.register}" value="Add product">
-
+<f:ajax execute="@form" render=":productsForm basePrice addProduct addProduct:basePriceMessage addProduct:productNameMessage addProductMessage"  />
                     </h:commandButton>
-                    <h:messages styleClass="messages" errorClass="invalid"
+                    <h:messages id="addProductMessage" styleClass="messages" errorClass="invalid"
                                 infoClass="valid" warnClass="warning" globalOnly="true" />
                 </h:panelGrid>
 
             </p>
-        </h:form>
-        Go down
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />more down
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <h:form id="logForm">
-            <h:commandButton value="Log" action="#{loggingController.makeLog}">
-                <f:ajax render="@none" />
-            </h:commandButton>
         </h:form>
     </ui:define>
 </ui:composition>

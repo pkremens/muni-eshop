@@ -5,9 +5,10 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
-		<h:form>
+		<h:form id="basketForm">
 			<h:panelGroup rendered="#{not isBasketEmpty}">
 				<a href="#{request.contextPath}/basketTEST.jsf">GO TO BASKET</a>
+				<h:commandButton action="#{basketController.clearBasket()}" value="Clear basket" />
 				basket total price: <h:outputText value="#{basketTotalPrice}" />
 				<br />
 			</h:panelGroup>
@@ -23,7 +24,7 @@
 			</h:panelGroup>
 
 			<h:dataTable value="#{productList}" var="_product" id="productList"
-				rendered="#{not productController.emptyProductsList}">
+				rendered="#{not productController.emptyProductsList}" border="1">
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="NAME" />
@@ -36,33 +37,66 @@
 					</f:facet>
 					<h:outputText value="#{_product.basePrice}" />
 				</h:column>
-
-
-
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="ON STORE" />
+					</f:facet>
+					<h:outputText value="#{_product.onStore}" />
+				</h:column>
 				<h:column>
 					<f:facet name="header">
      <h:outputText value="ACTION" />
         </f:facet>
-					<h:form id="addProductInBasket">
-						
-						<h:inputText id="quantity" value="1" binding="#{input1}"
-							validator="#{productController.validateQuantity}" />
-						<h:message for="quantity" errorClass="invalid" />
-						<h:commandButton id="addProductToBasket" value="add"
-							action="#{basketController.addToBasket(_product, input1.value)}" />
+					<h:form>					
+						<h:commandButton id="addProductToBasket" action="#{basketController.addToBasket(_product)}" value="add">
+							<f:ajax execute="addProductToBasket" render=":basketForm" />
+						</h:commandButton>
 					</h:form>
-				</h:column>
-				
-				<h:column >
-				<h:form id="Testbababa">
-				<h:commandButton action="#{basketController.isInBasket(_product)}" value="Test" />
-				
-				<h:outputFormat value="#{basketController.isInBasket(_product)}" />
-				</h:form>
-				
 				</h:column>
 			</h:dataTable>
 		</div>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
 
 

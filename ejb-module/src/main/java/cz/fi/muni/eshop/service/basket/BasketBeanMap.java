@@ -27,8 +27,7 @@ public class BasketBeanMap implements BasketManager<ProductEntity> {
 	
 	@Override
 	public void addToBasket(ProductEntity product) {
-		addToBasket(product, 1L);
-		
+		addToBasket(product, 1L);		
 	}
 
 	@Override
@@ -70,6 +69,7 @@ public class BasketBeanMap implements BasketManager<ProductEntity> {
 
 	@Override
 	public void removeFromBasker(ProductEntity product) {
+		totalPrice -= product.getBasePrice() * basket.get(product);
 		basket.remove(product);	
 	}
 
@@ -100,6 +100,7 @@ public class BasketBeanMap implements BasketManager<ProductEntity> {
 	@Override
 	public void clearBasket() {
 		basket.clear();
+		totalPrice=0L;
 		
 	}
 

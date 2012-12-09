@@ -36,7 +36,7 @@ public class BasketController implements Serializable {
     public void initNewProduct() {
     	log.warning("init");
         // basket.initNewBasket(); init methot of basket is called in baskets PostConstruct!!!
-        empty = true;
+        empty = basket.isEmpty();
     }
     
     @Produces
@@ -51,16 +51,40 @@ public class BasketController implements Serializable {
         return basket.getTotalPrice();
     }
     
-    public void addToBasket(ProductEntity product, String value) {
+    public void addToBasket(ProductEntity product) {
+    	basket.addToBasket(product);
+    	empty = basket.isEmpty();
+    }
+    
+    public void addMoreToBasket(ProductEntity product, String value) {
     	System.out.println("product = " + product);
     	System.out.println("value = " + value);
     	basket.addToBasket(product, Long.parseLong(value));
-    	empty = false;
+    	
     }  
+    
+    public void removeFromBasket(ProductEntity product) {
+    	basket.removeFromBasker(product);
+    	empty = basket.isEmpty();
+    }
     
     public boolean isInBasket(ProductEntity product) {
     	log.info("Is " + product.getProductName() + " in basket");
     	return basket.isInBasket(product);
+    }
+    
+    public void addMore(ProductEntity product, Long quantity) {
+    	log.info("adding to product: " + product + " quantity: " + quantity);
+    	basket.addToBasket(product, quantity);
+    }
+    
+    public void clearBasket() {
+    	basket.clearBasket();
+    	empty=basket.isEmpty();
+    }
+    
+    public Long getQuantityOfProduct(ProductEntity product) {
+    	return basket.getQuantityOfProduct(product); 
     }
     
 }

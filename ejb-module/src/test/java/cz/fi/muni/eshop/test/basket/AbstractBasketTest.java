@@ -46,6 +46,7 @@ public abstract class AbstractBasketTest {
         Assert.assertFalse(basket.isEmpty());
     
         basket.clearBasket();
+        Assert.assertEquals((Long)0L, basket.getTotalPrice());
         Assert.assertTrue(basket.isEmpty());
     }
 
