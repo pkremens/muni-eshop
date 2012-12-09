@@ -13,11 +13,15 @@ import cz.fi.muni.eshop.util.InvalidEntryException;
 import cz.fi.muni.eshop.util.NoEntryFoundExeption;
 import cz.fi.muni.eshop.util.Resources;
 
+
+import cz.fi.muni.eshop.util.annotation.JPAAnnotation;
 import cz.fi.muni.eshop.util.quilifier.JPA;
 import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import junit.framework.Assert;
@@ -39,6 +43,8 @@ import org.picketlink.idm.api.User;
  */
 @RunWith(Arquillian.class)
 public class CustomerManagerJPATest {
+	
+
 
     @Inject
     @MuniEshopLogger
@@ -49,7 +55,7 @@ public class CustomerManagerJPATest {
     @Deployment
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(WebArchive.class, "customer.war").addClasses(CustomerEntity.class, CustomerManager.class, Resources.class,
-                CustomerManagerJPA.class, User.class, InvalidEntryException.class, IdentityType.class, EntityValidator.class, Role.class, NoEntryFoundExeption.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+                CustomerManagerJPA.class, User.class, JPAAnnotation.class, InvalidEntryException.class, IdentityType.class, EntityValidator.class, Role.class, NoEntryFoundExeption.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
     @Inject

@@ -1,21 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html"
-                template="/WEB-INF/templates/default.xhtml">
-    <ui:define name="content">
-        <h:form>
-            <h:panelGroup rendered="#{not isBasketEmpty}">
-                <a href="#{request.contextPath}/basketTEST.jsf">GO TO BASKET</a><br />
-            </h:panelGroup>
-        </h:form>
-        
-        
-        
-        
-        
-        
-        
-    </ui:define>
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<h:form>
+			<h:panelGroup rendered="#{not isBasketEmpty}">
+				<a href="#{request.contextPath}/basketTEST.jsf">GO TO BASKET</a>
+				<br />
+			</h:panelGroup>
+		</h:form>
+
+
+		<div id="catalog" align="center">
+			<h1>Catalog</h1>
+			<h:panelGroup rendered="#{productController.emptyProductsList}">
+				<em>No products!</em>
+			</h:panelGroup>
+
+			<h:dataTable value="#{productList}" var="_product" id="productList"
+				rendered="#{not productController.emptyProductsList}">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="NAME" />
+					</f:facet>
+					<h:outputText value="#{_product.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="PRICE" />
+					</f:facet>
+					<h:outputText value="#{_product.basePrice}" />
+				</h:column>
+
+
+
+				<h:column>
+					<f:facet name="header">
+     Quantity
+        </f:facet>
+					<h:form id="addProductInBasket">
+						<h:outputLabel for="quantity" value="quantity" />
+						<h:inputText id="quantity" value="#{productToBasket.quantity}"
+							validator="#{productsBean.validateNumberRange}" />
+						<h:message for="quantity" errorClass="invalid" />
+						<h:commandButton id="addProductToBasket" value="add"
+							action="#{basketController.addProductToBasket}" />
+					</h:form>
+				</h:column>
+			</h:dataTable>
+		</div>
+
+
+
+
+	</ui:define>
 </ui:composition>

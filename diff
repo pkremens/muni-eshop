@@ -1,0 +1,150 @@
+diff --git a/web/src/main/java/cz/fi/muni/eshop/controller/CustomerController.java b/web/src/main/java/cz/fi/muni/eshop/controller/CustomerController.java
+index 78b403e..bf19f60 100644
+--- a/web/src/main/java/cz/fi/muni/eshop/controller/CustomerController.java
++++ b/web/src/main/java/cz/fi/muni/eshop/controller/CustomerController.java
+@@ -13,6 +13,8 @@ import javax.annotation.PostConstruct;
+ import javax.enterprise.context.SessionScoped;
+ import javax.enterprise.inject.Produces;
+ import javax.faces.application.FacesMessage;
++import javax.faces.bean.ViewScoped;
++
+ import javax.faces.context.FacesContext;
+ import javax.inject.Inject;
+ import javax.inject.Named;
+@@ -33,7 +35,7 @@ import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+  * @author Petr Kremensky <207855@mail.muni.cz>
+  */
+ @Named
+-@SessionScoped
++@ViewScoped
+ public class CustomerController implements Serializable {
+ 
+     /**
+diff --git a/web/src/main/java/cz/fi/muni/eshop/controller/MemberController.java b/web/src/main/java/cz/fi/muni/eshop/controller/MemberController.java
+index 71ebcae..54d3407 100644
+--- a/web/src/main/java/cz/fi/muni/eshop/controller/MemberController.java
++++ b/web/src/main/java/cz/fi/muni/eshop/controller/MemberController.java
+@@ -84,6 +84,7 @@ public class MemberController {
+ 
+     @PostConstruct
+     public void initNewMember() {
++    	System.out.println("POSTCONSTRUCT");
+         newMember = new Member();
+     }
+ 
+diff --git a/web/src/main/java/cz/fi/muni/eshop/controller/ProductController.java b/web/src/main/java/cz/fi/muni/eshop/controller/ProductController.java
+index 7658c4b..b98fbc4 100644
+--- a/web/src/main/java/cz/fi/muni/eshop/controller/ProductController.java
++++ b/web/src/main/java/cz/fi/muni/eshop/controller/ProductController.java
+@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
+ import javax.enterprise.context.SessionScoped;
+ import javax.enterprise.inject.Produces;
+ import javax.faces.application.FacesMessage;
++import javax.faces.bean.ViewScoped;
+ import javax.faces.component.UIComponent;
+ import javax.faces.component.UIInput;
+ import javax.faces.context.FacesContext;
+@@ -28,7 +29,7 @@ import javax.inject.Named;
+  */
+ //TODO what needs to implement Serializable except Entities where I am sure they have to??? WELD-000072 : DefinitionException be my guide :)
+ @Named
+-@SessionScoped
++@ViewScoped
+ public class ProductController implements Serializable {
+ 
+     /**
+diff --git a/web/src/main/webapp/mainTEST.xhtml b/web/src/main/webapp/mainTEST.xhtml
+index a152072..e89947b 100644
+--- a/web/src/main/webapp/mainTEST.xhtml
++++ b/web/src/main/webapp/mainTEST.xhtml
+@@ -1,21 +1,59 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+-                xmlns:ui="http://java.sun.com/jsf/facelets"
+-                xmlns:f="http://java.sun.com/jsf/core"
+-                xmlns:h="http://java.sun.com/jsf/html"
+-                template="/WEB-INF/templates/default.xhtml">
+-    <ui:define name="content">
+-        <h:form>
+-            <h:panelGroup rendered="#{not isBasketEmpty}">
+-                <a href="#{request.contextPath}/basketTEST.jsf">GO TO BASKET</a><br />
+-            </h:panelGroup>
+-        </h:form>
+-        
+-        
+-        
+-        
+-        
+-        
+-        
+-    </ui:define>
++	xmlns:ui="http://java.sun.com/jsf/facelets"
++	xmlns:f="http://java.sun.com/jsf/core"
++	xmlns:h="http://java.sun.com/jsf/html"
++	template="/WEB-INF/templates/default.xhtml">
++	<ui:define name="content">
++		<h:form>
++			<h:panelGroup rendered="#{not isBasketEmpty}">
++				<a href="#{request.contextPath}/basketTEST.jsf">GO TO BASKET</a>
++				<br />
++			</h:panelGroup>
++		</h:form>
++
++
++		<div id="catalog" align="center">
++			<h1>Catalog</h1>
++			<h:panelGroup rendered="#{productController.emptyProductsList}">
++				<em>No products!</em>
++			</h:panelGroup>
++
++			<h:dataTable value="#{productList}" var="_product" id="productList"
++				rendered="#{not productController.emptyProductsList}">
++				<h:column>
++					<f:facet name="header">
++						<h:outputText value="NAME" />
++					</f:facet>
++					<h:outputText value="#{_product.id}" />
++				</h:column>
++				<h:column>
++					<f:facet name="header">
++						<h:outputText value="PRICE" />
++					</f:facet>
++					<h:outputText value="#{_product.basePrice}" />
++				</h:column>
++
++
++
++				<h:column>
++					<f:facet name="header">
++     Quantity
++        </f:facet>
++					<h:form id="addProductInBasket">
++						<h:outputLabel for="quantity" value="quantity" />
++						<h:inputText id="quantity" value="#{productToBasket.quantity}"
++							validator="#{productsBean.validateNumberRange}" />
++						<h:message for="quantity" errorClass="invalid" />
++						<h:commandButton id="addProductToBasket" value="add"
++							action="#{basketController.addProductToBasket}" />
++					</h:form>
++				</h:column>
++			</h:dataTable>
++		</div>
++
++
++
++
++	</ui:define>
+ </ui:composition>
+\ No newline at end of file
+diff --git a/web/src/main/webapp/productsTEST.xhtml b/web/src/main/webapp/productsTEST.xhtml
+index a538fb4..d368a79 100644
+--- a/web/src/main/webapp/productsTEST.xhtml
++++ b/web/src/main/webapp/productsTEST.xhtml
+@@ -26,7 +26,6 @@
+ 
+                     <h:inputText id="productNameInput" value="#{_product.productName}"
+                                  disabled="#{!_product.editable}" />
+-                    <f:attribute name="width" value="50" />
+                 </h:column>
+                 <h:column>
+                     <f:facet name="header">

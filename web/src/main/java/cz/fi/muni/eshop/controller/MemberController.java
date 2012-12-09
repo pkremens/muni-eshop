@@ -84,6 +84,7 @@ public class MemberController {
 
     @PostConstruct
     public void initNewMember() {
+    	System.out.println("POSTCONSTRUCT");
         newMember = new Member();
     }
 

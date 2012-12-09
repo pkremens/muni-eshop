@@ -10,6 +10,8 @@ import cz.fi.muni.eshop.service.BasketManager;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.util.quilifier.JPA;
 import cz.fi.muni.eshop.util.quilifier.SetWithProducts;
+import cz.fi.muni.eshop.util.quilifier.TypeResolved;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Produces;
 
@@ -18,10 +20,10 @@ import javax.enterprise.inject.Produces;
 public class BasketController implements Serializable {
 
     @Inject
-    @SetWithProducts
+    @SetWithProducts // TODO move type resolution to Resources class
     private BasketManager basket;
     @Inject
-    @JPA
+    @TypeResolved
     private ProductManager productManager;
 
     @PostConstruct

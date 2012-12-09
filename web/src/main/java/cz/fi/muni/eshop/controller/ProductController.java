@@ -8,6 +8,8 @@ import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.util.quilifier.JPA;
 import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.quilifier.TypeResolved;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
@@ -16,6 +18,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -36,7 +39,7 @@ public class ProductController implements Serializable {
      */
     private static final long serialVersionUID = 650851568081767180L;
     @Inject
-    @JPA // using interface thus can later change to another implementation thanks to runtime bean type resolution see dummy translate test
+    @TypeResolved
     private ProductManager productManager;
     @Inject
     @MuniEshopLogger

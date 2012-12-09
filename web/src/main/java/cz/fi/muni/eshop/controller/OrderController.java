@@ -10,6 +10,8 @@ import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.util.quilifier.JPA;
 import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 import cz.fi.muni.eshop.util.quilifier.SetWithProducts;
+import cz.fi.muni.eshop.util.quilifier.TypeResolved;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
@@ -32,7 +34,7 @@ public class OrderController implements Serializable {
     @MuniEshopLogger
     private Logger log;
     @Inject
-    @JPA
+    @TypeResolved
     private OrderManager orderManager;
     @Inject
     private Identity identity;

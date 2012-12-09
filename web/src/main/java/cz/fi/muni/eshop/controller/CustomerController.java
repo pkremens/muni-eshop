@@ -13,6 +13,8 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
+
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,6 +29,7 @@ import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.util.InvalidEntryException;
 import cz.fi.muni.eshop.util.quilifier.JPA;
 import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.quilifier.TypeResolved;
 
 /**
  *
@@ -37,11 +40,11 @@ import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
 public class CustomerController implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 3100276829805233710L; // TODO Are those mandatory?
-	@Inject
-    @JPA
+     *
+     */
+    private static final long serialVersionUID = 3100276829805233710L; // TODO Are those mandatory?
+    @Inject
+    @TypeResolved
     private CustomerManager customerManager;
     @Inject
     @MuniEshopLogger
@@ -53,7 +56,6 @@ public class CustomerController implements Serializable {
     private FacesContext facesContext;
     private static List<CustomerEntity> customerList;
     private static boolean emptyCustomersList;
-    
     @Inject
     private Credentials credentials;
 
@@ -87,6 +89,7 @@ public class CustomerController implements Serializable {
     public CustomerEntity getNewCustomer() {
         return newCustomer;
     }
+
     @Produces
     @Named
     List<CustomerEntity> getCustomerList() {
@@ -97,15 +100,18 @@ public class CustomerController implements Serializable {
         newCustomer = new CustomerEntity();
     }
 
-    
     /**
-     * Register new Customer. Should be used only by unauthorized user. New customer is automatically logged in after registration and is given Basic permission.
-     * @throws InvalidEntryException if trying to register customer with invalid email.
+     * Register new Customer. Should be used only by unauthorized user. New
+     * customer is automatically logged in after registration and is given Basic
+     * permission.
+     *
+     * @throws InvalidEntryException if trying to register customer with invalid
+     * email.
      */
-    public void register() throws InvalidEntryException  {
-    	log.info("Is logged in?: " + identity.isLoggedIn());
+    public void register() throws InvalidEntryException {
+        log.info("Is logged in?: " + identity.isLoggedIn());
         if (!identity.isLoggedIn()) { // TODO BEWARE!!! not allowing to create user with higher role than BASIC for non-logged user!
-        	log.warning("User not logged in, setting role to BASIC"); // TODO remove when ready, this could confuse me sometimes in near future (where are my lost permissions)
+            log.warning("User not logged in, setting role to BASIC"); // TODO remove when ready, this could confuse me sometimes in near future (where are my lost permissions)
             newCustomer.setRole(Role.BASIC);
         }
 
@@ -122,13 +128,13 @@ public class CustomerController implements Serializable {
                 facesContext.addMessage("addCustomerForm:registerButton",
                         new FacesMessage("Customer was registered"));
                 customerList.add(newCustomer);
-                emptyCustomersList=false;
+                emptyCustomersList = false;
                 // log in new customer after registration
-    			credentials.setUsername(newCustomer.getEmail());
-    			PasswordCredential pc = new PasswordCredential(newCustomer.getPassword());
-    			credentials.setCredential(pc);
-    			identity.login();       
-    			
+                credentials.setUsername(newCustomer.getEmail());
+                PasswordCredential pc = new PasswordCredential(newCustomer.getPassword());
+                credentials.setCredential(pc);
+                identity.login();
+
                 initNewCustomer();
             } else {
                 log.info("Registration: trying to use already registered email");
