@@ -5,12 +5,12 @@
 package cz.fi.muni.eshop.controller;
 
 import cz.fi.muni.eshop.model.OrderEntity;
-import cz.fi.muni.eshop.service.BasketManager;
 import cz.fi.muni.eshop.service.OrderManager;
-import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
-import cz.fi.muni.eshop.util.quilifier.SetWithProducts;
-import cz.fi.muni.eshop.util.quilifier.TypeResolved;
+import cz.fi.muni.eshop.service.basket.BasketManager;
+import cz.fi.muni.eshop.util.qualifier.JPA;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.qualifier.SetWithProducts;
+import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 
 import java.io.Serializable;
 import java.util.List;
@@ -39,7 +39,7 @@ public class OrderController implements Serializable {
     @Inject
     private Identity identity;
     @Inject
-    @SetWithProducts
+    @TypeResolved
     private BasketManager basket;
     private OrderEntity newOrder;
     private static List<OrderEntity> activeOrders;

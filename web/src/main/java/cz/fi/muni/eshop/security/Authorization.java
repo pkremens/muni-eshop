@@ -10,7 +10,8 @@ import cz.fi.muni.eshop.model.Role;
 import cz.fi.muni.eshop.security.permissions.Admin;
 import cz.fi.muni.eshop.security.permissions.BasicPermission;
 import cz.fi.muni.eshop.security.permissions.Seller;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import org.jboss.seam.security.Identity;

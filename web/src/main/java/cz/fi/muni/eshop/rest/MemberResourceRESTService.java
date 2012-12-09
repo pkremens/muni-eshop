@@ -19,7 +19,8 @@ package cz.fi.muni.eshop.rest;
 import cz.fi.muni.eshop.data.member.MemberRepository;
 import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.service.MemberRegistration;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;

@@ -1,36 +1,23 @@
 package cz.fi.muni.eshop.util;
 
-/*
- * JBoss, Home of Professional Open Source Copyright 2012, Red Hat, Inc. and/or
- * its affiliates, and individual contributors by the @authors tag. See the
- * copyright.txt in the distribution for a full listing of individual
- * contributors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by
- * applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
- * OF ANY KIND, either express or implied. See the License for the specific
- * language governing permissions and limitations under the License.
- */
-import cz.fi.muni.eshop.playground.paymentprocessor.Asynchronous;
-import cz.fi.muni.eshop.playground.paymentprocessor.PaymentProcessor;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
+import cz.fi.muni.eshop.service.basket.BasketManager;
 import cz.fi.muni.eshop.util.annotation.JPAAnnotation;
-import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopDatabase;
-import cz.fi.muni.eshop.util.quilifier.TypeResolved;
+import cz.fi.muni.eshop.util.annotation.ListWithProductsAnnotation;
+import cz.fi.muni.eshop.util.annotation.MapWithProductsAnnotation;
+import cz.fi.muni.eshop.util.annotation.SetWithProductsAnnotation;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopDatabase;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.qualifier.TypeResolved;
+
 import java.lang.annotation.Annotation;
 import java.util.logging.Logger;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
-import javax.enterprise.util.AnnotationLiteral;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -51,7 +38,7 @@ public class Resources {
 //   @Produces
 //   @PersistenceContext
 //   private EntityManager em;
-
+private static int BASKET_TYPE = 2;
 
 
     @Produces
@@ -74,7 +61,7 @@ public class Resources {
     
     @Produces
     @TypeResolved 
-    public ProductManager resolveproductManager(@Any Instance<ProductManager> productManagerSources) {
+    public ProductManager resolveProductManager(@Any Instance<ProductManager> productManagerSources) {
         Annotation qualifier = new JPAAnnotation();
         ProductManager productManager = productManagerSources.select(qualifier).get();
         return productManager;
@@ -88,7 +75,29 @@ public class Resources {
         return orderManager;
     }
     
-//        Annonymou version, but soon as JPA type is called so ofted it make sence to create annotation type
+    @Produces
+    @TypeResolved 
+    public BasketManager resolveBasketManager(@Any Instance<BasketManager> basketManagerSources) {
+        Annotation qualifier = null;
+        switch (BASKET_TYPE) {
+        case 0:
+        	qualifier = new ListWithProductsAnnotation();
+        	break;
+        case 1:	
+        	qualifier = new SetWithProductsAnnotation();
+        	break;
+        case 2:
+        	qualifier = new MapWithProductsAnnotation();
+        	break;
+        default:
+        	throw new IllegalStateException("No basket implementation selected");
+        }        
+        BasketManager basketManager = basketManagerSources.select(qualifier).get();
+        return basketManager;
+    }
+
+    
+//        Annonymou version, but soon as JPA type is called so often it make sense to create annotation type
 //        CustomerManager customerManager = customerManagerSources.select(
 //                new AnnotationLiteral() {
 //                    @Override
@@ -98,13 +107,8 @@ public class Resources {
 //                }).get();
 //        return customerManager;
 //    }
-    
-    
-    
-    
-    
-    
-    // This doesn't have sense as entity manager lifecycle is controled by container (throws exeptions)
+   
+    // This doesn't have sense as entity manager lifecycle is controlled by container (throws exceptions)
 //    @Produces
 //    @MuniEshopDatabase
 //    public EntityManager create() {

@@ -8,8 +8,9 @@ import cz.fi.muni.eshop.model.CustomerEntity;
 import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.util.InvalidEntryException;
-import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.qualifier.JPA;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+
 import java.util.List;
 import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;

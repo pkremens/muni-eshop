@@ -7,8 +7,8 @@ import javax.enterprise.inject.spi.InjectionPoint;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import cz.fi.muni.eshop.util.quilifier.MuniEshopDatabase;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopDatabase;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
 
 public class JpaTestResources {
 	

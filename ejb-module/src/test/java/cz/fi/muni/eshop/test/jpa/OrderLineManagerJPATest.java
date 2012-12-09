@@ -11,9 +11,10 @@ import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.service.jpa.OrderLineManagerJPA;
 import cz.fi.muni.eshop.service.jpa.ProductManagerJPA;
 import cz.fi.muni.eshop.util.Resources;
-import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopDatabase;
+import cz.fi.muni.eshop.util.qualifier.JPA;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopDatabase;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;

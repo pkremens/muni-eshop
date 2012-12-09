@@ -5,7 +5,7 @@
 package cz.fi.muni.eshop.test.basket;
 
 import cz.fi.muni.eshop.model.ProductEntity;
-import cz.fi.muni.eshop.service.BasketManager;
+import cz.fi.muni.eshop.service.basket.BasketManager;
 import junit.framework.Assert;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
@@ -44,7 +44,7 @@ public abstract class AbstractBasketTest {
         }
 
         Assert.assertFalse(basket.isEmpty());
-        Assert.assertFalse(basket.getBasket().isEmpty());
+    
         basket.clearBasket();
         Assert.assertTrue(basket.isEmpty());
     }
@@ -74,6 +74,7 @@ public abstract class AbstractBasketTest {
         Assert.assertEquals((Long)(77L*9L), basket.getTotalPrice());
         basket.productQuantityDecrement(product, 5L);
         Assert.assertEquals((Long) 4L, basket.getQuantityOfProduct(product));
+        Assert.assertEquals((Long)(77L*4L), basket.getTotalPrice());
         basket.productQuantityDecrement(product, 4L);
         Assert.assertTrue(basket.isEmpty());
     }

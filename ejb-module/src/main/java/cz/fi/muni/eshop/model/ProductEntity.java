@@ -44,7 +44,7 @@ public class ProductEntity implements Serializable, Comparable<ProductEntity> {
     @Transient
     boolean editable = false;
     @Transient
-    Long quantityInBasket = 0L;
+    Long quantityInBasket = 1L;
     @NotNull
     private Long onStore = 0L;
 
@@ -109,29 +109,46 @@ public class ProductEntity implements Serializable, Comparable<ProductEntity> {
 		this.onStore = onStore;
 	}
 
-	@Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final ProductEntity other = (ProductEntity) obj;
-        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
+
 
     @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 71 * hash + (this.id != null ? this.id.hashCode() : 0);
-        hash = 71 * hash + (this.productName != null ? this.productName.hashCode() : 0);
-        hash = 71 * hash + (this.basePrice != null ? this.basePrice.hashCode() : 0);
-        return hash;
-    }
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ProductEntity other = (ProductEntity) obj;
+		if (basePrice == null) {
+			if (other.basePrice != null)
+				return false;
+		} else if (!basePrice.equals(other.basePrice))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (productName == null) {
+			if (other.productName != null)
+				return false;
+		} else if (!productName.equals(other.productName))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((basePrice == null) ? 0 : basePrice.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((productName == null) ? 0 : productName.hashCode());
+		return result;
+	}
 
     @Override
     public String toString() {

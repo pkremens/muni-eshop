@@ -4,7 +4,8 @@
  */
 package cz.fi.muni.eshop.test.jpa;
 
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import org.jboss.arquillian.junit.Arquillian;

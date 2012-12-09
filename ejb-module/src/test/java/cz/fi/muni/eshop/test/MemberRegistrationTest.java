@@ -23,7 +23,8 @@ import cz.fi.muni.eshop.service.MemberRegistration;
 import cz.fi.muni.eshop.test.jpa.JpaTestResources;
 import cz.fi.muni.eshop.testpackage.Dummy;
 import cz.fi.muni.eshop.util.Resources;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;

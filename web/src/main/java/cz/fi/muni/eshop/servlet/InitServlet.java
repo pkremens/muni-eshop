@@ -23,8 +23,8 @@ import cz.fi.muni.eshop.security.Authenticator;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.util.InvalidEntryException;
-import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.qualifier.JPA;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
 
 /**
  * Servlet implementation class TestServlet

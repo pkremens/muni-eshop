@@ -7,9 +7,10 @@ package cz.fi.muni.eshop.service.jpa;
 
 import cz.fi.muni.eshop.model.OrderEntity;
 import cz.fi.muni.eshop.service.OrderManager;
-import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopDatabase;
+import cz.fi.muni.eshop.util.qualifier.JPA;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopDatabase;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;

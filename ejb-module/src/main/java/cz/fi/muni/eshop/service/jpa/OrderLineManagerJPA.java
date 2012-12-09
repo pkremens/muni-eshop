@@ -6,9 +6,10 @@ package cz.fi.muni.eshop.service.jpa;
 
 import cz.fi.muni.eshop.model.OrderLineEntity;
 import cz.fi.muni.eshop.service.OrderLineManager;
-import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopDatabase;
+import cz.fi.muni.eshop.util.qualifier.JPA;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopDatabase;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;

@@ -5,7 +5,8 @@
 
 package cz.fi.muni.eshop.test.basket;
 
-import cz.fi.muni.eshop.service.BasketBeanList;
+import cz.fi.muni.eshop.service.basket.BasketBeanList;
+
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Before;
 import org.junit.runner.RunWith;

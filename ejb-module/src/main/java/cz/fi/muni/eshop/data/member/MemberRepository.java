@@ -18,7 +18,8 @@ package cz.fi.muni.eshop.data.member;
 
 import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.util.Resources;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopDatabase;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopDatabase;
+
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

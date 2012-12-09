@@ -6,9 +6,9 @@ package cz.fi.muni.eshop.controller;
 
 import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.service.ProductManager;
-import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
-import cz.fi.muni.eshop.util.quilifier.TypeResolved;
+import cz.fi.muni.eshop.util.qualifier.JPA;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 
 import java.io.Serializable;
 import java.util.List;
@@ -123,6 +123,16 @@ public class ProductController implements Serializable {
             FacesMessage message = new FacesMessage("Invalid number");
             context.addMessage(toValidate.getClientId(context), message);
         }
+    }
+    
+    public void validateQuantity(FacesContext context,
+            UIComponent toValidate, Object value) {
+    	long input = (Long) value;
+    	if (input < 1) {
+    		((UIInput) toValidate).setValid(false);
+            FacesMessage message = new FacesMessage("Must be greater than 0");
+            context.addMessage(toValidate.getClientId(context), message);
+    	}
     }
 //
 //    public void validateNumberRangeInBasket(FacesContext context,

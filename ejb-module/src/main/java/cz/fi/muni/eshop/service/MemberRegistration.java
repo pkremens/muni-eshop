@@ -20,8 +20,9 @@ package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.testpackage.Dummy;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopDatabase;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopDatabase;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;

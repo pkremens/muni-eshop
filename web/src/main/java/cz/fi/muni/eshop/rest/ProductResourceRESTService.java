@@ -18,8 +18,8 @@ import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.ProductManager;
-import cz.fi.muni.eshop.util.quilifier.JPA;
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.qualifier.JPA;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
 
 @Path("/products")
 @RequestScoped

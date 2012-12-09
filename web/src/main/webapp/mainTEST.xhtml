@@ -41,12 +41,12 @@
      Quantity
         </f:facet>
 					<h:form id="addProductInBasket">
-						<h:outputLabel for="quantity" value="quantity" />
-						<h:inputText id="quantity" value="#{productToBasket.quantity}"
-							validator="#{productsBean.validateNumberRange}" />
+						
+						<h:inputText id="quantity" value="#{_product.quantityInBasket}"
+							validator="#{productController.validateQuantity}" />
 						<h:message for="quantity" errorClass="invalid" />
 						<h:commandButton id="addProductToBasket" value="add"
-							action="#{basketController.addProductToBasket}" />
+							action="#{basketController.addToBasket()}" />
 					</h:form>
 				</h:column>
 			</h:dataTable>

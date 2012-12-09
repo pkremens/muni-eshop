@@ -5,7 +5,8 @@
 
 package cz.fi.muni.eshop.controller;
 
-import cz.fi.muni.eshop.util.quilifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+
 import java.util.logging.Logger;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
