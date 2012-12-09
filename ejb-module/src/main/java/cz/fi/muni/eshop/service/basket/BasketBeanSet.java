@@ -15,6 +15,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -28,7 +30,7 @@ import javax.inject.Named;
 @Stateful
 @SessionScoped
 @Named
-@Deprecated // not tested outside testCase, use BasketBeanMap instead 
+@Deprecated // not tested outside testCase, use BasketBeanMap instead, I guess that content of basket will be shared across application, Let it be for now -> WONT FIX
 public class BasketBeanSet implements BasketManager<ProductEntity> {
 
     //TODO Logs are breaking Arquillian test because don't using container.
@@ -96,6 +98,7 @@ public class BasketBeanSet implements BasketManager<ProductEntity> {
 
     // TODO TRY WITH POSTCONSTRUCT IN INTERFACE
     @Override
+    @PostConstruct
     public void initNewBasket() {
        // log.info("Initializing new basket");
         basket = new TreeSet<ProductEntity>();
@@ -126,4 +129,9 @@ public class BasketBeanSet implements BasketManager<ProductEntity> {
     public Long getQuantityOfProduct(ProductEntity product) {
         return product.getQuantityInBasket();
     }
+
+	@Override
+	public boolean isInBasket(ProductEntity product) {
+		return basket.contains(product);
+	}
 }

@@ -9,6 +9,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.service.basket.BasketManager;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
@@ -18,6 +19,7 @@ import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 @Named
 @SessionScoped
 public class BasketController implements Serializable {
+	private boolean empty;
 	
 	@Inject
 	@MuniEshopLogger
@@ -25,21 +27,22 @@ public class BasketController implements Serializable {
 
     @Inject
     @TypeResolved
-    private BasketManager basket;
+    private BasketManager<ProductEntity> basket;
     @Inject
     @TypeResolved
     private ProductManager productManager;
 
     @PostConstruct
     public void initNewProduct() {
-        basket.initNewBasket();
+    	log.warning("init");
+        // basket.initNewBasket(); init methot of basket is called in baskets PostConstruct!!!
+        empty = true;
     }
     
     @Produces
     @Named("isBasketEmpty")
     public boolean isBasketEmpty() {
-    	System.out.println(basket.isEmpty());
-        return basket.isEmpty();
+    	return empty;
     }
     
     @Produces
@@ -48,10 +51,16 @@ public class BasketController implements Serializable {
         return basket.getTotalPrice();
     }
     
-    public void addToBasket() {
-    	log.info("Add to basket");
+    public void addToBasket(ProductEntity product, String value) {
+    	System.out.println("product = " + product);
+    	System.out.println("value = " + value);
+    	basket.addToBasket(product, Long.parseLong(value));
+    	empty = false;
+    }  
+    
+    public boolean isInBasket(ProductEntity product) {
+    	log.info("Is " + product.getProductName() + " in basket");
+    	return basket.isInBasket(product);
     }
-    
-    
     
 }

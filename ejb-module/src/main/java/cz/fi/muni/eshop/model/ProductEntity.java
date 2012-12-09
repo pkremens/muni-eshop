@@ -153,7 +153,7 @@ public class ProductEntity implements Serializable, Comparable<ProductEntity> {
 
     @Override
     public String toString() {
-        return "ProductEntity{" + "id=" + id + ", productName=" + productName + ", basePrice=" + basePrice + ", onStore=" + onStore + '}';
+        return "ProductEntity{" + "id=" + id + ", productName=" + productName + ", basePrice=" + basePrice +'}';
     }
  
 

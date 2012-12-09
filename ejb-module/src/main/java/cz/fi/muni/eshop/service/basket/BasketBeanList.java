@@ -143,4 +143,15 @@ public class BasketBeanList implements BasketManager<ProductEntity> {
         }
         return quantity;
     }
+
+	@Override
+	public boolean isInBasket(ProductEntity product) {
+	       for (OrderLineEntity orderLineEntity : basket) {
+	            if (orderLineEntity.getProduct().equals(product)) {
+	                return true;
+	            }
+
+	        }
+		return false;
+	}
 }

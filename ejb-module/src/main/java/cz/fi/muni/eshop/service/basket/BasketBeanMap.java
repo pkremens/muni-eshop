@@ -4,13 +4,17 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.util.qualifier.MapWithProducts;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
 import cz.fi.muni.eshop.util.qualifier.SetWithProducts;
 
 @MapWithProducts
@@ -20,7 +24,7 @@ import cz.fi.muni.eshop.util.qualifier.SetWithProducts;
 public class BasketBeanMap implements BasketManager<ProductEntity> {
 	private Map<ProductEntity, Long> basket;
 	private Long totalPrice;
-
+	
 	@Override
 	public void addToBasket(ProductEntity product) {
 		addToBasket(product, 1L);
@@ -79,7 +83,8 @@ public class BasketBeanMap implements BasketManager<ProductEntity> {
 		return basket.isEmpty();
 	}
 
-	@Override
+    @PostConstruct
+    @Override
 	public void initNewBasket() {
 		totalPrice = 0L;
 		basket = new TreeMap<ProductEntity, Long>();
@@ -107,5 +112,12 @@ public class BasketBeanMap implements BasketManager<ProductEntity> {
 	public Long getQuantityOfProduct(ProductEntity product) {
 return basket.get(product);
 	}
+
+	@Override
+	public boolean isInBasket(ProductEntity product) {
+		
+		return basket.containsKey(product);
+	}
+
 
 }

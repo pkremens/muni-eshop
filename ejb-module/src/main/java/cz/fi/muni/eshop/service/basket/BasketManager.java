@@ -31,7 +31,6 @@ public interface BasketManager<T> {
 
     boolean isEmpty();
     
-    @PostConstruct
     void initNewBasket();
     
     Long getTotalPrice();
@@ -41,5 +40,7 @@ public interface BasketManager<T> {
     Collection<T> getAllProductsInBasket(); 
     
     Long getQuantityOfProduct(T product);
+    
+    boolean isInBasket(T product);
 //List<ProductEntity> getAllMessages() throws Exception;
 }

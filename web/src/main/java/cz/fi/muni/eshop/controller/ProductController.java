@@ -127,7 +127,14 @@ public class ProductController implements Serializable {
     
     public void validateQuantity(FacesContext context,
             UIComponent toValidate, Object value) {
-    	long input = (Long) value;
+    	long input = 0;
+    	try {
+    	input = Long.parseLong((String) value);
+    	} catch (ClassCastException cce) {
+    		((UIInput) toValidate).setValid(false);
+            FacesMessage message = new FacesMessage("Must be number");
+            context.addMessage(toValidate.getClientId(context), message);
+    	}
     	if (input < 1) {
     		((UIInput) toValidate).setValid(false);
             FacesMessage message = new FacesMessage("Must be greater than 0");

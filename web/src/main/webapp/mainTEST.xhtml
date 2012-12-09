@@ -8,12 +8,15 @@
 		<h:form>
 			<h:panelGroup rendered="#{not isBasketEmpty}">
 				<a href="#{request.contextPath}/basketTEST.jsf">GO TO BASKET</a>
+				basket total price: <h:outputText value="#{basketTotalPrice}" />
 				<br />
 			</h:panelGroup>
+			<h:outputText value="basket is empty" rendered="#{isBasketEmpty}" />
+			<h:outputText value="#{basketTotalPrice}" rendered="#{isBasketEmpty}" />
 		</h:form>
 
 
-		<div id="catalog" align="center">
+		<div id="catalog">
 			<h1>Catalog</h1>
 			<h:panelGroup rendered="#{productController.emptyProductsList}">
 				<em>No products!</em>
@@ -38,16 +41,25 @@
 
 				<h:column>
 					<f:facet name="header">
-     Quantity
+     <h:outputText value="ACTION" />
         </f:facet>
 					<h:form id="addProductInBasket">
 						
-						<h:inputText id="quantity" value="#{_product.quantityInBasket}"
+						<h:inputText id="quantity" value="1" binding="#{input1}"
 							validator="#{productController.validateQuantity}" />
 						<h:message for="quantity" errorClass="invalid" />
 						<h:commandButton id="addProductToBasket" value="add"
-							action="#{basketController.addToBasket()}" />
+							action="#{basketController.addToBasket(_product, input1.value)}" />
 					</h:form>
+				</h:column>
+				
+				<h:column >
+				<h:form id="Testbababa">
+				<h:commandButton action="#{basketController.isInBasket(_product)}" value="Test" />
+				
+				<h:outputFormat value="#{basketController.isInBasket(_product)}" />
+				</h:form>
+				
 				</h:column>
 			</h:dataTable>
 		</div>

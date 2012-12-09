@@ -53,6 +53,11 @@ public abstract class AbstractBasketTest {
     public void updateTest() {
         ProductEntity product = new ProductEntity("Name", 77L);
         product.setId(1L);
+        Assert.assertFalse(basket.isInBasket(product));
+        basket.addToBasket(product);
+        Assert.assertFalse(basket.isEmpty());
+        basket.productQuantityDecrement(product, 1L);
+        Assert.assertTrue(basket.isEmpty());
         basket.addToBasket(product);
         Assert.assertEquals((Long) 1L, basket.getQuantityOfProduct(product));
         basket.clearBasket();
