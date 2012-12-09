@@ -12,7 +12,7 @@
 				<em>No products!</em>
 			</h:panelGroup>
 			<h:dataTable value="#{productList}" var="_product" id="productList"
-				rendered="#{not productController.emptyProductsList}">
+				rendered="#{not productController.emptyProductsList}"  cellspacing="5" >
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="ID" />
@@ -29,13 +29,13 @@
 				</h:column>
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="PRICE" />
+						<h:outputText value="PRICE   " />
 					</f:facet>
 					<h:outputText value="#{_product.basePrice}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="ON STORE" />
+						<h:outputText value="ON STORE   " />
 					</f:facet>
 					<h:outputText id="productsOnStore" value="#{_product.onStore}" />
 				</h:column>
@@ -47,13 +47,13 @@
 						action="#{productController.editAction(_product)}"
 						disabled="#{_product.editable}">
 						<f:ajax execute="productNameInput"
-							render="editButton saveButton productNameInput :addProduct:addProductMessage" />
+							render="editButton saveButton productNameInput productNameInpuMessage :addProduct:addProductMessage" />
 					</h:commandButton>
 					<h:commandButton id="saveButton" value="Save"
 						action="#{productController.saveAction(_product)}"
 						disabled="#{!_product.editable}">
 						<f:ajax execute="productNameInput"
-							render="editButton saveButton productNameInput :addProduct:addProductMessage" />
+							render="editButton saveButton productNameInput productNameInpuMessage :addProduct:addProductMessage" />
 					</h:commandButton>
 				</h:column>
 				<h:column>
@@ -61,7 +61,7 @@
 					<a href="#{request.contextPath}/rest/products/#{_product.id}">/rest/products/#{_product.id}</a>
 				</h:column>
 				<h:column>
-					<h:message for="productNameInput" errorClass="invalid" />
+					<h:message id="productNameInpuMessage" for="productNameInput" errorClass="invalid" />
 				</h:column>
 			</h:dataTable>
 			<p>
@@ -72,10 +72,10 @@
 				</h:commandButton>
 				<br />
 			</p>
-			<h:panelGroup rendered="#{!productController.emptyProductsList}">
+			
                 REST URL for all products<a
 					href="#{request.contextPath}/rest/products">/rest/products</a>
-			</h:panelGroup>
+			
 
 		</h:form>
 

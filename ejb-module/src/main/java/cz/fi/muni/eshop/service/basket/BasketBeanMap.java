@@ -24,10 +24,10 @@ import cz.fi.muni.eshop.util.qualifier.SetWithProducts;
 public class BasketBeanMap implements BasketManager<ProductEntity> {
 	private Map<ProductEntity, Long> basket;
 	private Long totalPrice;
-	
+
 	@Override
 	public void addToBasket(ProductEntity product) {
-		addToBasket(product, 1L);		
+		addToBasket(product, 1L);
 	}
 
 	@Override
@@ -35,8 +35,8 @@ public class BasketBeanMap implements BasketManager<ProductEntity> {
 		if (basket.containsKey(product)) {
 			productQuantityIncrement(product, quantity);
 		} else {
-		totalPrice += product.getBasePrice() * quantity;
-		basket.put(product, quantity);
+			totalPrice += product.getBasePrice() * quantity;
+			basket.put(product, quantity);
 		}
 	}
 
@@ -45,7 +45,7 @@ public class BasketBeanMap implements BasketManager<ProductEntity> {
 		totalPrice += product.getBasePrice() * toAdd;
 		long newQuantity = basket.get(product) + toAdd;
 		updateInBasket(product, newQuantity);
-		
+
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class BasketBeanMap implements BasketManager<ProductEntity> {
 		totalPrice -= product.getBasePrice() * toRemove;
 		long newQuantity = basket.get(product) - toRemove;
 		updateInBasket(product, newQuantity);
-		
+
 	}
 
 	@Override
@@ -61,16 +61,15 @@ public class BasketBeanMap implements BasketManager<ProductEntity> {
 		if (newQuantity < 1) {
 			removeFromBasker(product);
 		} else {
-		basket.put(product, newQuantity);
+			basket.put(product, newQuantity);
 		}
-		
-		
+
 	}
 
 	@Override
 	public void removeFromBasker(ProductEntity product) {
 		totalPrice -= product.getBasePrice() * basket.get(product);
-		basket.remove(product);	
+		basket.remove(product);
 	}
 
 	@Override
@@ -83,25 +82,24 @@ public class BasketBeanMap implements BasketManager<ProductEntity> {
 		return basket.isEmpty();
 	}
 
-    @PostConstruct
-    @Override
+	@PostConstruct
+	@Override
 	public void initNewBasket() {
 		totalPrice = 0L;
 		basket = new TreeMap<ProductEntity, Long>();
-		
+
 	}
 
 	@Override
 	public Long getTotalPrice() {
 		return totalPrice;
-}
-	
+	}
 
 	@Override
 	public void clearBasket() {
 		basket.clear();
-		totalPrice=0L;
-		
+		totalPrice = 0L;
+
 	}
 
 	@Override
@@ -111,14 +109,20 @@ public class BasketBeanMap implements BasketManager<ProductEntity> {
 
 	@Override
 	public Long getQuantityOfProduct(ProductEntity product) {
-return basket.get(product);
+		if (basket.containsKey(product)) {
+			return basket.get(product);
+		} else {
+			return 0L;
+		}
+		
 	}
 
 	@Override
 	public boolean isInBasket(ProductEntity product) {
-		
+
 		return basket.containsKey(product);
 	}
-
+	
+	
 
 }

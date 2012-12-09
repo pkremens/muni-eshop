@@ -11,7 +11,7 @@
                 <em>No users!</em>
             </h:panelGroup>
             <h:dataTable value="#{customerList}" var="_customer"
-                         rendered="#{not customerController.emptyCustomerList}">
+                         rendered="#{not customerController.emptyCustomerList}" cellspacing="5" >
                 <h:column>
                     <f:facet name="header">
                         <h:outputText value="EMAIL" />
@@ -63,13 +63,10 @@
                     <f:facet name="header">REST URL</f:facet>
                     <a href="#{request.contextPath}/rest/customers/#{_customer.email}">/rest/customers/#{_customer.email}</a>
                 </h:column>
-                <h:column>
-                    <h:message for="role" errorClass="invalid" />
-                </h:column>
             </h:dataTable>
-            <h:panelGroup rendered="#{!customerController.emptyCustomerList}">
-                REST URL for all customers<a href="#{request.contextPath}/rest/customers">/rest/customers</a>
-            </h:panelGroup>
+            <br />
+            REST URL for all customers<a href="#{request.contextPath}/rest/customers">/rest/customers</a>
+            
         </h:form>
 
         <br />

@@ -75,7 +75,12 @@ public class BasketController implements Serializable {
     
     public void addMore(ProductEntity product, Long quantity) {
     	log.info("adding to product: " + product + " quantity: " + quantity);
-    	basket.addToBasket(product, quantity);
+    	basket.productQuantityIncrement(product, quantity);
+    }
+    
+    public void removeMore(ProductEntity product, Long quantity) {
+    	log.info("removing product: " + product + " quantity: " + quantity);
+    	basket.productQuantityDecrement(product, quantity);
     }
     
     public void clearBasket() {
@@ -86,5 +91,7 @@ public class BasketController implements Serializable {
     public Long getQuantityOfProduct(ProductEntity product) {
     	return basket.getQuantityOfProduct(product); 
     }
+    
+    
     
 }
