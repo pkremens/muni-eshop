@@ -10,6 +10,7 @@ import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.util.InvalidEntryException;
 import cz.fi.muni.eshop.util.qualifier.JPA;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -36,7 +37,7 @@ public class CustomerResourceRESTService {
     @MuniEshopLogger
     private Logger log;
     @Inject
-    @JPA
+    @TypeResolved
     private CustomerManager customerManager;
     
 
