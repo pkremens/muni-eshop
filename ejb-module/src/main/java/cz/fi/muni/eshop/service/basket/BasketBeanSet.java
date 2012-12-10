@@ -71,7 +71,7 @@ public class BasketBeanSet implements BasketManager<ProductEntity> {
     public void updateInBasket(ProductEntity product, Long newQuantity) {
         if (newQuantity < 1) {
            // log.log(Level.INFO, "Update basket - remove product because of negative (0 incl) value - product: {0} new quantity: {1}", new Object[]{product.toString(), newQuantity});
-            removeFromBasker(product);
+        	product.setQuantityInBasket(1L);
         } else {
           //  log.log(Level.INFO, "Update basket - updating product: {0} quantity: {1}", new Object[]{product.toString(), newQuantity});
             product.setQuantityInBasket(newQuantity);

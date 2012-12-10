@@ -4,34 +4,38 @@
  */
 package cz.fi.muni.eshop.test.jpa;
 
-import cz.fi.muni.eshop.model.OrderLineEntity;
-import cz.fi.muni.eshop.model.ProductEntity;
-import cz.fi.muni.eshop.service.OrderLineManager;
-import cz.fi.muni.eshop.service.ProductManager;
-import cz.fi.muni.eshop.service.jpa.OrderLineManagerJPA;
-import cz.fi.muni.eshop.service.jpa.ProductManagerJPA;
-import cz.fi.muni.eshop.util.Resources;
-import cz.fi.muni.eshop.util.qualifier.JPA;
-import cz.fi.muni.eshop.util.qualifier.MuniEshopDatabase;
-import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
-
 import java.util.logging.Logger;
+
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
+
 import junit.framework.Assert;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.junit.InSequence;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.picketlink.idm.api.IdentityType;
+import org.picketlink.idm.api.User;
+
+import cz.fi.muni.eshop.model.CustomerEntity;
+import cz.fi.muni.eshop.model.OrderEntity;
+import cz.fi.muni.eshop.model.OrderLineEntity;
+import cz.fi.muni.eshop.model.ProductEntity;
+import cz.fi.muni.eshop.model.Role;
+import cz.fi.muni.eshop.service.OrderLineManager;
+import cz.fi.muni.eshop.service.ProductManager;
+import cz.fi.muni.eshop.service.jpa.OrderLineManagerJPA;
+import cz.fi.muni.eshop.service.jpa.ProductManagerJPA;
+import cz.fi.muni.eshop.util.qualifier.JPA;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopDatabase;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
 
 /**
  *
@@ -66,8 +70,8 @@ public class OrderLineManagerJPATest {
      */
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "orderLine.war").addClasses(ProductEntity.class, ProductManagerJPA.class, ProductManager.class, OrderLineEntity.class, OrderLineManager.class, 
-                OrderLineManagerJPA.class, MuniEshopDatabase.class, JpaTestResources.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+        return ShrinkWrap.create(WebArchive.class, "orderLine.war").addClasses(ProductEntity.class, CustomerEntity.class, OrderEntity.class, ProductManagerJPA.class, ProductManager.class, OrderLineEntity.class, OrderLineManager.class, 
+                OrderLineManagerJPA.class, MuniEshopDatabase.class, Role.class, IdentityType.class, User.class, JpaTestResources.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
 

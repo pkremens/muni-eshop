@@ -44,7 +44,12 @@ public class BasketBeanList implements BasketManager<ProductEntity> {
 
     @Override
     public void addToBasket(ProductEntity product, Long quantity) {
+    	
+    	if (getQuantityOfProduct(product) > 0) {
+    		productQuantityIncrement(product, quantity);
+    	} else {
         basket.add(new OrderLineEntity(product, quantity));
+    	}
     }
 
     @Override
@@ -63,7 +68,7 @@ public class BasketBeanList implements BasketManager<ProductEntity> {
             if (orderLineEntity.getProduct().equals(product)) {
                 long newQuantity = (orderLineEntity.getQuantity() - toRemove);
                 if (newQuantity <= 0) {
-                    removeFromBasker(product);
+                	orderLineEntity.setQuantity(1L);
                 } else {
                     orderLineEntity.setQuantity(newQuantity);
                 }
