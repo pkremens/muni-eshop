@@ -76,7 +76,7 @@ public class BasketController implements Serializable {
     @Produces
     @Named("basketTotalPrice") 
     public Long basketTotalPrice() {
-    	log.warning("basketTotalPrice");
+    	//log.warning("basketTotalPrice");
         return basket.getTotalPrice();
     }
     

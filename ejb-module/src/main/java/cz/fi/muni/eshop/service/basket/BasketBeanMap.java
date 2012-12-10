@@ -50,13 +50,13 @@ public class BasketBeanMap implements BasketManager<ProductEntity> {
 
 	@Override
 	public void productQuantityDecrement(ProductEntity product, Long toRemove) {
-		long maxRemove = (basket.get(product));
-		if (maxRemove == 1) {
+		long maxRemove = (basket.get(product) - 1);
+		if (maxRemove == 0) {
 			return; // Can not decrease quantity
 		} else {
-			long update = (toRemove > maxRemove) ? maxRemove : toRemove;			
+			long update = (toRemove > maxRemove) ? maxRemove : toRemove;	// how many will I actually remove		
 			totalPrice -= product.getBasePrice() * (update);
-			long newQuantity = maxRemove - update;
+			long newQuantity = basket.get(product) - update;
 			updateInBasket(product, newQuantity);
 		}
 
