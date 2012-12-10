@@ -56,10 +56,11 @@ public class BasketBeanMap implements BasketManager<ProductEntity> {
 
 	}
 
-	@Override
+	
+	@Override 
 	public void updateInBasket(ProductEntity product, Long newQuantity) {
 		if (newQuantity < 1) {
-			removeFromBasker(product);
+			basket.put(product, 1L);
 		} else {
 			basket.put(product, newQuantity);
 		}

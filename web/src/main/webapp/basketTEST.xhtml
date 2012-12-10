@@ -34,13 +34,17 @@
 						<h:outputText value="ACTION" />
 					</f:facet>
 					<h:form id="basketActionForm">
-						<h:commandButton id="addProductToBasket"
-							action="#{basketController.addToBasket(_product)}" value="add">
-							
-						</h:commandButton>
+
 						<h:commandButton id="removeFromBasketButton"
 							action="#{basketController.removeFromBasket(_product)}"
-							value="Remove" disabled="#{basketController.basketEmpty}">
+							value="Remove">	
+						<h:commandButton id="removeFive" value="-5" action="#{basketController.removeMore(_product,5)}" />
+						<h:commandButton id="removeOne" value="-1" action="#{basketController.removeMore(_product,1)}" />
+						<h:commandButton id="addOne" value="+1" action="#{basketController.addMore(_product,1)}" />
+						<h:commandButton id="addFive" value="+5" action="#{basketController.addMore(_product,5)}" />				
+						</h:commandButton>
+												<h:commandButton id="addProductToBasket"
+							action="#{basketController.addToBasket(_product)}" value="add">
 							
 						</h:commandButton>
 					</h:form>
