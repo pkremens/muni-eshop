@@ -1,6 +1,7 @@
 package cz.fi.muni.eshop.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -48,11 +49,13 @@ public class OrderEntity implements Serializable {
 
     public OrderEntity() {
         super();
+        orderLines = new ArrayList<OrderLineEntity>();
+        this.openOrder = true;
     }
 
     public OrderEntity(CustomerEntity customer, List<OrderLineEntity> orderLines) {
+        this();
         this.customer = customer;
-        this.openOrder = true;
         this.orderLines = orderLines;
     }
 
@@ -94,6 +97,10 @@ public class OrderEntity implements Serializable {
 
     public void setOrderLines(List<OrderLineEntity> orderLines) {
         this.orderLines = orderLines;
+    }
+    
+    public void addOrderLine(OrderLineEntity orderLine) {
+        this.orderLines.add(orderLine);        
     }
 
     public Long getTotalPrice() {

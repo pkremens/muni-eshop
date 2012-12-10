@@ -11,8 +11,8 @@
 <h:body>
 	<div id="container">
 		<div id="log">
-			<h1 align="right">
-				<h:outputLabel value="You have been logged as"
+			<h5 align="right">
+				<h:outputLabel value="You are logged as"
 					rendered="#{identity.loggedIn}" />
 				<h:outputLabel value="#{identity.user.name}"
 					rendered="#{identity.loggedIn}" />
@@ -21,7 +21,7 @@
 					<h:commandButton id="logout" value="Logout"
 						action="#{identity.logout}" rendered="#{identity.loggedIn}" />
 				</h:form>
-			</h1>
+			</h5>
 			<li>Dummy pages:</li> <a href="#{request.contextPath}/InitServlet">Servlet
 				for generating dummy data</a><br />
 				

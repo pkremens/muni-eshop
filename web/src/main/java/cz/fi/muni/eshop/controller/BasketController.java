@@ -117,11 +117,9 @@ public class BasketController implements Serializable {
             throw new IllegalStateException("User must be logged in if he wants to make order"); // TODO change exceptions later
         }
         order.setCustomer((CustomerEntity) identity.getUser());
-        List<OrderLineEntity> lines = new ArrayList<OrderLineEntity>();
-        for (ProductEntity product : basket.getAllProductsInBasket()) {
-            lines.add(new OrderLineEntity(productManager.findProductById(product.getId()), basket.getQuantityOfProduct(product)));
+        for (ProductEntity product : basket.getAllProductsInBasket()) {   
+            order.addOrderLine((new OrderLineEntity(productManager.findProductById(product.getId()), basket.getQuantityOfProduct(product))));
         }
-        order.setOrderLines(lines);
         order.setOpenOrder(true);
         orderManager.addOrder(order);
         basket.clearBasket();
