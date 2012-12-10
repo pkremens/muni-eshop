@@ -21,6 +21,11 @@ public interface BasketManager<T> {
     
     void productQuantityIncrement(T product, Long toAdd);
     
+    /**
+     * This method can be used ONLY for decreasing quantity of product in basket. Can not be used to remove it as quantity is set always to 1 when trying this. 
+     * @param product to be updated
+     * @param toRemove to be removed
+     */
     void productQuantityDecrement(T product, Long toRemove);
 
     void updateInBasket(T product, Long newQuantity);

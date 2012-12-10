@@ -47,7 +47,7 @@ public class ProductEntity implements Serializable, Comparable<ProductEntity> {
     @Deprecated // used in early versions of basket
     Long quantityInBasket = 1L;
     @NotNull
-    private Long onStore = 0L;
+    private Long onStore;
 
     public ProductEntity() {
         super();
@@ -58,7 +58,12 @@ public class ProductEntity implements Serializable, Comparable<ProductEntity> {
         this.basePrice = basePrice;
     }
 
-    public Long getBasePrice() {
+    public ProductEntity(String productName, Long basePrice, Long onStore) {
+		this(productName, basePrice);
+		this.onStore = onStore;
+	}
+
+	public Long getBasePrice() {
         return basePrice;
     }
 

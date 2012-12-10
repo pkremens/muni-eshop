@@ -12,57 +12,57 @@
 				<em>No orders!</em>
 			</h:panelGroup>
 			<h:dataTable value="#{activeOrders}" var="_order"
-				rendered="#{not empty activeOrders}" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row">
+				rendered="#{not empty activeOrders}" styleClass="order-table"
+				headerClass="order-table-header"
+				rowClasses="order-table-odd-row,order-table-even-row">
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="ID" />
-                    </f:facet>
+					</f:facet>
 					<h:outputText value="#{_order.id}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="EMAIL" />
-                    </f:facet>
+					</f:facet>
 					<h:outputText value="#{_order.customer.email}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="NAME" />
-                    </f:facet>
+					</f:facet>
 					<h:outputText value="#{_order.customer.name}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="CREATION" />
-                    </f:facet>
+					</f:facet>
 					<h:outputText value="#{_order.creationDate}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="UNIQUE" />
-                    </f:facet>
-					<h:outputText
-						value="#{_order.orderLines.size()}" />
+					</f:facet>
+					<h:outputText value="#{_order.orderLines.size()}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="TOTAL" />
-                    </f:facet>
-					<h:outputText
-						value="#{_order.totalProductsQuantity}" />
+					</f:facet>
+					<h:outputText value="#{_order.totalProductsQuantity}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="PRICE" />
-                    </f:facet>
+					</f:facet>
 					<h:outputText value="#{_order.totalPrice}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="ACTION" />
-                    </f:facet>					
-						<h:commandButton value="details"
-							action="#{orderController.getOrderDetails(_order)}" />					
+					</f:facet>
+					<h:commandButton value="details"
+						action="#{orderController.getOrderDetails(_order)}" />
 				</h:column>
 			</h:dataTable>
 		</h:form>
@@ -71,12 +71,32 @@
 			<h:outputText value="Select from active orders"
 				rendered="#{!orderController.showDetail()}" />
 			<h:dataTable value="#{detailedLines}" var="_line"
-				rendered="#{orderController.showDetail()}"  styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" >
+				rendered="#{orderController.showDetail()}" styleClass="order-table"
+				headerClass="order-table-header"
+				rowClasses="order-table-odd-row,order-table-even-row">
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="NAME" />
-                    </f:facet>
+					</f:facet>
 					<h:outputText value="#{_line.product.productName}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="COUNT" />
+					</f:facet>
+					<h:outputText value="#{_line.quantity}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="PRICE" />
+					</f:facet>
+					<h:outputText value="#{_line.product.basePrice}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="TOTAL" />
+					</f:facet>
+					<h:outputText value="#{_line.quantity * _line.product.basePrice}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
@@ -84,36 +104,40 @@
 					</f:facet>
 					<h:outputText value="#{_line.product.onStore}" />
 				</h:column>
-
-
 			</h:dataTable>
 			<br />
-			<h:commandButton action="#{orderController.hideDetail()}"
-				value="Hide Detail" disabled="#{!orderController.showDetail()}" />
+			
+			<h:commandButton id="HideDetailButton" action="#{orderController.hideDetail()}"
+				value="Hide Detail" disabled="#{!orderController.showDetail()}" />&#160;&#160;
+			<h:commandButton id="closeOrderButton" value="Close Order" disabled="#{!closableOrder}" action="#{orderController.closeOrder()}" />&#160;&#160;			
+			TOTAL PRICE: <h:outputLabel value="#{zoomPrice}" />
 		</h:form>
+		<br />
 		Closed:
 		<h:form id="resolvedOrdersForm">
 			<h:panelGroup rendered="#{empty closedOrders}">
 				<em>No resolved orders!</em>
 			</h:panelGroup>
 			<h:dataTable value="#{closedOrders}" var="_order"
-				rendered="#{not empty closedOrders}"  styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" >
+				rendered="#{not empty closedOrders}" styleClass="order-table"
+				headerClass="order-table-header"
+				rowClasses="order-table-odd-row,order-table-even-row" >
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="ID" />
-                    </f:facet>
+					</f:facet>
 					<h:outputText value="#{_order.id}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="EMAIL" />
-                    </f:facet>
+					</f:facet>
 					<h:outputText value="#{_order.customer.email}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="NAME" />
-                    </f:facet>
+					</f:facet>
 					<h:outputText value="#{_order.customer.name}" />
 				</h:column>
 				<h:column>
@@ -125,28 +149,20 @@
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="UNIQUE" />
-                    </f:facet>
-					<h:outputText
-						value="#{_order.orderLines.size()}" />
+					</f:facet>
+					<h:outputText value="#{_order.orderLines.size()}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="TOTAL" />
-                    </f:facet>
-					<h:outputText
-						value="#{_order.totalProductsQuantity}" />
+					</f:facet>
+					<h:outputText value="#{_order.totalProductsQuantity}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="PRICE" />
-                    </f:facet>
+					</f:facet>
 					<h:outputText value="#{_order.totalPrice}" />
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="ACTION" />
-                    </f:facet>
-					<h:commandButton value="Order Detail dummy" />
 				</h:column>
 			</h:dataTable>
 		</h:form>

@@ -53,17 +53,12 @@ public class OrderManagerJPA implements OrderManager {
 	}
 
 	@Override
-	public void switchOrderOpen(Long id) {
-		log.log(Level.INFO, "Switching open for order with id: {0}", id);
-		OrderEntity order = getOrderById(id);
-		if (order.isOpenOrder()) {
+	public void closeOrder(OrderEntity order) {
+		log.warning("closing order: " + order.toString());
 			order.setOpenOrder(false);
-		} else {
-			order.setOpenOrder(true);			
-		}
-		orderEventSrc.fire(order);
 		log.warning("Fire event: " + order.toString());
 		em.merge(order);
+		orderEventSrc.fire(order);
 	}
 
 	@Override

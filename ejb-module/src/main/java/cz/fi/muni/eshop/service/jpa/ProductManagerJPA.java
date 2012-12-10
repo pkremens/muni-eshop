@@ -43,6 +43,7 @@ public class ProductManagerJPA implements ProductManager {
     public void addProduct(ProductEntity product) {
         log.log(Level.WARNING, "Add product: {0}", product);
         log.warning("accessing DB");
+        product.setOnStore(0L);
         em.persist(product);
         log.log(Level.WARNING, "Product added: {0}", product);
 		productEventSrc.fire(product);

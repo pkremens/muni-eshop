@@ -15,7 +15,7 @@ public interface OrderManager {
 
     void addOrder(OrderEntity order);
 
-    void switchOrderOpen(Long id);
+    void closeOrder(OrderEntity order);
 
     OrderEntity getOrderById(Long id);
 

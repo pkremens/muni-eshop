@@ -106,7 +106,7 @@ public class OrderEntity implements Serializable {
     public Long getTotalPrice() {
     	long totalPrice = 0L;
     	for (OrderLineEntity orderLine : orderLines) {
-			totalPrice =+ orderLine.getPrice();
+			totalPrice += orderLine.getPrice();
 		}
         return totalPrice;
     }
@@ -114,7 +114,7 @@ public class OrderEntity implements Serializable {
     public Long getTotalProductsQuantity() {
     	long totalProducts = 0L;
     	for (OrderLineEntity orderLine : orderLines) {
-			totalProducts =+ orderLine.getQuantity();
+			totalProducts += orderLine.getQuantity();
 		}
     	return totalProducts;
     }

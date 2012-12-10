@@ -44,8 +44,9 @@ public class EntityValidatorTest {
 
     @Test
     public void productValidationTest() throws InvalidEntryException {
-        ProductEntity product = new ProductEntity("test", 8L);
+        ProductEntity product = new ProductEntity("test", 8L, 0L);
         product.setId(1L);
+        
         validator = new EntityValidator<ProductEntity>();
         Assert.assertTrue(validator.validate(product));
 
@@ -54,7 +55,7 @@ public class EntityValidatorTest {
 
     @Test
     public void productValidationMissingIdTest() throws InvalidEntryException {
-        ProductEntity product = new ProductEntity("test", 8L);
+        ProductEntity product = new ProductEntity("test", 8L, 0L);
         validator = new EntityValidator<ProductEntity>();
         Assert.assertTrue(validator.validateIgnoreId(product));
 
