@@ -8,7 +8,7 @@ import cz.fi.muni.eshop.model.CustomerEntity;
 import cz.fi.muni.eshop.model.OrderEntity;
 import cz.fi.muni.eshop.model.OrderLineEntity;
 import cz.fi.muni.eshop.model.ProductEntity;
-import cz.fi.muni.eshop.model.Role;
+import cz.fi.muni.eshop.util.Role;
 import cz.fi.muni.eshop.service.OrderLineManager;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.service.jpa.OrderLineManagerJPA;

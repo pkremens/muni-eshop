@@ -5,9 +5,9 @@
 package cz.fi.muni.eshop.controller;
 
 import cz.fi.muni.eshop.model.CustomerEntity;
-import cz.fi.muni.eshop.model.Role;
+import cz.fi.muni.eshop.util.Role;
 import cz.fi.muni.eshop.service.CustomerManager;
-import cz.fi.muni.eshop.util.InvalidEntryException;
+import cz.fi.muni.eshop.util.exceptions.InvalidEntryException;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
 import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 import java.io.Serializable;

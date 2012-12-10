@@ -5,7 +5,7 @@
 package cz.fi.muni.eshop.test.security;
 
 import cz.fi.muni.eshop.model.CustomerEntity;
-import cz.fi.muni.eshop.model.Role;
+import cz.fi.muni.eshop.util.Role;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

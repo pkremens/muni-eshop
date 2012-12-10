@@ -5,7 +5,7 @@
 package cz.fi.muni.eshop.security;
 
 import cz.fi.muni.eshop.model.CustomerEntity;
-import cz.fi.muni.eshop.model.Role;
+import cz.fi.muni.eshop.util.Role;
 import cz.fi.muni.eshop.security.permissions.Admin;
 import cz.fi.muni.eshop.security.permissions.BasicPermission;
 import cz.fi.muni.eshop.security.permissions.Seller;

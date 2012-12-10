@@ -5,12 +5,12 @@
 package cz.fi.muni.eshop.test.jpa;
 
 import cz.fi.muni.eshop.model.CustomerEntity;
-import cz.fi.muni.eshop.model.Role;
+import cz.fi.muni.eshop.util.Role;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.jpa.CustomerManagerJPA;
 import cz.fi.muni.eshop.util.EntityValidator;
-import cz.fi.muni.eshop.util.InvalidEntryException;
-import cz.fi.muni.eshop.util.NoEntryFoundExeption;
+import cz.fi.muni.eshop.util.exceptions.InvalidEntryException;
+import cz.fi.muni.eshop.util.exceptions.NoEntryFoundExeption;
 import cz.fi.muni.eshop.util.qualifier.JPA;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
 import java.util.List;

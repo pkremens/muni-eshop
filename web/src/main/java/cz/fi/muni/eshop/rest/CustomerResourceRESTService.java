@@ -6,7 +6,7 @@ package cz.fi.muni.eshop.rest;
 
 import cz.fi.muni.eshop.model.CustomerEntity;
 import cz.fi.muni.eshop.service.CustomerManager;
-import cz.fi.muni.eshop.util.InvalidEntryException;
+import cz.fi.muni.eshop.util.exceptions.InvalidEntryException;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
 import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 import java.util.List;

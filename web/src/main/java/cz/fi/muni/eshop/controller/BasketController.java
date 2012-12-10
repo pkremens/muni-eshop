@@ -83,7 +83,7 @@ public class BasketController implements Serializable {
     }
 
     public boolean isInBasket(ProductEntity product) {
-        log.info("Is " + product.getProductName() + " in basket");
+        //log.info("Is " + product.getProductName() + " in basket");
         return basket.isInBasket(product);
     }
 

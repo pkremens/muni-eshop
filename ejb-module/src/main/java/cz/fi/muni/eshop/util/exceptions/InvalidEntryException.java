@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.fi.muni.eshop.util;
+package cz.fi.muni.eshop.util.exceptions;
 
 import java.util.List;
 

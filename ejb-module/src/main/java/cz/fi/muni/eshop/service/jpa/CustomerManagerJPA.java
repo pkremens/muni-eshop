@@ -5,11 +5,12 @@
 package cz.fi.muni.eshop.service.jpa;
 
 import cz.fi.muni.eshop.model.CustomerEntity;
-import cz.fi.muni.eshop.model.Role;
+import cz.fi.muni.eshop.util.Role;
 import cz.fi.muni.eshop.service.CustomerManager;
+import cz.fi.muni.eshop.util.ControlMessage;
 import cz.fi.muni.eshop.util.EntityValidator;
-import cz.fi.muni.eshop.util.InvalidEntryException;
-import cz.fi.muni.eshop.util.NoEntryFoundExeption;
+import cz.fi.muni.eshop.util.exceptions.InvalidEntryException;
+import cz.fi.muni.eshop.util.exceptions.NoEntryFoundExeption;
 import cz.fi.muni.eshop.util.qualifier.JPA;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopDatabase;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
@@ -40,6 +41,7 @@ public class CustomerManagerJPA implements CustomerManager {
     @Inject
     private Event<CustomerEntity> customerEventSrc; //TODO will be needed?
 
+
     @Override
     public void addCustomer(CustomerEntity customer) {
         log.log(Level.WARNING, "Add customer: {0}", customer.toLog());
@@ -47,6 +49,7 @@ public class CustomerManagerJPA implements CustomerManager {
         em.persist(customer);
         log.log(Level.WARNING, "Customer added: {0}", customer.toLog());
         customerEventSrc.fire(customer);
+        
     }
 
     @Override

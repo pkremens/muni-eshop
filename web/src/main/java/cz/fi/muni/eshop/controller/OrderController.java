@@ -9,6 +9,7 @@ import cz.fi.muni.eshop.model.OrderLineEntity;
 import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
+import cz.fi.muni.eshop.util.ControlMessage;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
 import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 import java.io.Serializable;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
 import javax.enterprise.inject.Produces;
@@ -47,6 +49,8 @@ public class OrderController implements Serializable {
     private static List<OrderEntity> closedOrders;
     private boolean detail = false; // Show order detail
     private OrderEntity zoomOrder = null;
+    @Inject
+    private Event<ControlMessage> controlMessageEventSrc;
 
     @PostConstruct
     public void retrieveAllOrders() {
@@ -125,6 +129,9 @@ public class OrderController implements Serializable {
                 }
             }
             log.warning("Closable = " + closable);
+            if (!closable) {
+                controlMessageEventSrc.fire(ControlMessage.FILL_THE_STORE); // TODO just a test, I gues it will be thrown hundread times :)
+            }
             return closable;
         }
     }

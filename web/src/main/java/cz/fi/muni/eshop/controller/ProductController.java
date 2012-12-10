@@ -6,6 +6,7 @@ package cz.fi.muni.eshop.controller;
 
 import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.service.ProductManager;
+import cz.fi.muni.eshop.util.ControlMessage;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
 import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
 import javax.enterprise.inject.Produces;
@@ -168,6 +170,9 @@ public class ProductController implements Serializable {
     // }
     // }
     public void setStore() {
+
+
+        
         productManager.fillTheStore(productList);
 
     }

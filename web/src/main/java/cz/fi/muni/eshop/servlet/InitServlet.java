@@ -4,12 +4,12 @@ import cz.fi.muni.eshop.model.CustomerEntity;
 import cz.fi.muni.eshop.model.OrderEntity;
 import cz.fi.muni.eshop.model.OrderLineEntity;
 import cz.fi.muni.eshop.model.ProductEntity;
-import cz.fi.muni.eshop.model.Role;
 import cz.fi.muni.eshop.security.Authenticator;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
-import cz.fi.muni.eshop.util.InvalidEntryException;
+import cz.fi.muni.eshop.util.Role;
+import cz.fi.muni.eshop.util.exceptions.InvalidEntryException;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
 import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 import java.io.IOException;
@@ -112,6 +112,7 @@ public class InitServlet extends HttpServlet {
         generateCustomers();
         generateOrders();
         generated = true;
+
     }
 
     private void generateProducts() {
@@ -175,16 +176,13 @@ public class InitServlet extends HttpServlet {
         for (ProductEntity productEntity : products) {
             log.warning(productEntity.toString());
         }
-        
         OrderLineEntity orderline;
         OrderEntity order;
         for (int i = 0; i < ORDERS; i++) {
             order = new OrderEntity();
             order.setCustomer(customer.get(random.nextInt(CUSTOMERS)));
             for (int j = 0; j < LINES; j++) {
-                
-                orderline = new OrderLineEntity(products.get(random.nextInt(PRODUCTS)), (long) random.nextInt(QUANTITY + 1));
-                
+                orderline = new OrderLineEntity(products.get(random.nextInt(PRODUCTS)), (long) random.nextInt(QUANTITY - 1) + 1); // don't want zeros!
                 order.addOrderLine(orderline);
             }
             orderManager.addOrder(order);

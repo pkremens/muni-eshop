@@ -4,6 +4,7 @@
  */
 package cz.fi.muni.eshop.model;
 
+import cz.fi.muni.eshop.util.Role;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
