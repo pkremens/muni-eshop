@@ -15,6 +15,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.omg.CORBA.OMGVMCID;
+
 /**
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
@@ -113,6 +115,14 @@ public class ProductEntity implements Serializable, Comparable<ProductEntity> {
 
 	public void setOnStore(Long onStore) {
 		this.onStore = onStore;
+	}
+	
+	public void removeFromStore(Long toRemove) {
+		if (toRemove > onStore) {
+			throw new IllegalArgumentException("Cannot have negative number in store");
+		} else {
+			onStore -= toRemove;
+		}
 	}
 
 

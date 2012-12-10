@@ -16,6 +16,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.event.Observes;
+import javax.enterprise.event.Reception;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
@@ -59,6 +61,12 @@ public class ProductController implements Serializable {
         emptyProductsList = productList.isEmpty(); // isEmpty is calling to often to access whole list all the time
         initNewProduct();
     }
+    
+	public void onProductListChanged(
+			@Observes(notifyObserver = Reception.IF_EXISTS) final ProductEntity product) {
+		log.warning("Catching event: " + product);
+		retrieveAllProducts();
+	}
 
     public boolean isEmptyProductsList() {
         //log.log(Level.INFO, "Is list of products empty?: {0}", emptyProductsList);
@@ -155,13 +163,12 @@ public class ProductController implements Serializable {
 //    }
     
     public void setStore() {
-    	for (ProductEntity product : productList) {
-			if (product.getOnStore() < 100L) {
-				product.setOnStore(1000L);
-				productManager.update(product);
-			}
-		}
+    	productManager.fillTheStore(productList);
+    	
+    	
     }
+    
+    
     
 
     public void initNewProduct() {

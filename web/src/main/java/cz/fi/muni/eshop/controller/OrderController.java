@@ -9,6 +9,7 @@ import cz.fi.muni.eshop.model.OrderEntity;
 import cz.fi.muni.eshop.model.OrderLineEntity;
 import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.service.OrderManager;
+import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.service.basket.BasketManager;
 import cz.fi.muni.eshop.util.qualifier.JPA;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
@@ -41,6 +42,11 @@ public class OrderController implements Serializable {
 	@Inject
 	@TypeResolved
 	private OrderManager orderManager;
+	
+	@Inject
+	@TypeResolved
+	private ProductManager productManager;
+	
 	@Inject
 	private Identity identity;
 
@@ -138,8 +144,9 @@ public class OrderController implements Serializable {
 	}
 
 	public void closeOrder() {		
-		log.info("close order");
+		log.info("close order");		
 		orderManager.closeOrder(zoomOrder);
+		productManager.updateOnStore(zoomOrder);
 		hideDetail();
 	}
 }

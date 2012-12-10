@@ -57,6 +57,7 @@ public class OrderManagerJPA implements OrderManager {
 		log.warning("closing order: " + order.toString());
 			order.setOpenOrder(false);
 		log.warning("Fire event: " + order.toString());
+		
 		em.merge(order);
 		orderEventSrc.fire(order);
 	}

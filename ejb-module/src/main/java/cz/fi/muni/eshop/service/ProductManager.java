@@ -4,6 +4,7 @@
  */
 package cz.fi.muni.eshop.service;
 
+import cz.fi.muni.eshop.model.OrderEntity;
 import cz.fi.muni.eshop.model.ProductEntity;
 import java.util.List;
 
@@ -20,4 +21,8 @@ public interface ProductManager {
     ProductEntity findProductById(long id);
 
     List<ProductEntity> getProducts();
+
+	void updateOnStore(OrderEntity zoomOrder);
+	
+	 void fillTheStore(List<ProductEntity> products);
 }
