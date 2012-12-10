@@ -7,6 +7,7 @@ package cz.fi.muni.eshop.controller;
 import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.model.OrderEntity;
 import cz.fi.muni.eshop.model.OrderLineEntity;
+import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.basket.BasketManager;
 import cz.fi.muni.eshop.util.qualifier.JPA;
@@ -61,6 +62,11 @@ public class OrderController implements Serializable {
     
     public void onOrderListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final OrderEntity order) {
     	log.warning("Catching event: " + order);
+    	retrieveAllOrders();
+     }
+    
+    public void onProductListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final ProductEntity product) {
+    	log.warning("Catching event: " + product);
     	retrieveAllOrders();
      }
 

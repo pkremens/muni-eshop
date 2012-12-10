@@ -162,6 +162,7 @@ public class ProductController implements Serializable {
 			}
 		}
     }
+    
 
     public void initNewProduct() {
         log.info("Init new product");

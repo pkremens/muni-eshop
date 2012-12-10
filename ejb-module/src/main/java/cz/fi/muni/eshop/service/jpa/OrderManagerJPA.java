@@ -45,10 +45,11 @@ public class OrderManagerJPA implements OrderManager {
 	public void addOrder(OrderEntity order) {
 		log.log(Level.INFO, "Adding new order: {0}", order);
 		order.setCreationDate(Calendar.getInstance().getTime());
-		orderEventSrc.fire(order);
-		log.warning("Fire event: " + order.toString());
+
 		em.persist(order);
 		log.log(Level.INFO, "Order added: {0}", order);
+		orderEventSrc.fire(order);
+		log.warning("Fire event: " + order.toString());
 	}
 
 	@Override
@@ -57,11 +58,12 @@ public class OrderManagerJPA implements OrderManager {
 		OrderEntity order = getOrderById(id);
 		if (order.isOpenOrder()) {
 			order.setOpenOrder(false);
-			em.merge(order);
 		} else {
-			order.setOpenOrder(true);
-			em.merge(order);
+			order.setOpenOrder(true);			
 		}
+		orderEventSrc.fire(order);
+		log.warning("Fire event: " + order.toString());
+		em.merge(order);
 	}
 
 	@Override

@@ -78,6 +78,12 @@
                     </f:facet>
 					<h:outputText value="#{_line.product.productName}" />
 				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="ON STORE" />
+					</f:facet>
+					<h:outputText value="#{_line.product.onStore}" />
+				</h:column>
 
 
 			</h:dataTable>
