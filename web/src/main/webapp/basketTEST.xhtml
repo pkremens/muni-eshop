@@ -15,7 +15,9 @@
 		</form>
 		<form id="basketForm">
 			<h:dataTable id="basketTable" value="#{basketContent}" var="_product"
-				rendered="#{!isBasketEmpty}" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row">
+				rendered="#{!isBasketEmpty}" styleClass="order-table"
+				headerClass="order-table-header"
+				rowClasses="order-table-odd-row,order-table-even-row">
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="NAME" />
@@ -28,25 +30,46 @@
 					</f:facet>
 					<h:outputText value="#{_product.basePrice}" />
 				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="REMOVE" />
+					</f:facet>
+					<h:commandButton id="removeFromBasketButton"
+						action="#{basketController.removeFromBasket(_product)}"
+						value="Remove">
+						<f:ajax render="@all" execute="@all" />
+					</h:commandButton>
 
+				</h:column>
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="ACTION" />
 					</f:facet>
 					<h:form id="basketActionForm">
 
-						<h:commandButton id="removeFromBasketButton"
-							action="#{basketController.removeFromBasket(_product)}"
-							value="Remove">	
-						<h:commandButton id="removeFive" value="-5" action="#{basketController.removeMore(_product,5)}" />
-						<h:commandButton id="removeOne" value="-1" action="#{basketController.removeMore(_product,1)}" />
-						<h:commandButton id="addOne" value="+1" action="#{basketController.addMore(_product,1)}" />
-						<h:commandButton id="addFive" value="+5" action="#{basketController.addMore(_product,5)}" />				
+
+						<h:commandButton id="removeFive" value="-5"
+							action="#{basketController.removeMore(_product,5)}">
+							<f:ajax
+								render=":basketTable:basketProductQuantity :basketTable:basketProductPrice :totalPriceOutput" />
 						</h:commandButton>
-												<h:commandButton id="addProductToBasket"
-							action="#{basketController.addToBasket(_product)}" value="add">
-							
+						<h:commandButton id="removeOne" value="-1"
+							action="#{basketController.removeMore(_product,1)}">
+							<f:ajax
+								render=":basketTable:basketProductQuantity :basketTable:basketProductPrice :totalPriceOutput" />
 						</h:commandButton>
+						<h:commandButton id="addOne" value="+1"
+							action="#{basketController.addMore(_product,1)}">
+							<f:ajax
+								render=":basketTable:basketProductQuantity :basketTable:basketProductPrice :totalPriceOutput" />
+						</h:commandButton>
+						<h:commandButton id="addFive" value="+5"
+							action="#{basketController.addMore(_product,5)}">
+							<f:ajax
+								render=":basketTable:basketProductQuantity :basketTable:basketProductPrice :totalPriceOutput" />
+						</h:commandButton>
+
+
 					</h:form>
 				</h:column>
 
@@ -54,16 +77,16 @@
 					<f:facet name="header">
 						<h:outputText value="IN BASKET" />
 					</f:facet>
-					
-						<h:outputText id="basketPrice"
-							value="#{basketController.getQuantityOfProduct(_product)}" />
-					
+
+					<h:outputText id="basketProductQuantity"
+						value="#{basketController.getQuantityOfProduct(_product)}" />
+
 				</h:column>
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="PRODUCTS PRICE" />
 					</f:facet>
-					<h:outputText
+					<h:outputText id="basketProductPrice"
 						value="#{_product.basePrice * basketController.getQuantityOfProduct(_product) }" />
 				</h:column>
 			</h:dataTable>
@@ -71,11 +94,19 @@
 				TOTAL PRICE:
 				<h:outputLabel id="totalPriceOutput" value="#{basketTotalPrice}" />
 			</p>
-			<h:commandButton action="#{basketController.clearBasket()}"
-				value="CLEAR BASKET DUMMY" disabled="#{isBasketEmpty}" />
-			
-			<h:commandButton action="#{basketController.makeOrder()}"
-				value="FINISH ORDER DUMMY" disabled="#{isBasketEmpty}" />
+			<h:commandButton id="clearBasketButton"
+				action="#{basketController.clearBasket()}" value="CLEAR BASKET"
+				disabled="#{isBasketEmpty}">
+				<f:ajax render="@all" execute="@all" />
+			</h:commandButton>
+
+			<h:commandButton id="finishOrderButton"
+				action="#{basketController.makeOrder()}" value="FINISH ORDER"
+				disabled="#{isBasketEmpty}">
+				<f:ajax render="@all" execute="@all" />
+			</h:commandButton>
 		</form>
+
+
 	</ui:define>
 </ui:composition>
