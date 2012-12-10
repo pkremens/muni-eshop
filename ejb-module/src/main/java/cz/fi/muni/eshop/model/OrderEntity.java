@@ -57,7 +57,7 @@ public class OrderEntity implements Serializable {
         super();
     }
 
-    public OrderEntity(CustomerEntity customer, List<OrderLineEntity> orderLines, Long totalPrice) {
+    public OrderEntity(CustomerEntity customer, List<OrderLineEntity> orderLines) {
         this.customer = customer;
         this.openOrder = true;
         this.orderLines = orderLines;        

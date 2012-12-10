@@ -17,9 +17,9 @@ import javax.validation.ValidatorFactory;
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 public class EntityValidator<T> {
-    
+
     /**
-     * 
+     *
      * @param entity instance of some entity
      * @return true if and only if the entity is valid
      * @throws InvalidEntryException if there are some constraint violations
@@ -36,11 +36,33 @@ public class EntityValidator<T> {
             for (ConstraintViolation<T> constraintViolation : constraintViolations) {
                 violations.add(constraintViolation.toString());
             }
-            throw new InvalidEntryException(entity.getClass(),violations);
+            throw new InvalidEntryException(entity.getClass(), violations);
         }
     }
-    // TODO for JPA, because is null before inserting to DB
+
+    /**
+     * This version ignores all violations containing id property.
+     * @param entity instance of some entity
+     * @return true if and only if the entity is valid
+     * @throws InvalidEntryException if there are some constraint violations
+     */
     public boolean validateIgnoreId(T entity) throws InvalidEntryException {
-        throw new UnsupportedOperationException("Not yet implemented!");
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<T>> constraintViolations =
+                validator.validate(entity);
+        List<String> violations = new ArrayList<String>();
+        for (ConstraintViolation<T> constraintViolation : constraintViolations) {
+            // Ignore Id
+            if (!constraintViolation.getPropertyPath().toString().equals("id")) {
+                violations.add(constraintViolation.toString());
+            }
+        }        
+        if (violations.isEmpty()) {
+            return true;
+        } else {
+            throw new InvalidEntryException(entity.getClass(),violations);
+        }
+        
     }
 }

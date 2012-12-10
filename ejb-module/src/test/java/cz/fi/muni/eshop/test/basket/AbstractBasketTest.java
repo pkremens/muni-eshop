@@ -7,16 +7,13 @@ package cz.fi.muni.eshop.test.basket;
 import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.service.basket.BasketManager;
 import junit.framework.Assert;
-import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
-//@RunWith(Arquillian.class)
 public abstract class AbstractBasketTest {
 
     BasketManager<ProductEntity> basket;
@@ -28,7 +25,7 @@ public abstract class AbstractBasketTest {
 
     @Test
     public void addToBasketTest() {
-        ProductEntity product = new ProductEntity("last" , 8L);
+        ProductEntity product = new ProductEntity("last", 8L);
         product.setId(15L);
         basket.addToBasket(product);
         for (long i = 5; i < 10; i++) {
@@ -36,7 +33,7 @@ public abstract class AbstractBasketTest {
             product.setId(i);
             basket.addToBasket(product);
         }
-        product = new ProductEntity("first" , 78L);
+        product = new ProductEntity("first", 78L);
         product.setId(1L);
         basket.addToBasket(product);
         for (ProductEntity productX : basket.getAllProductsInBasket()) {
@@ -44,9 +41,9 @@ public abstract class AbstractBasketTest {
         }
 
         Assert.assertFalse(basket.isEmpty());
-    
+
         basket.clearBasket();
-        Assert.assertEquals((Long)0L, basket.getTotalPrice());
+        Assert.assertEquals((Long) 0L, basket.getTotalPrice());
         Assert.assertTrue(basket.isEmpty());
     }
 
@@ -77,10 +74,10 @@ public abstract class AbstractBasketTest {
         basket.addToBasket(product);
         basket.productQuantityIncrement(product, 8L);
         Assert.assertEquals((Long) 9L, basket.getQuantityOfProduct(product));
-        Assert.assertEquals((Long)(77L*9L), basket.getTotalPrice());
+        Assert.assertEquals((Long) (77L * 9L), basket.getTotalPrice());
         basket.productQuantityDecrement(product, 5L);
         Assert.assertEquals((Long) 4L, basket.getQuantityOfProduct(product));
-        Assert.assertEquals((Long)(77L*4L), basket.getTotalPrice());
+        Assert.assertEquals((Long) (77L * 4L), basket.getTotalPrice());
         basket.productQuantityDecrement(product, 4L);
         Assert.assertTrue(basket.isEmpty());
     }
