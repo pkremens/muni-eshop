@@ -4,6 +4,7 @@
  */
 package cz.fi.muni.eshop.controller;
 
+import cz.fi.muni.eshop.model.Member;
 import cz.fi.muni.eshop.model.OrderEntity;
 import cz.fi.muni.eshop.model.OrderLineEntity;
 import cz.fi.muni.eshop.service.OrderManager;
@@ -18,6 +19,8 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.event.Observes;
+import javax.enterprise.event.Reception;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -44,6 +47,7 @@ public class OrderController implements Serializable {
     private static List<OrderEntity> activeOrders;
     private static List<OrderEntity> closedOrders;
     private boolean detail = false; // Show order detail
+    private OrderEntity zoomOrder = null;
 
 
 
@@ -54,6 +58,10 @@ public class OrderController implements Serializable {
         activeOrders = orderManager.getActiveOrders();
         closedOrders = orderManager.getClosedOrders();
       }
+    
+    public void onOrderListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final OrderEntity order) {
+    	retrieveAllOrders();
+     }
 
     @Produces
     @Named("allActiveOrders")
@@ -69,11 +77,23 @@ public class OrderController implements Serializable {
     
     public void hideDetail() {
     	detail = false;
+    	zoomOrder = null;
     }
 
-    public List<OrderLineEntity> getOrderDetails(OrderEntity order) { 
+    @Produces
+    @Named("detailedLines")
+    public List<OrderLineEntity> getDetails() { 
+    	return zoomOrder.getOrderLines();
+    }
+    
+    public void getOrderDetails(OrderEntity order) {
     	detail = true;
-    	return order.getOrderLines();
+    	zoomOrder = order;
+    }
+    
+    
+    public boolean showDetail() {
+    	return detail;
     }
      public boolean closeOrder(OrderEntity order) {
     	 log.info("close order");

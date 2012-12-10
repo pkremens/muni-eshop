@@ -61,11 +61,43 @@
 					<f:facet name="header">
 						&#160;&#160;&#160;<h:outputText value="ACTION" />&#160;&#160;&#160;
                     </f:facet>
-					&#160;&#160;&#160;<h:commandButton value="Order Detail dummy" />
+					<form id="testforrrrm">
+						&#160;&#160;&#160;
+						<h:commandButton value="details"
+							action="#{orderController.getOrderDetails(_order)}" />
+					</form>
 				</h:column>
 			</h:dataTable>
 		</h:form>
 		<br />
+
+
+
+		<h:form id="orderDetailsForm">
+			<h:outputText value="Select from active orders"
+				rendered="#{!orderController.showDetail()}" />
+			<h:dataTable value="#{detailedLines}" var="_line"
+				rendered="#{orderController.showDetail()}">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="NAME" />&#160;&#160;&#160;
+                    </f:facet>
+					<h:outputText value="#{_line.product.productName}" />
+				</h:column>
+
+
+			</h:dataTable>
+			<br />
+			<h:commandButton action="#{orderController.hideDetail()}"
+				value="Hide Detail" disabled="#{!orderController.showDetail()}" />
+
+
+		</h:form>
+		
+		
+		
+		
+		
 		Closed:
 		<h:form id="resolvedOrdersForm">
 			<h:panelGroup rendered="#{empty closedOrders}">

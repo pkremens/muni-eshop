@@ -20,6 +20,7 @@ import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.util.qualifier.JPA;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 
 @Path("/products")
 @RequestScoped
@@ -29,7 +30,7 @@ public class ProductResourceRESTService {
 	private Logger log;
 	
 	@Inject
-	@JPA
+	@TypeResolved
 	private ProductManager productManager;
 
     @GET

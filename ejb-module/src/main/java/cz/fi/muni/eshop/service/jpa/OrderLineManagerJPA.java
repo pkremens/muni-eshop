@@ -4,17 +4,18 @@
  */
 package cz.fi.muni.eshop.service.jpa;
 
+import java.util.List;
+import java.util.logging.Logger;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
 import cz.fi.muni.eshop.model.OrderLineEntity;
 import cz.fi.muni.eshop.service.OrderLineManager;
 import cz.fi.muni.eshop.util.qualifier.JPA;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopDatabase;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
-
-import java.util.List;
-import java.util.logging.Logger;
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
 /**
  *
@@ -32,9 +33,12 @@ public class OrderLineManagerJPA implements OrderLineManager {
     @MuniEshopLogger
     private Logger log;
 
+
+    
     @Override
     public void addOrderLine(OrderLineEntity orderLine) {
         log.info("Add order line");
+        
         em.persist(orderLine);
         log.info("Order line added");
     }

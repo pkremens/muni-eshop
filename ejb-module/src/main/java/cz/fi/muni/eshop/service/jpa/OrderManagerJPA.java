@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -36,11 +37,15 @@ public class OrderManagerJPA implements OrderManager {
 	@Inject
 	@MuniEshopDatabase
 	private EntityManager em;
+	
+    @Inject
+    private Event<OrderEntity> orderEventSrc;
 
 	@Override
 	public void addOrder(OrderEntity order) {
 		log.log(Level.INFO, "Adding new order: {0}", order);
 		order.setCreationDate(Calendar.getInstance().getTime());
+		orderEventSrc.fire(order);
 		em.persist(order);
 		log.log(Level.INFO, "Order added: {0}", order);
 	}
