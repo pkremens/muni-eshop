@@ -12,16 +12,16 @@
 				<em>No products!</em>
 			</h:panelGroup>
 			<h:dataTable value="#{productList}" var="_product" id="productList"
-				rendered="#{not productController.emptyProductsList}"  cellspacing="5" >
+				rendered="#{not productController.emptyProductsList}"  styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" >
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="ID" />&#160;&#160;
+						<h:outputText value="ID" />
 					</f:facet>
 					<h:outputText value="#{_product.id}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="NAME" />&#160;&#160;
+						<h:outputText value="NAME" />
 					</f:facet>
 
 					<h:inputText id="productNameInput" value="#{_product.productName}"
@@ -29,19 +29,19 @@
 				</h:column>
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="PRICE" />&#160;&#160;
+						<h:outputText value="PRICE" />
 					</f:facet>
 					<h:outputText value="#{_product.basePrice}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="ON STORE" />&#160;&#160;
+						<h:outputText value="ON STORE" />
 					</f:facet>
 					<h:outputText id="productsOnStore" value="#{_product.onStore}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="ACTION" />&#160;&#160;
+						<h:outputText value="ACTION" />
 					</f:facet>
 					<h:commandButton id="editButton" value="Edit"
 						action="#{productController.editAction(_product)}"
@@ -58,7 +58,7 @@
 				</h:column>
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="REST URL" />&#160;&#160;
+						<h:outputText value="REST URL" />
 					</f:facet>
 					<a href="#{request.contextPath}/rest/products/#{_product.id}">/rest/products/#{_product.id}</a>
 				</h:column>

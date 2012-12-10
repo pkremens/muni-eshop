@@ -11,28 +11,28 @@
                 <em>No users!</em>
             </h:panelGroup>
             <h:dataTable value="#{customerList}" var="_customer"
-                         rendered="#{not customerController.emptyCustomerList}" cellspacing="5" >
+                         rendered="#{not customerController.emptyCustomerList}"  styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" >
                 <h:column>
                     <f:facet name="header">
-                        <h:outputText value="EMAIL" />&#160;&#160;
+                        <h:outputText value="EMAIL" />
                     </f:facet>
                     <h:outputText value="#{_customer.email}" />
                 </h:column>
                 <h:column>
                     <f:facet name="header">
-                        <h:outputText value="NAME" />&#160;&#160;
+                        <h:outputText value="NAME" />
                     </f:facet>
                     <h:outputText value="#{_customer.name}" />
                 </h:column>
                 <h:column>
                     <f:facet name="header">
-                        <h:outputText value="PASSWORD" />&#160;&#160;
+                        <h:outputText value="PASSWORD" />
                     </f:facet>
                     <h:outputText value="#{_customer.password}" />
                 </h:column>
                 <h:column>
                     <f:facet name="header">
-                        <h:outputText value="ROLE" />&#160;&#160;
+                        <h:outputText value="ROLE" />
                     </f:facet>
                     <h:selectOneMenu value="#{_customer.role}" id="role"
                                      disabled="#{!_customer.editable}">
@@ -45,7 +45,7 @@
 
                 <h:column>
                     <f:facet name="header">
-                        <h:outputText value="ACTION" />&#160;&#160;
+                        <h:outputText value="ACTION" />
                     </f:facet>
                     <h:commandButton id="editB" value="Edit"
                     				 action="#{customerController.editAction(_customer)}"
@@ -61,7 +61,7 @@
                 </h:column>
                 <h:column>
                     <f:facet name="header">
-                    	<h:outputText value="REST URL" />&#160;&#160;
+                    	<h:outputText value="REST URL" />
                     </f:facet>
                     <a href="#{request.contextPath}/rest/customers/#{_customer.email}">/rest/customers/#{_customer.email}</a>
                 </h:column>

@@ -62,7 +62,7 @@ public class BasketController implements Serializable {
     @Produces
     @Named("basketContent")
     public Collection<ProductEntity> getBasketContent() {
-    	log.warning("getBasketContent");
+    	//log.warning("getBasketContent");
     	return new ArrayList<ProductEntity>(basket.getAllProductsInBasket()); // TODO create local List in BasketBean????
     }
     
@@ -120,7 +120,7 @@ public class BasketController implements Serializable {
     }
     
     public Long getQuantityOfProduct(ProductEntity product) {
-    	log.warning("getQuantityOfProduct");
+    	//log.warning("getQuantityOfProduct");
     	return basket.getQuantityOfProduct(product); 
     }
     

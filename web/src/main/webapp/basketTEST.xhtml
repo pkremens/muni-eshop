@@ -15,49 +15,49 @@
 		</form>
 		<form id="basketForm">
 			<h:dataTable id="basketTable" value="#{basketContent}" var="_product"
-				rendered="#{!isBasketEmpty}" cellspacing="5">
+				rendered="#{!isBasketEmpty}" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row">
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="NAME" />&#160;&#160;
+						<h:outputText value="NAME" />
 					</f:facet>
 					<h:outputText value="#{_product.productName}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="PRICE" />&#160;&#160;
+						<h:outputText value="PRICE" />
 					</f:facet>
 					<h:outputText value="#{_product.basePrice}" />
 				</h:column>
 
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="ACTION" />&#160;&#160;
+						<h:outputText value="ACTION" />
 					</f:facet>
-					<h:form id="basketOperations">
+					<h:form id="basketActionForm">
 						<h:commandButton id="addProductToBasket"
 							action="#{basketController.addToBasket(_product)}" value="add">
-							<f:ajax render="@all" execute="@all" />
+							
 						</h:commandButton>
 						<h:commandButton id="removeFromBasketButton"
 							action="#{basketController.removeFromBasket(_product)}"
 							value="Remove" disabled="#{basketController.basketEmpty}">
-							<f:ajax render="@all" execute="@all" />
+							
 						</h:commandButton>
 					</h:form>
 				</h:column>
 
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="IN BASKET" />&#160;&#160;
+						<h:outputText value="IN BASKET" />
 					</f:facet>
-					<h:form id="xxbasketOperations">
+					
 						<h:outputText id="basketPrice"
 							value="#{basketController.getQuantityOfProduct(_product)}" />
-					</h:form>
+					
 				</h:column>
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="PRODUCTS PRICE" />&#160;&#160;
+						<h:outputText value="PRODUCTS PRICE" />
 					</f:facet>
 					<h:outputText
 						value="#{_product.basePrice * basketController.getQuantityOfProduct(_product) }" />
@@ -69,7 +69,7 @@
 			</p>
 			<h:commandButton action="#{basketController.clearBasket()}"
 				value="CLEAR BASKET DUMMY" disabled="#{isBasketEmpty}" />
-			&#160;&#160;
+			
 			<h:commandButton action="#{basketController.makeOrder()}"
 				value="FINISH ORDER DUMMY" disabled="#{isBasketEmpty}" />
 		</form>
