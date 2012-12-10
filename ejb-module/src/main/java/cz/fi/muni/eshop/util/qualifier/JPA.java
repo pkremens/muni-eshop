@@ -2,9 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cz.fi.muni.eshop.util.qualifier;
-
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

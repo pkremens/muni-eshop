@@ -4,35 +4,28 @@
  */
 package cz.fi.muni.eshop.controller;
 
+import cz.fi.muni.eshop.model.CustomerEntity;
+import cz.fi.muni.eshop.model.Role;
+import cz.fi.muni.eshop.service.CustomerManager;
+import cz.fi.muni.eshop.util.InvalidEntryException;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ViewScoped;
-
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import org.jboss.seam.security.Credentials;
 import org.jboss.seam.security.Identity;
 import org.picketlink.idm.impl.api.PasswordCredential;
-
-import cz.fi.muni.eshop.model.CustomerEntity;
-import cz.fi.muni.eshop.model.ProductEntity;
-import cz.fi.muni.eshop.model.Role;
-import cz.fi.muni.eshop.service.CustomerManager;
-import cz.fi.muni.eshop.util.InvalidEntryException;
-import cz.fi.muni.eshop.util.qualifier.JPA;
-import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
-import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 
 /**
  *
@@ -70,13 +63,13 @@ public class CustomerController implements Serializable {
         emptyCustomersList = customerList.isEmpty();
         initNewCustomer();
     }
-    
-	public void onProductListChanged(
-			@Observes(notifyObserver = Reception.IF_EXISTS) final CustomerEntity customer) {
-		log.warning("Catching event: " + customer);
-		customerList = customerManager.getCustomers();
-		emptyCustomersList = customerList.isEmpty();
-	}
+
+    public void onProductListChanged(
+            @Observes(notifyObserver = Reception.IF_EXISTS) final CustomerEntity customer) {
+        log.warning("Catching event: " + customer);
+        customerList = customerManager.getCustomers();
+        emptyCustomersList = customerList.isEmpty();
+    }
 
     public void saveAction(CustomerEntity customer) {
         log.info("Save action");
@@ -141,10 +134,10 @@ public class CustomerController implements Serializable {
                 emptyCustomersList = false;
                 // log in new customer after registration, but only if not already logged in
                 if (!identity.isLoggedIn()) {
-                credentials.setUsername(newCustomer.getEmail());
-                PasswordCredential pc = new PasswordCredential(newCustomer.getPassword());
-                credentials.setCredential(pc);
-                identity.login();
+                    credentials.setUsername(newCustomer.getEmail());
+                    PasswordCredential pc = new PasswordCredential(newCustomer.getPassword());
+                    credentials.setCredential(pc);
+                    identity.login();
                 }
                 initNewCustomer();
             } else {

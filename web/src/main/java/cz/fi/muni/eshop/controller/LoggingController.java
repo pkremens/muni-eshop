@@ -2,11 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cz.fi.muni.eshop.controller;
 
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
-
 import java.util.logging.Logger;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -17,16 +15,15 @@ import javax.inject.Inject;
  */
 @Model
 public class LoggingController { // TODO Remove, just dummy
+
     @Inject
     @MuniEshopLogger
     Logger log;
-    
-  
+
     public void makeLog() {
         System.out.println("Making log");
         log.info("Fine log");
         log.info("Info log");
         log.warning("Warning log");
     }
-    
 }

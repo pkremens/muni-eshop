@@ -4,7 +4,6 @@
  */
 package cz.fi.muni.eshop.test.security;
 
-
 import cz.fi.muni.eshop.model.CustomerEntity;
 import cz.fi.muni.eshop.model.Role;
 import java.util.Set;
@@ -13,7 +12,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -24,14 +22,13 @@ public class AuthenticationValidatorTest {
 
     private static Validator validator;
 
-    
     @Test
     public void invalidEmailTest() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
         CustomerEntity customer = new CustomerEntity("", "name", "password", Role.BASIC);
         Set<ConstraintViolation<CustomerEntity>> constraintViolations =
-            validator.validate(customer);
+                validator.validate(customer);
         Assert.assertEquals(2, constraintViolations.size());
 //        for (ConstraintViolation<CustomerEntity> constraintViolation : constraintViolations) {
 //            System.out.println(constraintViolation);

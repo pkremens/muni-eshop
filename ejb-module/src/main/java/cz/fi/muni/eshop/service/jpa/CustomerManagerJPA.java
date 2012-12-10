@@ -13,7 +13,6 @@ import cz.fi.muni.eshop.util.NoEntryFoundExeption;
 import cz.fi.muni.eshop.util.qualifier.JPA;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopDatabase;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
-
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -90,7 +89,7 @@ public class CustomerManagerJPA implements CustomerManager {
 
     @Override
     public CustomerEntity isRegistered(String email) throws InvalidEntryException {
-    	log.warning("Is customer with email: " + email + " registered?");
+        log.warning("Is customer with email: " + email + " registered?");
         EntityValidator<CustomerEntity> validator = new EntityValidator<CustomerEntity>();
         dummyCustomer.setEmail(email);
         boolean isValid = false;

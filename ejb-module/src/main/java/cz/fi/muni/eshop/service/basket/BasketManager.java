@@ -4,25 +4,25 @@
  */
 package cz.fi.muni.eshop.service.basket;
 
-import cz.fi.muni.eshop.model.OrderLineEntity;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import javax.annotation.PostConstruct;
 
 /**
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 public interface BasketManager<T> {
+
     void addToBasket(T product);
-    
+
     void addToBasket(T product, Long quantity);
-    
+
     void productQuantityIncrement(T product, Long toAdd);
-    
+
     /**
-     * This method can be used ONLY for decreasing quantity of product in basket. Can not be used to remove it as quantity is set always to 1 when trying this. 
+     * This method can be used ONLY for decreasing quantity of product in
+     * basket. Can not be used to remove it as quantity is set always to 1 when
+     * trying this.
+     *
      * @param product to be updated
      * @param toRemove to be removed
      */
@@ -35,17 +35,17 @@ public interface BasketManager<T> {
     Collection getBasket(); // TODO is there better superinterface for List and Map?
 
     boolean isEmpty();
-    
+
     void initNewBasket();
-    
+
     Long getTotalPrice();
-    
+
     void clearBasket();
-    
-    Collection<T> getAllProductsInBasket(); 
-    
+
+    Collection<T> getAllProductsInBasket();
+
     Long getQuantityOfProduct(T product);
-    
+
     boolean isInBasket(T product);
 //List<ProductEntity> getAllMessages() throws Exception;
 }

@@ -2,18 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cz.fi.muni.eshop.util;
 
 import java.util.List;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
 
 /**
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 public class InvalidEntryException extends Exception {
+
     private Class entityClass;
     private List<String> violations;
 
@@ -21,12 +19,9 @@ public class InvalidEntryException extends Exception {
         this.entityClass = entityClass;
         this.violations = violations;
     }
-    
+
     @Override
     public String getMessage() {
         return "Found constraint violations for entity type: " + entityClass.getName() + "\n" + violations.toString();
     }
-    
-    
-
 }

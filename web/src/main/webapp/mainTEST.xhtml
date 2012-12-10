@@ -1,65 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	template="/WEB-INF/templates/default.xhtml">
-	<ui:define name="content">
-		<h:form id="catalogHeader">
-			<h:panelGroup rendered="#{not isBasketEmpty}">
-				<a href="#{request.contextPath}/basketTEST.jsf">GO TO BASKET FIX label</a>
-				<h:commandButton action="#{basketController.clearBasket()}"
-					value="Clear basket">
-					<f:ajax execute="@form" render="@form :catalogForm:productList:basketOperations " />
-					</h:commandButton>
-				basket total price: <h:outputText value="#{basketTotalPrice}" />
-				<br />
-			</h:panelGroup>
-			<h:outputText value="basket is empty" rendered="#{isBasketEmpty}" />
-		</h:form>
-		<h1>Catalog</h1>
-		<h:form id="catalogForm">
-			<h:panelGroup rendered="#{productController.emptyProductsList}">
-				<em>Empty catalog!</em>
-			</h:panelGroup>
-			<h:dataTable value="#{productList}" var="_product" id="productList"
-				rendered="#{not productController.emptyProductsList}" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row">
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="NAME" />
-					</f:facet>
-					<h:outputText value="#{_product.productName}" />				
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="PRICE" />
-					</f:facet>
-					<h:outputText value="#{_product.basePrice}" />
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="ON STORE" />
-					</f:facet>
-					<h:outputText value="#{_product.onStore}" />
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="ACTION" />
-					</f:facet>
-				<h:form id="basketOperations">
-				<h:commandButton id="addProductToBasket"
-							action="#{basketController.addToBasket(_product)}" value="add">
-							<f:ajax render=":catalogHeader inBasketCount removeFromBasketButton" execute="removeFromBasketButton" />
-						</h:commandButton>
-				<h:commandButton id="removeFromBasketButton" action="#{basketController.removeFromBasket(_product)}" value="Remove" disabled="#{not basketController.isInBasket(_product)}">
-					<f:ajax render=":catalogHeader inBasketCount @this" />
-				</h:commandButton>
-				<h:outputLabel value="" />	
-				<h:outputLabel value="in basket:" />		
-				<h:outputLabel id="inBasketCount" value="#{basketController.getQuantityOfProduct(_product)}" />
-					</h:form>
-				</h:column>
-			</h:dataTable>
-			</h:form>
-	</ui:define>
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+        <h:form id="catalogHeader">
+            <h:panelGroup rendered="#{not isBasketEmpty}">
+                <a href="#{request.contextPath}/basketTEST.jsf">GO TO BASKET FIX label</a>
+                <h:commandButton action="#{basketController.clearBasket()}"
+                                 value="Clear basket">
+                    <f:ajax execute="@form" render="@form :catalogForm:productList:basketOperations " />
+                </h:commandButton>
+                basket total price: <h:outputText value="#{basketTotalPrice}" />
+                <br />
+            </h:panelGroup>
+            <h:outputText value="basket is empty" rendered="#{isBasketEmpty}" />
+        </h:form>
+        <h1>Catalog</h1>
+        <h:form id="catalogForm">
+            <h:panelGroup rendered="#{productController.emptyProductsList}">
+                <em>Empty catalog!</em>
+            </h:panelGroup>
+            <h:dataTable value="#{productList}" var="_product" id="productList"
+                         rendered="#{not productController.emptyProductsList}" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="NAME" />
+                    </f:facet>
+                    <h:outputText value="#{_product.productName}" />				
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="PRICE" />
+                    </f:facet>
+                    <h:outputText value="#{_product.basePrice}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="ON STORE" />
+                    </f:facet>
+                    <h:outputText value="#{_product.onStore}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="ACTION" />
+                    </f:facet>
+                    <h:form id="basketOperations">
+                        <h:commandButton id="addProductToBasket"
+                                         action="#{basketController.addToBasket(_product)}" value="add">
+                            <f:ajax render=":catalogHeader inBasketCount removeFromBasketButton" execute="removeFromBasketButton" />
+                        </h:commandButton>&#160;&#160;
+                        <h:commandButton id="removeFromBasketButton" action="#{basketController.removeFromBasket(_product)}" value="Remove" disabled="#{not basketController.isInBasket(_product)}">
+                            <f:ajax render=":catalogHeader inBasketCount @this" />
+                        </h:commandButton>&#160;&#160;
+                        In basket:
+                        <h:outputLabel id="inBasketCount" value="#{basketController.getQuantityOfProduct(_product)}" />
+                    </h:form>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+    </ui:define>
 </ui:composition>

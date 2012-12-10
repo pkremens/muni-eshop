@@ -1,6 +1,5 @@
 package cz.fi.muni.eshop.model;
 
-
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,7 +10,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -30,14 +28,12 @@ public class OrderLineEntity implements Serializable {
     @Column(name = "ID", nullable = false)
     @NotNull
     private Long id;
-    
     @OneToOne(cascade = {CascadeType.ALL})
     @NotNull
     private ProductEntity product;
     @Column(name = "QUANTITY", nullable = false)
     @NotNull
     private Long quantity;
-
 
     public OrderLineEntity() {
         super();
@@ -63,7 +59,7 @@ public class OrderLineEntity implements Serializable {
 
     public void setProduct(ProductEntity product) {
         this.product = product;
-        
+
     }
 
     public Long getQuantity() {
@@ -72,18 +68,18 @@ public class OrderLineEntity implements Serializable {
 
     public void setQuantity(Long quantity) {
         this.quantity = quantity;
-        
+
     }
-    
+
     public void addQuantity(Long quantity) {
         this.quantity += quantity;
-        
+
     }
 
     public Long getPrice() {
-    	return product.getBasePrice() * quantity;
+        return product.getBasePrice() * quantity;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -118,6 +114,4 @@ public class OrderLineEntity implements Serializable {
     public String toString() {
         return "OrderLineEntity{" + "id=" + id + ", product=" + product + ", quantity=" + quantity + ", price=" + getPrice() + '}';
     }
-
-
 }

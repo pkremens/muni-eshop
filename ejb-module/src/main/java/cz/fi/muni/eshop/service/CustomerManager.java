@@ -6,9 +6,7 @@ package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.CustomerEntity;
 import cz.fi.muni.eshop.util.InvalidEntryException;
-import cz.fi.muni.eshop.util.NoEntryFoundExeption;
 import java.util.List;
-import javax.persistence.NoResultException;
 
 /**
  *
@@ -23,20 +21,23 @@ public interface CustomerManager {
     List<CustomerEntity> getCustomers();
 
     List<CustomerEntity> findCustomersOrderedByMail();
-    
+
     /**
-     * 
+     *
      * @param email
      * @param password
      * @return instance of customer if existing in DB else null
-     * @throws InvalidEntryException InvalidEntryException  if entered invalid email, prevent wasting db connection resources
+     * @throws InvalidEntryException InvalidEntryException if entered invalid
+     * email, prevent wasting db connection resources
      */
     public CustomerEntity verifyCustomer(String email, String password) throws InvalidEntryException;
-/**
- * 
- * @param email
- * @return instance of customer if existing in DB else null
- * @throws InvalidEntryException  if entered invalid email, prevent wasting db connection resources
- */
+
+    /**
+     *
+     * @param email
+     * @return instance of customer if existing in DB else null
+     * @throws InvalidEntryException if entered invalid email, prevent wasting
+     * db connection resources
+     */
     CustomerEntity isRegistered(String email) throws InvalidEntryException;
 }

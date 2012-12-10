@@ -11,7 +11,7 @@
 <h:body>
 	<div id="container">
 		<div id="log">
-			<h1 align="center">
+			<h1 align="right">
 				<h:outputLabel value="You have been logged as"
 					rendered="#{identity.loggedIn}" />
 				<h:outputLabel value="#{identity.user.name}"
@@ -27,8 +27,7 @@
 				
 				
 			<h:panelGrid columns="7" >			
-					<a href="#{request.contextPath}/index.jsf">index</a>
-					<a href="#{request.contextPath}/loggingTEST.jsf">login</a>				
+					<a href="#{request.contextPath}/index.jsf">login</a>							
 					<a href="#{request.contextPath}/productsTEST.jsf">products</a>				
 					<a href="#{request.contextPath}/customerTEST.jsf">customers</a>				
 					<a href="#{request.contextPath}/mainTEST.jsf">catalog</a>				

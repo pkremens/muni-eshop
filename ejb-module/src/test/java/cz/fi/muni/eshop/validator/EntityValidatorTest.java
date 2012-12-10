@@ -27,14 +27,14 @@ public class EntityValidatorTest {
 
     @Test
     public void customerValidationTest() throws InvalidEntryException {
-        CustomerEntity customer = new CustomerEntity("test@test.cz", "test", "test", Role.ADMIN);
+        CustomerEntity customer = new CustomerEntity("admin0@admin.cz", "test", "test", Role.ADMIN);
         validator = new EntityValidator<CustomerEntity>();
         Assert.assertTrue(validator.validate(customer));
         customer.setEmail("aaaa");
-         boolean ret = false;
+        boolean ret = false;
         try {
-           
-        validator.validate(customer);
+
+            validator.validate(customer);
         } catch (InvalidEntryException ex) {
             ret = true;
         }
@@ -46,7 +46,7 @@ public class EntityValidatorTest {
     public void productValidationTest() throws InvalidEntryException {
         ProductEntity product = new ProductEntity("test", 8L, 0L);
         product.setId(1L);
-        
+
         validator = new EntityValidator<ProductEntity>();
         Assert.assertTrue(validator.validate(product));
 
@@ -77,7 +77,7 @@ public class EntityValidatorTest {
         validator = new EntityValidator<OrderLineEntity>();
         Assert.assertTrue(validator.validate(order));
     }
-    
+
     @Test
     public void orderValidatorMissingIdTest() throws InvalidEntryException {
         CustomerEntity customer = new CustomerEntity("test@test.cz", "test", "test", Role.ADMIN);

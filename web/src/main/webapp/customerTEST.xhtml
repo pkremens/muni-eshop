@@ -39,36 +39,35 @@
                         <f:selectItem itemValue="BASIC" itemLabel="User" />
                         <f:selectItem itemValue="SELLER" itemLabel="Seller" />
                         <f:selectItem itemValue="ADMIN" itemLabel="Administrator" />
-                    </h:selectOneMenu>
+                    </h:selectOneMenu>&#160;&#160;
                 </h:column>
-
 
                 <h:column>
                     <f:facet name="header">
                         <h:outputText value="ACTION" />
                     </f:facet>
                     <h:commandButton id="editB" value="Edit"
-                    				 action="#{customerController.editAction(_customer)}"
+                                     action="#{customerController.editAction(_customer)}"
                                      disabled="#{_customer.editable}">
-						<f:ajax execute="role" render="editB saveB role" />
-					</h:commandButton>
+                        <f:ajax execute="role" render="editB saveB role" />
+                    </h:commandButton>&#160;&#160;
                     <h:commandButton id="saveB" value="Save"
                                      action="#{customerController.saveAction(_customer)}"
                                      disabled="#{!_customer.editable}">
                         <f:ajax execute="role" render="editB saveB role" />
-                    </h:commandButton>
+                    </h:commandButton>&#160;&#160;
 
                 </h:column>
                 <h:column>
                     <f:facet name="header">
-                    	<h:outputText value="REST URL" />
+                        <h:outputText value="REST URL" />
                     </f:facet>
                     <a href="#{request.contextPath}/rest/customers/#{_customer.email}">/rest/customers/#{_customer.email}</a>
                 </h:column>
             </h:dataTable>
             <br />
             REST URL for all customers<a href="#{request.contextPath}/rest/customers">/rest/customers</a>
-            
+
         </h:form>
 
         <br />
@@ -106,8 +105,8 @@
             </h:panelGrid>
             <h:commandButton id="registerButton"
                              action="#{customerController.register()}" value="Add User">
-                             <f:ajax execute="@form" render="@form :customersForm" />
-                             </h:commandButton>
+                <f:ajax execute="@form" render="@form :customersForm" />
+            </h:commandButton>
             <br />
             <h:message for="registerButton" />
 

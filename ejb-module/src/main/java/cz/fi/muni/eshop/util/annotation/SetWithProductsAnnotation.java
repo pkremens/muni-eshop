@@ -1,10 +1,8 @@
 package cz.fi.muni.eshop.util.annotation;
 
+import cz.fi.muni.eshop.util.qualifier.SetWithProducts;
 import javax.enterprise.util.AnnotationLiteral;
 
-import cz.fi.muni.eshop.util.qualifier.SetWithProducts;
-
 public class SetWithProductsAnnotation extends AnnotationLiteral<SetWithProducts>
-implements SetWithProducts {
-
+        implements SetWithProducts {
 }

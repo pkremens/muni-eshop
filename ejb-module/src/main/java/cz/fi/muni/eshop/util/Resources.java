@@ -11,7 +11,6 @@ import cz.fi.muni.eshop.util.annotation.SetWithProductsAnnotation;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopDatabase;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
 import cz.fi.muni.eshop.util.qualifier.TypeResolved;
-
 import java.lang.annotation.Annotation;
 import java.util.logging.Logger;
 import javax.enterprise.inject.Any;
@@ -38,8 +37,7 @@ public class Resources {
 //   @Produces
 //   @PersistenceContext
 //   private EntityManager em;
-private static int BASKET_TYPE = 2;
-
+    private static int BASKET_TYPE = 2;
 
     @Produces
     @MuniEshopLogger
@@ -58,45 +56,43 @@ private static int BASKET_TYPE = 2;
         CustomerManager customerManager = customerManagerSources.select(qualifier).get();
         return customerManager;
     }
-    
+
     @Produces
-    @TypeResolved 
+    @TypeResolved
     public ProductManager resolveProductManager(@Any Instance<ProductManager> productManagerSources) {
         Annotation qualifier = new JPAAnnotation();
         ProductManager productManager = productManagerSources.select(qualifier).get();
         return productManager;
     }
-    
+
     @Produces
-    @TypeResolved 
+    @TypeResolved
     public OrderManager resolveOrderManager(@Any Instance<OrderManager> orderManagerSources) {
         Annotation qualifier = new JPAAnnotation();
         OrderManager orderManager = orderManagerSources.select(qualifier).get();
         return orderManager;
     }
-    
+
     @Produces
-    @TypeResolved 
+    @TypeResolved
     public BasketManager resolveBasketManager(@Any Instance<BasketManager> basketManagerSources) {
         Annotation qualifier = null;
         switch (BASKET_TYPE) {
-        case 0:
-        	qualifier = new ListWithProductsAnnotation();
-        	break;
-        case 1:	
-        	qualifier = new SetWithProductsAnnotation();
-        	break;
-        case 2:
-        	qualifier = new MapWithProductsAnnotation();
-        	break;
-        default:
-        	throw new IllegalStateException("No basket implementation selected");
-        }        
+            case 0:
+                qualifier = new ListWithProductsAnnotation();
+                break;
+            case 1:
+                qualifier = new SetWithProductsAnnotation();
+                break;
+            case 2:
+                qualifier = new MapWithProductsAnnotation();
+                break;
+            default:
+                throw new IllegalStateException("No basket implementation selected");
+        }
         BasketManager basketManager = basketManagerSources.select(qualifier).get();
         return basketManager;
     }
-
-    
 //        Annonymou version, but soon as JPA type is called so often it make sense to create annotation type
 //        CustomerManager customerManager = customerManagerSources.select(
 //                new AnnotationLiteral() {
@@ -107,7 +103,6 @@ private static int BASKET_TYPE = 2;
 //                }).get();
 //        return customerManager;
 //    }
-   
     // This doesn't have sense as entity manager lifecycle is controlled by container (throws exceptions)
 //    @Produces
 //    @MuniEshopDatabase

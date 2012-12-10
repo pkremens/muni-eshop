@@ -22,7 +22,7 @@ public interface ProductManager {
 
     List<ProductEntity> getProducts();
 
-	void updateOnStore(OrderEntity zoomOrder);
-	
-	 void fillTheStore(List<ProductEntity> products);
+    void updateOnStore(OrderEntity zoomOrder);
+
+    void fillTheStore(List<ProductEntity> products);
 }

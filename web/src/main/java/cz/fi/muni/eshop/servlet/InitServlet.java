@@ -1,21 +1,5 @@
 package cz.fi.muni.eshop.servlet;
 
-import java.io.IOException;
-import java.util.Random;
-import java.util.logging.Logger;
-
-import javax.inject.Inject;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.jboss.seam.security.Authenticator.AuthenticationStatus;
-import org.jboss.seam.security.Credentials;
-import org.jboss.seam.security.Identity;
-import org.picketlink.idm.impl.api.PasswordCredential;
-
 import cz.fi.muni.eshop.model.CustomerEntity;
 import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.model.Role;
@@ -25,6 +9,18 @@ import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.util.InvalidEntryException;
 import cz.fi.muni.eshop.util.qualifier.JPA;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+import java.io.IOException;
+import java.util.logging.Logger;
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.jboss.seam.security.Authenticator.AuthenticationStatus;
+import org.jboss.seam.security.Credentials;
+import org.jboss.seam.security.Identity;
+import org.picketlink.idm.impl.api.PasswordCredential;
 
 /**
  * Servlet implementation class TestServlet

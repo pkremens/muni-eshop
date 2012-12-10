@@ -1,8 +1,11 @@
 package cz.fi.muni.eshop.rest;
 
+import cz.fi.muni.eshop.model.ProductEntity;
+import cz.fi.muni.eshop.service.ProductManager;
+import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
+import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 import java.util.List;
 import java.util.logging.Logger;
-
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
@@ -14,44 +17,35 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cz.fi.muni.eshop.model.Member;
-import cz.fi.muni.eshop.model.ProductEntity;
-import cz.fi.muni.eshop.service.CustomerManager;
-import cz.fi.muni.eshop.service.ProductManager;
-import cz.fi.muni.eshop.util.qualifier.JPA;
-import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
-import cz.fi.muni.eshop.util.qualifier.TypeResolved;
-
 @Path("/products")
 @RequestScoped
 public class ProductResourceRESTService {
-	@Inject
-	@MuniEshopLogger
-	private Logger log;
-	
-	@Inject
-	@TypeResolved
-	private ProductManager productManager;
+
+    @Inject
+    @MuniEshopLogger
+    private Logger log;
+    @Inject
+    @TypeResolved
+    private ProductManager productManager;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<ProductEntity> listAllProducts() {
-    	log.info("FindAllProducts");
+        log.info("FindAllProducts");
         return productManager.getProducts();
     }
-	
-	@GET
-	@Path("/{id:[0-9][0-9]*}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public ProductEntity lookupProductById(@PathParam("id") long id) {
-		log.info("lookupProductById");
-		ProductEntity product;
-		try {
-		product = productManager.findProductById(id);
-		} catch (NoResultException nre) {
-			throw new WebApplicationException(Response.Status.NOT_FOUND);
-		}
-		return product;
-	}
 
+    @GET
+    @Path("/{id:[0-9][0-9]*}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ProductEntity lookupProductById(@PathParam("id") long id) {
+        log.info("lookupProductById");
+        ProductEntity product;
+        try {
+            product = productManager.findProductById(id);
+        } catch (NoResultException nre) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        return product;
+    }
 }

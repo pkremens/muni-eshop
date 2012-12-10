@@ -42,6 +42,7 @@ public class EntityValidator<T> {
 
     /**
      * This version ignores all violations containing id property.
+     *
      * @param entity instance of some entity
      * @return true if and only if the entity is valid
      * @throws InvalidEntryException if there are some constraint violations
@@ -57,12 +58,12 @@ public class EntityValidator<T> {
             if (!constraintViolation.getPropertyPath().toString().equals("id")) {
                 violations.add(constraintViolation.toString());
             }
-        }        
+        }
         if (violations.isEmpty()) {
             return true;
         } else {
-            throw new InvalidEntryException(entity.getClass(),violations);
+            throw new InvalidEntryException(entity.getClass(), violations);
         }
-        
+
     }
 }

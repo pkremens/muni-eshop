@@ -16,23 +16,18 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
-
-
-
 @Entity(name = "orderEntity")
 @Table(name = "orderEntity")
 @NamedQueries({
     @NamedQuery(name = "order.getOrderById", query = "SELECT o FROM orderEntity o WHERE o.id = :id"),
     @NamedQuery(name = "order.getOrders", query = "SELECT o FROM orderEntity o"),
-    @NamedQuery(name = "order.getOrdersByOpen", query = "SELECT o FROM orderEntity o WHERE o.openOrder=:open ORDER BY o.customer,o.creationDate ASC"), 
-    })
+    @NamedQuery(name = "order.getOrdersByOpen", query = "SELECT o FROM orderEntity o WHERE o.openOrder=:open ORDER BY o.customer,o.creationDate ASC"),})
 public class OrderEntity implements Serializable {
 
     @Id
@@ -40,14 +35,12 @@ public class OrderEntity implements Serializable {
     @Column(name = "ID", nullable = false)
     @NotNull
     private Long id;
-    
     @OneToOne
     @NotNull
     private CustomerEntity customer;
     @Column(name = "OPENORDER", nullable = false)
     private boolean openOrder;
-    
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}) 
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private List<OrderLineEntity> orderLines;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATIONDATE", nullable = false)
@@ -60,7 +53,7 @@ public class OrderEntity implements Serializable {
     public OrderEntity(CustomerEntity customer, List<OrderLineEntity> orderLines) {
         this.customer = customer;
         this.openOrder = true;
-        this.orderLines = orderLines;        
+        this.orderLines = orderLines;
     }
 
     public Date getCreationDate() {
@@ -104,21 +97,20 @@ public class OrderEntity implements Serializable {
     }
 
     public Long getTotalPrice() {
-    	long totalPrice = 0L;
-    	for (OrderLineEntity orderLine : orderLines) {
-			totalPrice += orderLine.getPrice();
-		}
+        long totalPrice = 0L;
+        for (OrderLineEntity orderLine : orderLines) {
+            totalPrice += orderLine.getPrice();
+        }
         return totalPrice;
     }
-    
-    public Long getTotalProductsQuantity() {
-    	long totalProducts = 0L;
-    	for (OrderLineEntity orderLine : orderLines) {
-			totalProducts += orderLine.getQuantity();
-		}
-    	return totalProducts;
-    }
 
+    public Long getTotalProductsQuantity() {
+        long totalProducts = 0L;
+        for (OrderLineEntity orderLine : orderLines) {
+            totalProducts += orderLine.getQuantity();
+        }
+        return totalProducts;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -158,6 +150,4 @@ public class OrderEntity implements Serializable {
     public String toString() {
         return "OrderEntity{" + "id=" + id + ", customer=" + customer + ", openOrder=" + openOrder + ", orderLines=" + orderLines + ", creationDate=" + creationDate + ", totalPrice=" + getTotalPrice() + '}';
     }
-    
-    
 }

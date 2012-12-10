@@ -8,7 +8,6 @@ import cz.fi.muni.eshop.model.OrderLineEntity;
 import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.util.qualifier.ListWithProducts;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -44,12 +43,12 @@ public class BasketBeanList implements BasketManager<ProductEntity> {
 
     @Override
     public void addToBasket(ProductEntity product, Long quantity) {
-    	
-    	if (getQuantityOfProduct(product) > 0) {
-    		productQuantityIncrement(product, quantity);
-    	} else {
-        basket.add(new OrderLineEntity(product, quantity));
-    	}
+
+        if (getQuantityOfProduct(product) > 0) {
+            productQuantityIncrement(product, quantity);
+        } else {
+            basket.add(new OrderLineEntity(product, quantity));
+        }
     }
 
     @Override
@@ -68,7 +67,7 @@ public class BasketBeanList implements BasketManager<ProductEntity> {
             if (orderLineEntity.getProduct().equals(product)) {
                 long newQuantity = (orderLineEntity.getQuantity() - toRemove);
                 if (newQuantity <= 0) {
-                	orderLineEntity.setQuantity(1L);
+                    orderLineEntity.setQuantity(1L);
                 } else {
                     orderLineEntity.setQuantity(newQuantity);
                 }
@@ -149,14 +148,14 @@ public class BasketBeanList implements BasketManager<ProductEntity> {
         return quantity;
     }
 
-	@Override
-	public boolean isInBasket(ProductEntity product) {
-	       for (OrderLineEntity orderLineEntity : basket) {
-	            if (orderLineEntity.getProduct().equals(product)) {
-	                return true;
-	            }
+    @Override
+    public boolean isInBasket(ProductEntity product) {
+        for (OrderLineEntity orderLineEntity : basket) {
+            if (orderLineEntity.getProduct().equals(product)) {
+                return true;
+            }
 
-	        }
-		return false;
-	}
+        }
+        return false;
+    }
 }
