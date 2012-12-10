@@ -67,8 +67,7 @@ public class ProductManagerJPA implements ProductManager {
 				em.merge(productEntity);
 			}
 		}
-		productEventSrc.fire(new ProductEntity()); // firing emty product just to reload list
-		
+		productEventSrc.fire(new ProductEntity()); // firing empty product just to reload list
 	}
 		
 		
@@ -94,17 +93,11 @@ public class ProductManagerJPA implements ProductManager {
 	@Override
 	public void updateOnStore(OrderEntity zoomOrder) {
 		ProductEntity product = null;
-		for (OrderLineEntity orderLine : zoomOrder.getOrderLines()) {
-			log.warning("PRODUCT: "+ orderLine.getProduct());
-			product = orderLine.getProduct();
-			log.warning("ON STORE: " + product.getOnStore());
-			log.warning("TO REMOVE: " + orderLine.getQuantity());
-			product.removeFromStore(orderLine.getQuantity());
-			log.warning("AFTER: " + product.getOnStore());
-			em.merge(product);
-			productEventSrc.fire(product);
-			log.warning("Fire event: " + product.toString());
+		for (OrderLineEntity orderLine : zoomOrder.getOrderLines()) {			
+			product = orderLine.getProduct();						
+			product.removeFromStore(orderLine.getQuantity());			
+			em.merge(product);			
 		}
-
+		productEventSrc.fire(new ProductEntity());		
 	}
 }

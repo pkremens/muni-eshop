@@ -11,6 +11,8 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.event.Observes;
+import javax.enterprise.event.Reception;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
@@ -24,6 +26,7 @@ import org.jboss.seam.security.Identity;
 import org.picketlink.idm.impl.api.PasswordCredential;
 
 import cz.fi.muni.eshop.model.CustomerEntity;
+import cz.fi.muni.eshop.model.ProductEntity;
 import cz.fi.muni.eshop.model.Role;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.util.InvalidEntryException;
@@ -67,6 +70,13 @@ public class CustomerController implements Serializable {
         emptyCustomersList = customerList.isEmpty();
         initNewCustomer();
     }
+    
+	public void onProductListChanged(
+			@Observes(notifyObserver = Reception.IF_EXISTS) final CustomerEntity customer) {
+		log.warning("Catching event: " + customer);
+		customerList = customerManager.getCustomers();
+		emptyCustomersList = customerList.isEmpty();
+	}
 
     public void saveAction(CustomerEntity customer) {
         log.info("Save action");

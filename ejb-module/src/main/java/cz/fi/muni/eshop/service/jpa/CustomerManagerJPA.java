@@ -55,6 +55,7 @@ public class CustomerManagerJPA implements CustomerManager {
         log.log(Level.WARNING, "Update customer: {0}", customer.toLog());
         log.warning("accessing DB");
         em.merge(customer);
+        customerEventSrc.fire(customer);
     }
 
     private CustomerEntity findByEmail(String email) throws NoEntryFoundExeption {
