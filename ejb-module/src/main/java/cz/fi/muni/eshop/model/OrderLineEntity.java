@@ -37,8 +37,7 @@ public class OrderLineEntity implements Serializable {
     @Column(name = "QUANTITY", nullable = false)
     @NotNull
     private Long quantity;
-    @Transient
-    private Long price;
+
 
     public OrderLineEntity() {
         super();
@@ -47,7 +46,7 @@ public class OrderLineEntity implements Serializable {
     public OrderLineEntity(ProductEntity product, Long quantity) {
         this.product = product;
         this.quantity = quantity;
-        this.price = product.getBasePrice() * quantity;
+
     }
 
     public Long getId() {
@@ -64,7 +63,7 @@ public class OrderLineEntity implements Serializable {
 
     public void setProduct(ProductEntity product) {
         this.product = product;
-        this.price = product.getBasePrice() * quantity;
+        
     }
 
     public Long getQuantity() {
@@ -73,16 +72,16 @@ public class OrderLineEntity implements Serializable {
 
     public void setQuantity(Long quantity) {
         this.quantity = quantity;
-        this.price = product.getBasePrice() * quantity; // TODO test what happens if product = null
+        
     }
     
     public void addQuantity(Long quantity) {
         this.quantity += quantity;
-        this.price = product.getBasePrice() * this.quantity;
+        
     }
 
     public Long getPrice() {
-        return price;
+    	return product.getBasePrice() * quantity;
     }
     
     @Override
@@ -117,7 +116,7 @@ public class OrderLineEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "OrderLineEntity{" + "id=" + id + ", product=" + product + ", quantity=" + quantity + ", price=" + price + '}';
+        return "OrderLineEntity{" + "id=" + id + ", product=" + product + ", quantity=" + quantity + ", price=" + getPrice() + '}';
     }
 
 

@@ -47,13 +47,11 @@ public class OrderEntity implements Serializable {
     @Column(name = "OPENORDER", nullable = false)
     private boolean openOrder;
     
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}) 
     private List<OrderLineEntity> orderLines;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATIONDATE", nullable = false)
     private Date creationDate;
-    @Transient
-    private Long totalPrice;
 
     public OrderEntity() {
         super();
@@ -63,7 +61,6 @@ public class OrderEntity implements Serializable {
         this.customer = customer;
         this.openOrder = true;
         this.orderLines = orderLines;        
-        this.totalPrice = totalPrice;
     }
 
     public Date getCreationDate() {
@@ -107,12 +104,21 @@ public class OrderEntity implements Serializable {
     }
 
     public Long getTotalPrice() {
+    	long totalPrice = 0L;
+    	for (OrderLineEntity orderLine : orderLines) {
+			totalPrice =+ orderLine.getPrice();
+		}
         return totalPrice;
     }
-
-    public void setTotalPrice(Long totalPrice) {
-        this.totalPrice = totalPrice;
+    
+    public Long getTotalProductsQuantity() {
+    	long totalProducts = 0L;
+    	for (OrderLineEntity orderLine : orderLines) {
+			totalProducts =+ orderLine.getQuantity();
+		}
+    	return totalProducts;
     }
+
 
     @Override
     public boolean equals(Object obj) {
@@ -150,7 +156,7 @@ public class OrderEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "OrderEntity{" + "id=" + id + ", customer=" + customer + ", openOrder=" + openOrder + ", orderLines=" + orderLines + ", creationDate=" + creationDate + ", totalPrice=" + totalPrice + '}';
+        return "OrderEntity{" + "id=" + id + ", customer=" + customer + ", openOrder=" + openOrder + ", orderLines=" + orderLines + ", creationDate=" + creationDate + ", totalPrice=" + getTotalPrice() + '}';
     }
     
     

@@ -39,7 +39,7 @@ public class InitServlet extends HttpServlet {
 	private static final int PRODUCTS = 20; // change later
 	private static final long PRODUCT_MAX_PRICE = 100;
 	private static final long PRODUCT_MIN_PRICE = 10;
-	private static final int ADMINS = 2;
+	private static final int ADMINS = 2; 
 	private static final int SELLERS = 5;
 	private static final int BASICS = 15;
 	private static final int ORDERS = 20;

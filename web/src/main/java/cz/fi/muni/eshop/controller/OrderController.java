@@ -5,6 +5,7 @@
 package cz.fi.muni.eshop.controller;
 
 import cz.fi.muni.eshop.model.OrderEntity;
+import cz.fi.muni.eshop.model.OrderLineEntity;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.basket.BasketManager;
 import cz.fi.muni.eshop.util.qualifier.JPA;
@@ -42,6 +43,7 @@ public class OrderController implements Serializable {
     private OrderEntity newOrder;
     private static List<OrderEntity> activeOrders;
     private static List<OrderEntity> closedOrders;
+    private boolean detail = false; // Show order detail
 
 
 
@@ -64,7 +66,18 @@ public class OrderController implements Serializable {
     public List<OrderEntity> getClosedOrders() {
         return closedOrders;
     }
-
-    public void getOrderDetails() { //TODO
+    
+    public void hideDetail() {
+    	detail = false;
     }
+
+    public List<OrderLineEntity> getOrderDetails(OrderEntity order) { 
+    	detail = true;
+    	return order.getOrderLines();
+    }
+     public boolean closeOrder(OrderEntity order) {
+    	 log.info("close order");
+    	 // TODO
+    	 return false;
+     }
 }
