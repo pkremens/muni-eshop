@@ -54,11 +54,12 @@ public abstract class AbstractBasketTest {
         Assert.assertFalse(basket.isInBasket(product));
         basket.addToBasket(product);
         Assert.assertFalse(basket.isEmpty());
+        Assert.assertEquals((Long) (77L * 1L), basket.getTotalPrice());
         basket.productQuantityDecrement(product, 1L);
         Assert.assertFalse(basket.isEmpty()); // QuantityDecrement should not remove product from basket, min value = 1;
         Assert.assertEquals((Long) (77L * 1L), basket.getTotalPrice());
         basket.addToBasket(product);
-        Assert.assertEquals((Long) 1L, basket.getQuantityOfProduct(product));
+        Assert.assertEquals((Long) 2L, basket.getQuantityOfProduct(product));
         basket.clearBasket();
         Assert.assertTrue(basket.isEmpty());
         basket.addToBasket(product, 7L);

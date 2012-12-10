@@ -76,6 +76,7 @@ public class OrderLineManagerJPATest {
         product.setBasePrice(44L);
         product.setProductName("Product");
         product.setEditable(false);
+        product.setOnStore(132L);
         utx.begin();
         em.joinTransaction();
         em.persist(product);
