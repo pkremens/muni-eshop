@@ -60,6 +60,7 @@ public class OrderController implements Serializable {
       }
     
     public void onOrderListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final OrderEntity order) {
+    	log.warning("Catching event: " + order);
     	retrieveAllOrders();
      }
 
@@ -83,16 +84,19 @@ public class OrderController implements Serializable {
     @Produces
     @Named("detailedLines")
     public List<OrderLineEntity> getDetails() { 
+    	log.info("Produces get order details " + zoomOrder.getId());
     	return zoomOrder.getOrderLines();
     }
     
     public void getOrderDetails(OrderEntity order) {
+    	log.info("getOrderDetails selected: " + order.getId());
     	detail = true;
     	zoomOrder = order;
     }
     
     
     public boolean showDetail() {
+    	log.info("show detail?");
     	return detail;
     }
      public boolean closeOrder(OrderEntity order) {

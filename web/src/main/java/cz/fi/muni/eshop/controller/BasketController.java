@@ -69,7 +69,7 @@ public class BasketController implements Serializable {
     @Produces
     @Named("isBasketEmpty")
     public boolean isBasketEmpty() {
-    	log.warning("isEmpty");
+    	//log.warning("isEmpty");
     	return basket.isEmpty();
     }
     

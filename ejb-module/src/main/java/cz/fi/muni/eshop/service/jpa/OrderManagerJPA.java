@@ -46,6 +46,7 @@ public class OrderManagerJPA implements OrderManager {
 		log.log(Level.INFO, "Adding new order: {0}", order);
 		order.setCreationDate(Calendar.getInstance().getTime());
 		orderEventSrc.fire(order);
+		log.warning("Fire event: " + order.toString());
 		em.persist(order);
 		log.log(Level.INFO, "Order added: {0}", order);
 	}
