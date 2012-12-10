@@ -138,6 +138,7 @@ public class BasketController implements Serializable {
 			lines.add(new OrderLineEntity(productManager.findProductById(product.getId()), basket.getQuantityOfProduct(product)));
 		}
     	order.setOrderLines(lines);
+    	order.setOpenOrder(true);
     	orderManager.addOrder(order);
     	basket.clearBasket();
     	order = new OrderEntity(); // TODO is needed? trace logs 

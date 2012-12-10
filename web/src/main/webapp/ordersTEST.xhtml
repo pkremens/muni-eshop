@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<h1>Orders</h1>
+		Active:
+		<h:form id="activeOrdersForm">
+			<h:panelGroup rendered="#{empty activeOrders}">
+				<em>No orders!</em>
+			</h:panelGroup>
+			<h:dataTable value="#{activeOrders}" var="_order"
+				rendered="#{not empty activeOrders}" cellspacing="5">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="ID	" />&#160;&#160;
+                    </f:facet>
+					<h:outputText value="#{_order.id}" />
+				</h:column>
+			</h:dataTable>
+		</h:form>
+		Closed:
+		<h:form id="resolvedOrdersForm">
+			<h:panelGroup rendered="#{empty closedOrders}">
+				<em>No resolved orders!</em>
+			</h:panelGroup>
+			<h:dataTable value="#{closedOrders}" var="_order"
+				rendered="#{not empty closedOrders}" cellspacing="5">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="ID	" />&#160;&#160;
+                    </f:facet>
+					<h:outputText value="#{_order.id}" />
+				</h:column>
+			</h:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

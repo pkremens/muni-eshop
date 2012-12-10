@@ -129,12 +129,13 @@ public class CustomerController implements Serializable {
                         new FacesMessage("Customer was registered"));
                 customerList.add(newCustomer);
                 emptyCustomersList = false;
-                // log in new customer after registration
+                // log in new customer after registration, but only if not already logged in
+                if (!identity.isLoggedIn()) {
                 credentials.setUsername(newCustomer.getEmail());
                 PasswordCredential pc = new PasswordCredential(newCustomer.getPassword());
                 credentials.setCredential(pc);
                 identity.login();
-
+                }
                 initNewCustomer();
             } else {
                 log.info("Registration: trying to use already registered email");
