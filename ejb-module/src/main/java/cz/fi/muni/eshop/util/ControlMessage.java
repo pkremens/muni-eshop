@@ -11,7 +11,8 @@ package cz.fi.muni.eshop.util;
  */
 public enum ControlMessage {
     TOO_MANY_CLOSED("There are too many closed orders in database, make a clean up!"),
-    FILL_THE_STORE("There are too many orders, which can not be closed, fill the store!");
+    FILL_THE_STORE("There are too many orders, which can not be closed, fill the store!"),
+    JMS_CONTROL_MESSAGE("This is my test message for JMS, see you on the other side!");
     
     private final String message;
     

@@ -45,8 +45,7 @@ public class CustomerResourceRESTService {
 
     @GET
     @Path("/{email:.*}") // TODO fix pattern
-    @Produces(MediaType.APPLICATION_JSON)
-    public CustomerEntity lookupMemberById(@PathParam("email") String email) {
+    public CustomerEntity lookupCustomerById(@PathParam("email") String email) {
         log.info("lookupProductById");
         CustomerEntity customer;
         try {

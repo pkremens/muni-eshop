@@ -62,3 +62,8 @@ web.xml was automaticali created, but I delete it, there it is if needed:
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
 
+
+datasource adding:
+http://www.jboss.org/jdf/quickstarts/jboss-as-quickstart/helloworld-jms/
+
+from now I must full profile to support jms: ./standalone.sh -c standalone-full.xml
