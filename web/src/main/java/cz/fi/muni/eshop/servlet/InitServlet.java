@@ -80,21 +80,41 @@ public class InitServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        String location = request.getContextPath() + "/index.jsf";
-        if (!generated) {
-            generateData();
-            // TODO REMOVE, little security hack to be logged after data generation
-            CustomerEntity customer = null;
-            try {
-                customer = customerManager.isRegistered("admin0@admin.cz");
-            } catch (InvalidEntryException e) {
+        String orderString = null;
+
+        
+        try {
+            orderString = request.getParameter("order");
+        } catch (NullPointerException npe) {
+        } // ignore
+        if (orderString == null) {
+            if (!generated) {
+                generateData();
+                // TODO REMOVE, little security hack to be logged after data generation
+                CustomerEntity customer = null;
+                try {
+                    customer = customerManager.isRegistered("admin0@admin.cz");
+                } catch (InvalidEntryException e) {
+                }
+                credentials.setUsername(customer.getEmail());
+                PasswordCredential pc = new PasswordCredential("admin0");
+                credentials.setCredential(pc);
+                identity.login();
             }
-            credentials.setUsername(customer.getEmail());
-            PasswordCredential pc = new PasswordCredential("admin0");
-            credentials.setCredential(pc);
-            identity.login();
+        } else {
+            long order = 0L;
+            try {
+                order = Long.parseLong(request.getParameter("order"));
+            } catch (NumberFormatException nfe) {
+                log.info(nfe.getMessage());
+                String location = request.getContextPath() + "/index.jsf";
+                response.sendRedirect(location);
+                return;
+            }
+            generateOrders(order);
 
         }
+        String location = request.getContextPath() + "/index.jsf";
         response.sendRedirect(location);
     }
 
@@ -179,6 +199,30 @@ public class InitServlet extends HttpServlet {
         OrderLineEntity orderline;
         OrderEntity order;
         for (int i = 0; i < ORDERS; i++) {
+            order = new OrderEntity();
+            order.setCustomer(customer.get(random.nextInt(CUSTOMERS)));
+            for (int j = 0; j < LINES; j++) {
+                orderline = new OrderLineEntity(products.get(random.nextInt(PRODUCTS)), (long) random.nextInt(QUANTITY - 1) + 1); // don't want zeros!
+                order.addOrderLine(orderline);
+            }
+            orderManager.addOrder(order);
+        }
+    }
+
+    // Just Test
+    private void generateOrders(Long orders) {
+        List<CustomerEntity> customer = customerManager.getCustomers();
+        log.warning("Generating Orders:");
+        for (CustomerEntity customerEntity : customer) {
+            log.warning(customerEntity.toString());
+        }
+        List<ProductEntity> products = productManager.getProducts();
+        for (ProductEntity productEntity : products) {
+            log.warning(productEntity.toString());
+        }
+        OrderLineEntity orderline;
+        OrderEntity order;
+        for (int i = 0; i < orders; i++) {
             order = new OrderEntity();
             order.setCustomer(customer.get(random.nextInt(CUSTOMERS)));
             for (int j = 0; j < LINES; j++) {
