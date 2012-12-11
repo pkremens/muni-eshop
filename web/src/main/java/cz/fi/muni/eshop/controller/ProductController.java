@@ -119,8 +119,7 @@ public class ProductController implements Serializable {
     public void register() throws Exception {
         log.info("Register new product: " + newProduct);
         emptyProductsList = false;
-        productManager.addProduct(newProduct);
-        productList.add(newProduct);
+        productManager.addProduct(newProduct);        
         facesContext.addMessage(null, new FacesMessage(
                 FacesMessage.SEVERITY_INFO, "Added!", "Product was added"));
         initNewProduct();

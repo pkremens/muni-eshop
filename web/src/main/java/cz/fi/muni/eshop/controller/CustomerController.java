@@ -130,8 +130,8 @@ public class CustomerController implements Serializable {
                 log.log(Level.INFO, "Registration: adding new customer {0}", newCustomer.toString());
                 facesContext.addMessage("addCustomerForm:registerButton",
                         new FacesMessage("Customer was registered"));
-                customerList.add(newCustomer);
-                emptyCustomersList = false;
+                
+                
                 // log in new customer after registration, but only if not already logged in
                 if (!identity.isLoggedIn()) {
                     credentials.setUsername(newCustomer.getEmail());
