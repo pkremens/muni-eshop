@@ -7,7 +7,6 @@ package cz.fi.muni.eshop.model;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -37,4 +36,114 @@ public class Customer implements Serializable {
     
     @OneToMany(mappedBy = "customer")
     private List<Invoice> invoice;
+
+    public Customer() {
+    }
+
+    public Customer(String email, String name, String password) {
+        this.email = email;
+        this.name = name;
+        this.password = password;
+    }
+
+    public Customer(Long id, String email, String name, String password, List<Order> order, List<Invoice> invoice) {
+        this(email, name, password);
+        this.order = order;
+        this.invoice = invoice;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Invoice> getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(List<Invoice> invoice) {
+        this.invoice = invoice;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Order> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<Order> order) {
+        this.order = order;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Customer other = (Customer) obj;
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
+            return false;
+        }
+        if ((this.email == null) ? (other.email != null) : !this.email.equals(other.email)) {
+            return false;
+        }
+        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+            return false;
+        }
+        if ((this.password == null) ? (other.password != null) : !this.password.equals(other.password)) {
+            return false;
+        }
+        if (this.order != other.order && (this.order == null || !this.order.equals(other.order))) {
+            return false;
+        }
+        if (this.invoice != other.invoice && (this.invoice == null || !this.invoice.equals(other.invoice))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 67 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 67 * hash + (this.email != null ? this.email.hashCode() : 0);
+        hash = 67 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 67 * hash + (this.password != null ? this.password.hashCode() : 0);
+        hash = 67 * hash + (this.order != null ? this.order.hashCode() : 0);
+        hash = 67 * hash + (this.invoice != null ? this.invoice.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" + "id=" + id + ", email=" + email + ", name=" + name + ", password=" + password + '}';
+    }
 }

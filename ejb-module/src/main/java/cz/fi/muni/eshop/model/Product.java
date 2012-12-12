@@ -33,4 +33,28 @@ public class Product implements Serializable {
     private Long onStore;
     @NotNull
     private Long reserved;
+
+    public Product() {
+    }
+
+    public Product(String productName, Long base, Category category) {
+        this.productName = productName;
+        this.base = base;
+        this.category = category;
+    }
+
+    public Product(String productName, Long base, Category category, Long onStore, Long reserved) {
+        this(productName, base, category);
+        this.onStore = onStore;
+        this.reserved = reserved;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" + "id=" + id + ", productName=" + productName + ", base=" + base + ", category=" + category + ", onStore=" + onStore + ", reserved=" + reserved + '}';
+    }
+    
+    
+    
+    
 }
