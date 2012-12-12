@@ -5,6 +5,7 @@
 package cz.fi.muni.eshop.test.basket;
 
 import cz.fi.muni.eshop.model.Product;
+import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.basket.BasketBean;
 import junit.framework.Assert;
 import org.junit.After;
@@ -25,15 +26,15 @@ public abstract class AbstractBasketTest {
 
     @Test
     public void addToBasketTest() {
-        Product product = new Product("last", 8L);
+        Product product = new Product("last", 8L, Category.TYPE1);
         product.setId(15L);
         basket.addToBasket(product);
         for (long i = 5; i < 10; i++) {
-            product = new Product("name" + i, i);
+            product = new Product("name" + i, i,Category.TYPE2);
             product.setId(i);
             basket.addToBasket(product);
         }
-        product = new Product("first", 78L);
+        product = new Product("first", 78L, Category.TYPE3);
         product.setId(1L);
         basket.addToBasket(product);
         for (Product productX : basket.getAllProductsInBasket()) {
@@ -49,7 +50,7 @@ public abstract class AbstractBasketTest {
 
     @Test
     public void updateTest() {
-        Product product = new Product("Name", 77L);
+        Product product = new Product("Name", 77L, Category.TYPE4);
         product.setId(1L);
         Assert.assertFalse(basket.isInBasket(product));
         basket.addToBasket(product);
@@ -72,7 +73,7 @@ public abstract class AbstractBasketTest {
     @Test
     public void increaseAndDecreaseTest() {
         Assert.assertTrue(basket.isEmpty());
-        Product product = new Product("Name", 77L);
+        Product product = new Product("Name", 77L, Category.TYPE6);
         product.setId(1L);
         basket.addToBasket(product);
         basket.productQuantityIncrement(product, 8L);

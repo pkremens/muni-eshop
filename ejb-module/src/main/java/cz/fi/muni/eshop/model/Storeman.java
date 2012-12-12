@@ -36,8 +36,12 @@ public class Storeman implements Serializable {
     public Storeman() {
     }
 
-    public Storeman(String name, List<Order> order, List<Invoice> invoice) {
+    public Storeman(String name) {
         this.name = name;
+    }
+    
+    public Storeman(String name, List<Order> order, List<Invoice> invoice) {
+        this(name);
         this.order = order;
         this.invoice = invoice;
     }

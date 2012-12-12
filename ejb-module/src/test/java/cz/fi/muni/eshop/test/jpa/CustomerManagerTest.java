@@ -35,17 +35,17 @@ import org.picketlink.idm.api.User;
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @RunWith(Arquillian.class)
-public class CustomerManagerJPATest {
+public class CustomerManagerTest {
 
     @Inject
-    @MuniEshopLogger // logger from JpaTestResources
+
     private Logger log;
     @Inject
     private Customer customer;
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "customer.war").addClasses(Customer.class, CustomerManager.class, JpaTestResources.class,
+        return ShrinkWrap.create(WebArchive.class, "customer-test.war").addClasses(Customer.class, CustomerManager.class, JpaTestResources.class,
                 CustomerManagerJPA.class, User.class, InvalidEntryException.class, IdentityType.class, EntityValidator.class, Role.class, NoEntryFoundExeption.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
