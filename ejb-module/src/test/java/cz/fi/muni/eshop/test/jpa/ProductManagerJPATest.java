@@ -4,30 +4,21 @@
  */
 package cz.fi.muni.eshop.test.jpa;
 
-import cz.fi.muni.eshop.model.Customer;
-import cz.fi.muni.eshop.model.Order;
-import cz.fi.muni.eshop.model.OrderItem;
 import cz.fi.muni.eshop.model.Product;
-import cz.fi.muni.eshop.model.enums.Role;
+import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.ProductManager;
-import cz.fi.muni.eshop.service.jpa.ProductManagerJPA;
-import cz.fi.muni.eshop.util.qualifier.JPA;
-import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.junit.InSequence;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picketlink.idm.api.IdentityType;
-import org.picketlink.idm.api.User;
 
 /**
  *
@@ -37,46 +28,52 @@ import org.picketlink.idm.api.User;
 public class ProductManagerJPATest {
 
     @Inject
-    @MuniEshopLogger
     Logger log;
+    @Inject
+    private ProductManager productManager;
+    @Inject
+    private Product product;
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "customer.war").addClasses(Product.class, Order.class, ProductManager.class, JpaTestResources.class,
-                ProductManagerJPA.class, Customer.class, Role.class, OrderItem.class, IdentityType.class, User.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+        return ShrinkWrap.create(WebArchive.class, "product-test.war").addClasses(Product.class, ProductManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
-    @Inject
-    private Product productEntity;
-    @Inject
-    @JPA
-    ProductManager productManager;
+
+    private void setUp() {
+        product = new Product("name", 5L, Category.TYPE1);
+        productManager.addProduct(product);
+    }
+
+    @After
+    public void cleanUp() {
+        productManager.clearProductsTable();
+    }
 
     @Test
-    @InSequence(1)
     public void addProductTest() {
-        Assert.assertTrue(productManager.getProducts().isEmpty());
-        productEntity = new Product("Testp1", 20L);
-        log.log(Level.INFO, "New Product: {0}", productEntity.toString());
-        productManager.addProduct(productEntity);
+        product = new Product("name", 5L, Category.TYPE1);
+        Assert.assertNull(product.getId());
+        productManager.addProduct(product);
+        Assert.assertNotNull(product.getId());
     }
 
     @Test
-    @InSequence(2)
     public void updateTest() {
-        Assert.assertTrue(productEntity.getId() == null);
-        productEntity = productManager.findProductById(1L);
-        Assert.assertEquals("Testp1", productEntity.getProductName());
-        log.info(productEntity.toString());
-        productEntity.setProductName("TestName");
-        productManager.update(productEntity);
-        log.info(productEntity.toString());
+        setUp();
+        long id = product.getId();
+        product.setProductName("ASD");
+        product = productManager.getProductByName("ASD");
+        int hash = productManager.hashCode();
+        product = productManager.getProductById(id);
+        Assert.assertEquals((long) product.getId(), id);
 
     }
 
-    @Test
-    @InSequence(3)
     public void getAllTest() {
-        Assert.assertFalse(productManager.getProducts().isEmpty());
+        product = new Product("xxx", 5L, Category.TYPE1);
+        productManager.addProduct(product);
+        Assert.assertEquals(productManager.getProducts().size(), 2L);
+        Assert.assertTrue(productManager.getProducts().contains(product));
     }
 }

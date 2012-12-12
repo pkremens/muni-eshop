@@ -4,6 +4,7 @@
  */
 package cz.fi.muni.eshop.service;
 
+import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.model.Product;
 import java.util.List;
 import java.util.logging.Logger;
@@ -28,12 +29,12 @@ public class ProductManager {
     
     public void addProduct(Product product) {
         log.info("Adding product: " + product);
-        
         em.persist(product);
     }
     
     public void updateProduct(Product product) {
         log.info("Updating product: " + product);
+        em.merge(product);
     }
     
     public Product getProductById(Long id) {
@@ -52,7 +53,6 @@ public class ProductManager {
         Root<Product> product = criteria.from(Product.class);
         criteria.select(product).where(cb.equal(product.get("name"), name));
         return em.createQuery(criteria).getSingleResult();
-        
     }
     
     public List<Product> getProducts() {
@@ -62,6 +62,14 @@ public class ProductManager {
         Root<Product> product = criteria.from(Product.class);
         criteria.select(product);
         return em.createQuery(criteria).getResultList();
-        
     }
+    
+        public void clearProductsTable() {
+        List<Product> products = getProducts();
+        em.getTransaction().begin();
+        for (Product product : products) {
+            em.remove(product);
+        }
+        em.getTransaction().commit();
+    } 
 }
