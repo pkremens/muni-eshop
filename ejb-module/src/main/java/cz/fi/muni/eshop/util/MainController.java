@@ -5,11 +5,8 @@
 package cz.fi.muni.eshop.util;
 
 import cz.fi.muni.eshop.service.ProductManager;
-import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
-import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 import java.util.logging.Logger;
 import javax.ejb.Singleton;
-import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
 import javax.inject.Inject;
@@ -19,15 +16,26 @@ import javax.inject.Inject;
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Singleton
-public class CML {
+public class MainController {
 
     @Inject
-    @TypeResolved
     private ProductManager productManager;
     @Inject
-    @MuniEshopLogger
     private Logger log;
 
+    public void generateData() {
+        
+    }
+    
+    public void controlData() {
+        
+    }
+    
+    public void clearData() {
+        
+    }
+    
+    
     public void onControlMessageReception(
             @Observes(notifyObserver = Reception.ALWAYS) final ControlMessage controlMessage) {
         log.warning("Catching event: " + controlMessage.getMessage());

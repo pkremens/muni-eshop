@@ -1,14 +1,14 @@
 package cz.fi.muni.eshop.servlet;
 
-import cz.fi.muni.eshop.model.CustomerEntity;
-import cz.fi.muni.eshop.model.OrderEntity;
-import cz.fi.muni.eshop.model.OrderLineEntity;
-import cz.fi.muni.eshop.model.ProductEntity;
+import cz.fi.muni.eshop.model.Customer;
+import cz.fi.muni.eshop.model.Order;
+import cz.fi.muni.eshop.model.OrderItem;
+import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.security.Authenticator;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
-import cz.fi.muni.eshop.util.Role;
+import cz.fi.muni.eshop.model.enums.Role;
 import cz.fi.muni.eshop.util.exceptions.InvalidEntryException;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
 import cz.fi.muni.eshop.util.qualifier.TypeResolved;
@@ -91,7 +91,7 @@ public class InitServlet extends HttpServlet {
             if (!generated) {
                 generateData();
                 // TODO REMOVE, little security hack to be logged after data generation
-                CustomerEntity customer = null;
+                Customer customer = null;
                 try {
                     customer = customerManager.isRegistered("admin0@admin.cz");
                 } catch (InvalidEntryException e) {
@@ -138,7 +138,7 @@ public class InitServlet extends HttpServlet {
     private void generateProducts() {
         log.info("Generating products...");
         for (int i = 0; i < PRODUCTS; i++) {
-            ProductEntity product = new ProductEntity();
+            Product product = new Product();
             product.setProductName("product" + i);
             product.setBasePrice(PRODUCT_MIN_PRICE
                     + (long) (Math.random() * ((PRODUCT_MAX_PRICE - PRODUCT_MIN_PRICE) + 1)));
@@ -155,7 +155,7 @@ public class InitServlet extends HttpServlet {
     private void generateCustomersWithRole(Role role, int count) {
         log.info("generating " + role.toString());
         for (int i = 0; i < count; i++) {
-            CustomerEntity customer = new CustomerEntity();
+            Customer customer = new Customer();
             String base;
             switch (role) {
                 case ADMIN:
@@ -187,22 +187,22 @@ public class InitServlet extends HttpServlet {
     }
 
     private void generateOrders() {
-        List<CustomerEntity> customer = customerManager.getCustomers();
+        List<Customer> customer = customerManager.getCustomers();
         log.warning("Generating Orders:");
-        for (CustomerEntity customerEntity : customer) {
+        for (Customer customerEntity : customer) {
             log.warning(customerEntity.toString());
         }
-        List<ProductEntity> products = productManager.getProducts();
-        for (ProductEntity productEntity : products) {
+        List<Product> products = productManager.getProducts();
+        for (Product productEntity : products) {
             log.warning(productEntity.toString());
         }
-        OrderLineEntity orderline;
-        OrderEntity order;
+        OrderItem orderline;
+        Order order;
         for (int i = 0; i < ORDERS; i++) {
-            order = new OrderEntity();
+            order = new Order();
             order.setCustomer(customer.get(random.nextInt(CUSTOMERS)));
             for (int j = 0; j < LINES; j++) {
-                orderline = new OrderLineEntity(products.get(random.nextInt(PRODUCTS)), (long) random.nextInt(QUANTITY - 1) + 1); // don't want zeros!
+                orderline = new OrderItem(products.get(random.nextInt(PRODUCTS)), (long) random.nextInt(QUANTITY - 1) + 1); // don't want zeros!
                 order.addOrderLine(orderline);
             }
             orderManager.addOrder(order);
@@ -211,22 +211,22 @@ public class InitServlet extends HttpServlet {
 
     // Just Test
     private void generateOrders(Long orders) {
-        List<CustomerEntity> customer = customerManager.getCustomers();
+        List<Customer> customer = customerManager.getCustomers();
         log.warning("Generating Orders:");
-        for (CustomerEntity customerEntity : customer) {
+        for (Customer customerEntity : customer) {
             log.warning(customerEntity.toString());
         }
-        List<ProductEntity> products = productManager.getProducts();
-        for (ProductEntity productEntity : products) {
+        List<Product> products = productManager.getProducts();
+        for (Product productEntity : products) {
             log.warning(productEntity.toString());
         }
-        OrderLineEntity orderline;
-        OrderEntity order;
+        OrderItem orderline;
+        Order order;
         for (int i = 0; i < orders; i++) {
-            order = new OrderEntity();
+            order = new Order();
             order.setCustomer(customer.get(random.nextInt(CUSTOMERS)));
             for (int j = 0; j < LINES; j++) {
-                orderline = new OrderLineEntity(products.get(random.nextInt(PRODUCTS)), (long) random.nextInt(QUANTITY - 1) + 1); // don't want zeros!
+                orderline = new OrderItem(products.get(random.nextInt(PRODUCTS)), (long) random.nextInt(QUANTITY - 1) + 1); // don't want zeros!
                 order.addOrderLine(orderline);
             }
             orderManager.addOrder(order);

@@ -1,6 +1,6 @@
 package cz.fi.muni.eshop.rest;
 
-import cz.fi.muni.eshop.model.ProductEntity;
+import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
 import cz.fi.muni.eshop.util.qualifier.TypeResolved;
@@ -30,7 +30,7 @@ public class ProductResourceRESTService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ProductEntity> listAllProducts() {
+    public List<Product> listAllProducts() {
         log.info("FindAllProducts");
         return productManager.getProducts();
     }
@@ -38,9 +38,9 @@ public class ProductResourceRESTService {
     @GET
     @Path("/{id:[0-9][0-9]*}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ProductEntity lookupProductById(@PathParam("id") long id) {
+    public Product lookupProductById(@PathParam("id") long id) {
         log.info("lookupProductById");
-        ProductEntity product;
+        Product product;
         try {
             product = productManager.findProductById(id);
         } catch (NoResultException nre) {

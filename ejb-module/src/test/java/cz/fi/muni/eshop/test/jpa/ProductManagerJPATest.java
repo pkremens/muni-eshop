@@ -4,11 +4,11 @@
  */
 package cz.fi.muni.eshop.test.jpa;
 
-import cz.fi.muni.eshop.model.CustomerEntity;
-import cz.fi.muni.eshop.model.OrderEntity;
-import cz.fi.muni.eshop.model.OrderLineEntity;
-import cz.fi.muni.eshop.model.ProductEntity;
-import cz.fi.muni.eshop.util.Role;
+import cz.fi.muni.eshop.model.Customer;
+import cz.fi.muni.eshop.model.Order;
+import cz.fi.muni.eshop.model.OrderItem;
+import cz.fi.muni.eshop.model.Product;
+import cz.fi.muni.eshop.model.enums.Role;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.service.jpa.ProductManagerJPA;
 import cz.fi.muni.eshop.util.qualifier.JPA;
@@ -42,12 +42,12 @@ public class ProductManagerJPATest {
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "customer.war").addClasses(ProductEntity.class, OrderEntity.class, ProductManager.class, JpaTestResources.class,
-                ProductManagerJPA.class, CustomerEntity.class, Role.class, OrderLineEntity.class, IdentityType.class, User.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+        return ShrinkWrap.create(WebArchive.class, "customer.war").addClasses(Product.class, Order.class, ProductManager.class, JpaTestResources.class,
+                ProductManagerJPA.class, Customer.class, Role.class, OrderItem.class, IdentityType.class, User.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
     @Inject
-    private ProductEntity productEntity;
+    private Product productEntity;
     @Inject
     @JPA
     ProductManager productManager;
@@ -56,7 +56,7 @@ public class ProductManagerJPATest {
     @InSequence(1)
     public void addProductTest() {
         Assert.assertTrue(productManager.getProducts().isEmpty());
-        productEntity = new ProductEntity("Testp1", 20L);
+        productEntity = new Product("Testp1", 20L);
         log.log(Level.INFO, "New Product: {0}", productEntity.toString());
         productManager.addProduct(productEntity);
     }

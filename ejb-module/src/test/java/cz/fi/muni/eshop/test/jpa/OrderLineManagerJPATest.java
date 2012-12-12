@@ -4,11 +4,11 @@
  */
 package cz.fi.muni.eshop.test.jpa;
 
-import cz.fi.muni.eshop.model.CustomerEntity;
-import cz.fi.muni.eshop.model.OrderEntity;
-import cz.fi.muni.eshop.model.OrderLineEntity;
-import cz.fi.muni.eshop.model.ProductEntity;
-import cz.fi.muni.eshop.util.Role;
+import cz.fi.muni.eshop.model.Customer;
+import cz.fi.muni.eshop.model.Order;
+import cz.fi.muni.eshop.model.OrderItem;
+import cz.fi.muni.eshop.model.Product;
+import cz.fi.muni.eshop.model.enums.Role;
 import cz.fi.muni.eshop.service.OrderLineManager;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.service.jpa.OrderLineManagerJPA;
@@ -47,9 +47,9 @@ public class OrderLineManagerJPATest {
     @JPA
     OrderLineManager orderLineManager;
     @Inject
-    OrderLineEntity orderLine;
+    OrderItem orderLine;
     @Inject
-    ProductEntity product;
+    Product product;
     @Inject
     @JPA
     ProductManager productManager;
@@ -65,7 +65,7 @@ public class OrderLineManagerJPATest {
      */
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "orderLine.war").addClasses(ProductEntity.class, CustomerEntity.class, OrderEntity.class, ProductManagerJPA.class, ProductManager.class, OrderLineEntity.class, OrderLineManager.class,
+        return ShrinkWrap.create(WebArchive.class, "orderLine.war").addClasses(Product.class, Customer.class, Order.class, ProductManagerJPA.class, ProductManager.class, OrderItem.class, OrderLineManager.class,
                 OrderLineManagerJPA.class, MuniEshopDatabase.class, Role.class, IdentityType.class, User.class, JpaTestResources.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
@@ -79,7 +79,7 @@ public class OrderLineManagerJPATest {
         utx.begin();
         em.joinTransaction();
         em.persist(product);
-        orderLine = new OrderLineEntity(product, 6L);
+        orderLine = new OrderItem(product, 6L);
         em.persist(orderLine);
         utx.commit();
     }

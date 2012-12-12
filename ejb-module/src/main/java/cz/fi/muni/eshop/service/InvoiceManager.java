@@ -9,13 +9,6 @@ package cz.fi.muni.eshop.service;
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
-public class ProductManager {
-    
-    
-    
-    
-    public Long getPrice() {
-        return 0L;
-    }
+public class InvoiceManager {
 
 }

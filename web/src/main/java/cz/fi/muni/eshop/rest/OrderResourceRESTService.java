@@ -1,6 +1,6 @@
 package cz.fi.muni.eshop.rest;
 
-import cz.fi.muni.eshop.model.OrderEntity;
+import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
 import cz.fi.muni.eshop.util.qualifier.TypeResolved;
@@ -30,21 +30,21 @@ public class OrderResourceRESTService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<OrderEntity> listAllOrders() {
+    public List<Order> listAllOrders() {
         log.info("FindAllOrders");
         return orderManager.getOrders();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<OrderEntity> listActiveProducts() {
+    public List<Order> listActiveProducts() {
         log.info("FindActiveOrders");
         return orderManager.getActiveOrders();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<OrderEntity> listClosedProducts() {
+    public List<Order> listClosedProducts() {
         log.info("FindClosedOrders");
         return orderManager.getClosedOrders();
     }
@@ -52,9 +52,9 @@ public class OrderResourceRESTService {
     @GET
     @Path("/{id:[0-9][0-9]*}")
     @Produces(MediaType.APPLICATION_JSON)
-    public OrderEntity lookupOrderById(@PathParam("id") long id) {
+    public Order lookupOrderById(@PathParam("id") long id) {
         log.info("lookupOrderById");
-        OrderEntity order;
+        Order order;
         try {
             order = orderManager.getOrderById(id);
         } catch (NoResultException nre) {

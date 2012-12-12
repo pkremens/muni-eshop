@@ -4,10 +4,10 @@
  */
 package cz.fi.muni.eshop.test.jpa;
 
-import cz.fi.muni.eshop.model.CustomerEntity;
-import cz.fi.muni.eshop.util.Role;
+import cz.fi.muni.eshop.model.Customer;
+import cz.fi.muni.eshop.model.enums.Role;
 import cz.fi.muni.eshop.service.CustomerManager;
-import cz.fi.muni.eshop.service.jpa.CustomerManagerJPA;
+import cz.fi.muni.eshop.service.CustomerManagerJPA;
 import cz.fi.muni.eshop.util.EntityValidator;
 import cz.fi.muni.eshop.util.exceptions.InvalidEntryException;
 import cz.fi.muni.eshop.util.exceptions.NoEntryFoundExeption;
@@ -41,11 +41,11 @@ public class CustomerManagerJPATest {
     @MuniEshopLogger // logger from JpaTestResources
     private Logger log;
     @Inject
-    private CustomerEntity customer;
+    private Customer customer;
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "customer.war").addClasses(CustomerEntity.class, CustomerManager.class, JpaTestResources.class,
+        return ShrinkWrap.create(WebArchive.class, "customer.war").addClasses(Customer.class, CustomerManager.class, JpaTestResources.class,
                 CustomerManagerJPA.class, User.class, InvalidEntryException.class, IdentityType.class, EntityValidator.class, Role.class, NoEntryFoundExeption.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
@@ -57,7 +57,7 @@ public class CustomerManagerJPATest {
     @InSequence(1)
     public void addCustomerTest() {
         Assert.assertTrue(customerManager.getCustomers().isEmpty());
-        customer = new CustomerEntity("rambo.john@foogle.com", "Rocky Balboa", "phoenix", Role.ADMIN);
+        customer = new Customer("rambo.john@foogle.com", "Rocky Balboa", "phoenix", Role.ADMIN);
         log.log(Level.INFO, "New Customer: {0}", customer.toLog());
         customerManager.addCustomer(customer);
     }
@@ -85,12 +85,12 @@ public class CustomerManagerJPATest {
     @Test
     @InSequence(4)
     public void emailOrderingTest() {
-        customer = new CustomerEntity("hallOfFame@nhl.com", "Steve Yzerman", "hattrick", Role.ADMIN);
+        customer = new Customer("hallOfFame@nhl.com", "Steve Yzerman", "hattrick", Role.ADMIN);
         customerManager.addCustomer(customer);
         for (int i = 0; i < 10; i++) {
-            customerManager.addCustomer(new CustomerEntity("jemail" + i + "@foogle.cz", "name" + i, "password" + i, Role.BASIC));
+            customerManager.addCustomer(new Customer("jemail" + i + "@foogle.cz", "name" + i, "password" + i, Role.BASIC));
         }
-        List<CustomerEntity> list = customerManager.findCustomersOrderedByMail();
+        List<Customer> list = customerManager.findCustomersOrderedByMail();
         Assert.assertEquals("Steve Yzerman", list.get(0).getName());
         Assert.assertEquals("John Spartan", list.get(11).getName());
 
@@ -99,7 +99,7 @@ public class CustomerManagerJPATest {
     @Test
     @InSequence(5)
     public void enumCompareTest() {
-        List<CustomerEntity> list = customerManager.findCustomersOrderedByMail();
+        List<Customer> list = customerManager.findCustomersOrderedByMail();
         Assert.assertTrue(list.get(0).getRole().equals(Role.ADMIN));
         Assert.assertTrue(list.get(1).getRole().equals(Role.BASIC));
     }
@@ -113,15 +113,15 @@ public class CustomerManagerJPATest {
     @Test
     @InSequence(5)
     public void verificationWrongPasswordTest() throws InvalidEntryException {
-        CustomerEntity nullCustomer = customerManager.verifyCustomer("hallOfFame@nhl.com", "hooray-gretzky");
+        Customer nullCustomer = customerManager.verifyCustomer("hallOfFame@nhl.com", "hooray-gretzky");
         Assert.assertNull(nullCustomer);
     }
 
     @Test(expected = InvalidEntryException.class)
     @InSequence(5)
     public void addingCustomerWithInvalidEmailTest() throws InvalidEntryException {
-        customer = new CustomerEntity("invalidMail", "name", "password", Role.ADMIN);
-        EntityValidator<CustomerEntity> validator = new EntityValidator<CustomerEntity>();
+        customer = new Customer("invalidMail", "name", "password", Role.ADMIN);
+        EntityValidator<Customer> validator = new EntityValidator<Customer>();
         validator.validate(customer);
     }
 

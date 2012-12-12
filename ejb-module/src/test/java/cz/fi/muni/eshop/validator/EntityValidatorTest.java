@@ -4,11 +4,11 @@
  */
 package cz.fi.muni.eshop.validator;
 
-import cz.fi.muni.eshop.model.CustomerEntity;
-import cz.fi.muni.eshop.model.OrderEntity;
-import cz.fi.muni.eshop.model.OrderLineEntity;
-import cz.fi.muni.eshop.model.ProductEntity;
-import cz.fi.muni.eshop.util.Role;
+import cz.fi.muni.eshop.model.Customer;
+import cz.fi.muni.eshop.model.Order;
+import cz.fi.muni.eshop.model.OrderItem;
+import cz.fi.muni.eshop.model.Product;
+import cz.fi.muni.eshop.model.enums.Role;
 import cz.fi.muni.eshop.util.EntityValidator;
 import cz.fi.muni.eshop.util.exceptions.InvalidEntryException;
 import java.util.ArrayList;
@@ -27,8 +27,8 @@ public class EntityValidatorTest {
 
     @Test
     public void customerValidationTest() throws InvalidEntryException {
-        CustomerEntity customer = new CustomerEntity("admin0@admin.cz", "test", "test", Role.ADMIN);
-        validator = new EntityValidator<CustomerEntity>();
+        Customer customer = new Customer("admin0@admin.cz", "test", "test", Role.ADMIN);
+        validator = new EntityValidator<Customer>();
         Assert.assertTrue(validator.validate(customer));
         customer.setEmail("aaaa");
         boolean ret = false;
@@ -44,10 +44,10 @@ public class EntityValidatorTest {
 
     @Test
     public void productValidationTest() throws InvalidEntryException {
-        ProductEntity product = new ProductEntity("test", 8L, 0L);
+        Product product = new Product("test", 8L, 0L);
         product.setId(1L);
 
-        validator = new EntityValidator<ProductEntity>();
+        validator = new EntityValidator<Product>();
         Assert.assertTrue(validator.validate(product));
 
         // TODO some invalid data
@@ -55,8 +55,8 @@ public class EntityValidatorTest {
 
     @Test
     public void productValidationMissingIdTest() throws InvalidEntryException {
-        ProductEntity product = new ProductEntity("test", 8L, 0L);
-        validator = new EntityValidator<ProductEntity>();
+        Product product = new Product("test", 8L, 0L);
+        validator = new EntityValidator<Product>();
         Assert.assertTrue(validator.validateIgnoreId(product));
 
         // TODO some invalid data
@@ -64,30 +64,30 @@ public class EntityValidatorTest {
 
     @Test
     public void orderValidatorTest() throws InvalidEntryException {
-        CustomerEntity customer = new CustomerEntity("test@test.cz", "test", "test", Role.ADMIN);
-        ProductEntity product = new ProductEntity("test", 8L);
+        Customer customer = new Customer("test@test.cz", "test", "test", Role.ADMIN);
+        Product product = new Product("test", 8L);
         product.setId(3L);
-        OrderLineEntity line = new OrderLineEntity(product, 5L);
+        OrderItem line = new OrderItem(product, 5L);
         line.setId(4L);
-        List<OrderLineEntity> lines = new ArrayList<OrderLineEntity>();
+        List<OrderItem> lines = new ArrayList<OrderItem>();
         lines.add(line);
-        OrderEntity order = new OrderEntity(customer, lines);
+        Order order = new Order(customer, lines);
         order.setCreationDate(Calendar.getInstance().getTime());
         order.setId(5L);
-        validator = new EntityValidator<OrderLineEntity>();
+        validator = new EntityValidator<OrderItem>();
         Assert.assertTrue(validator.validate(order));
     }
 
     @Test
     public void orderValidatorMissingIdTest() throws InvalidEntryException {
-        CustomerEntity customer = new CustomerEntity("test@test.cz", "test", "test", Role.ADMIN);
-        ProductEntity product = new ProductEntity("test", 8L);
-        OrderLineEntity line = new OrderLineEntity(product, 5L);
-        List<OrderLineEntity> lines = new ArrayList<OrderLineEntity>();
+        Customer customer = new Customer("test@test.cz", "test", "test", Role.ADMIN);
+        Product product = new Product("test", 8L);
+        OrderItem line = new OrderItem(product, 5L);
+        List<OrderItem> lines = new ArrayList<OrderItem>();
         lines.add(line);
-        OrderEntity order = new OrderEntity(customer, lines);
+        Order order = new Order(customer, lines);
         order.setCreationDate(Calendar.getInstance().getTime());
-        validator = new EntityValidator<OrderLineEntity>();
+        validator = new EntityValidator<OrderItem>();
         Assert.assertTrue(validator.validateIgnoreId(order));
     }
 }

@@ -4,8 +4,8 @@
  */
 package cz.fi.muni.eshop.test.basket;
 
-import cz.fi.muni.eshop.model.ProductEntity;
-import cz.fi.muni.eshop.service.basket.BasketManager;
+import cz.fi.muni.eshop.model.Product;
+import cz.fi.muni.eshop.service.basket.BasketBean;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import org.junit.Test;
  */
 public abstract class AbstractBasketTest {
 
-    BasketManager<ProductEntity> basket;
+    BasketBean basket;
 
     @After
     public void clearBasket() {
@@ -25,18 +25,18 @@ public abstract class AbstractBasketTest {
 
     @Test
     public void addToBasketTest() {
-        ProductEntity product = new ProductEntity("last", 8L);
+        Product product = new Product("last", 8L);
         product.setId(15L);
         basket.addToBasket(product);
         for (long i = 5; i < 10; i++) {
-            product = new ProductEntity("name" + i, i);
+            product = new Product("name" + i, i);
             product.setId(i);
             basket.addToBasket(product);
         }
-        product = new ProductEntity("first", 78L);
+        product = new Product("first", 78L);
         product.setId(1L);
         basket.addToBasket(product);
-        for (ProductEntity productX : basket.getAllProductsInBasket()) {
+        for (Product productX : basket.getAllProductsInBasket()) {
             System.out.println(productX);
         }
 
@@ -49,7 +49,7 @@ public abstract class AbstractBasketTest {
 
     @Test
     public void updateTest() {
-        ProductEntity product = new ProductEntity("Name", 77L);
+        Product product = new Product("Name", 77L);
         product.setId(1L);
         Assert.assertFalse(basket.isInBasket(product));
         basket.addToBasket(product);
@@ -72,7 +72,7 @@ public abstract class AbstractBasketTest {
     @Test
     public void increaseAndDecreaseTest() {
         Assert.assertTrue(basket.isEmpty());
-        ProductEntity product = new ProductEntity("Name", 77L);
+        Product product = new Product("Name", 77L);
         product.setId(1L);
         basket.addToBasket(product);
         basket.productQuantityIncrement(product, 8L);

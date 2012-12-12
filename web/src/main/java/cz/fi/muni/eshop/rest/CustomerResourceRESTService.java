@@ -4,7 +4,7 @@
  */
 package cz.fi.muni.eshop.rest;
 
-import cz.fi.muni.eshop.model.CustomerEntity;
+import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.util.exceptions.InvalidEntryException;
 import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
@@ -38,16 +38,16 @@ public class CustomerResourceRESTService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<CustomerEntity> listAllProducts() {
+    public List<Customer> listAllProducts() {
         log.info("FindAllCustomers");
         return customerManager.getCustomers();
     }
 
     @GET
     @Path("/{email:.*}") // TODO fix pattern
-    public CustomerEntity lookupCustomerById(@PathParam("email") String email) {
+    public Customer lookupCustomerById(@PathParam("email") String email) {
         log.info("lookupProductById");
-        CustomerEntity customer;
+        Customer customer;
         try {
             customer = customerManager.isRegistered(email);
             if (customer == null) {
