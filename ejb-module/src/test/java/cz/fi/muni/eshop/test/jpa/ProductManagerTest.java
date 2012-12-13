@@ -15,6 +15,7 @@ import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.test.TestResources;
+import cz.fi.muni.eshop.util.DataGenerator;
 
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -34,18 +35,20 @@ import org.junit.runner.RunWith;
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @RunWith(Arquillian.class)
-public class ProductManagerJPATest {
+public class ProductManagerTest {
 
     @Inject
-    Logger log;
+    private Logger log;
     @Inject
     private ProductManager productManager;
     @Inject
     private Product product;
+    @Inject
+    private DataGenerator dataGenerator;
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Storeman.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+        return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Storeman.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
 
@@ -59,6 +62,12 @@ public class ProductManagerJPATest {
     @After
     public void cleanUp() {
         productManager.clearProductsTable();
+    }
+    
+    @Test
+    public void getProductTableCountTest() {
+        dataGenerator.generateProducts(20L, 20L, 20L);
+        Assert.assertEquals(productManager.getProducts().size(),(long) productManager.getProductTableCount());
     }
 
     @Test
@@ -94,4 +103,6 @@ public class ProductManagerJPATest {
         Assert.assertEquals(productManager.getProducts().size(), 2L);
         Assert.assertTrue(productManager.getProducts().contains(product));
     }
+    
+    
 }

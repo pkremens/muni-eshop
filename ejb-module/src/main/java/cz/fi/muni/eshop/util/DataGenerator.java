@@ -5,11 +5,17 @@
 package cz.fi.muni.eshop.util;
 
 import cz.fi.muni.eshop.model.Customer;
+import cz.fi.muni.eshop.model.Order;
+import cz.fi.muni.eshop.model.OrderItem;
 import cz.fi.muni.eshop.model.Product;
+import cz.fi.muni.eshop.model.Storeman;
 import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.CustomerManager;
+import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
-import javax.ejb.Stateless;
+import cz.fi.muni.eshop.service.StoremanManager;
+import java.util.ArrayList;
+import java.util.List;
 import javax.enterprise.context.RequestScoped;
 // import java.util.Random;
 import javax.inject.Inject;
@@ -25,7 +31,12 @@ public class DataGenerator {
     private CustomerManager customerManager;
     @Inject
     private ProductManager productManager;
-   // private Random random = new Random();
+    @Inject
+    private OrderManager orderManager;
+    @Inject
+    private StoremanManager storemanManager;
+    
+    // private Random random = new Random();
 
     public void generateCustomers(Long quantity) {
         for (int i = 0; i < quantity; i++) {
@@ -72,6 +83,40 @@ public class DataGenerator {
             product.setStored(stored);
             product.setProductName(base);
             productManager.addProduct(product);
+        }
+    }
+
+    /**
+     * MUST BE CALLED AFTER PRODUCTS AND CUSTOMERS GENERATION!!!
+     *
+     * @param quantity number of orders to be generated
+     */
+    public void generateOrders(Long quantity, Long itemsPerOrder) {
+        List<Customer> customers = customerManager.getCustomers();
+        List<Product> products = productManager.getProducts();
+        long productsCount = products.size();
+        long customersCount = customers.size();
+        OrderItem orderItem;
+        Order order;
+        List<OrderItem> items;
+        for (int i = 0; i < quantity; i++) {
+            order = new Order();
+            items = new ArrayList<OrderItem>();
+            order.setCustomer(customers.get((int) (Math.random() * customersCount)));
+            for (int j = 0; j < itemsPerOrder; j++) {
+                orderItem = new OrderItem(products.get((int) (Math.random() * productsCount)), ((long) Math.random() * quantity + 1) - 1); // don't want zeros!
+                items.add(orderItem);
+            }
+            order.setOrderItems(items);
+            orderManager.addOrder(order);
+        }
+    }
+
+    public void generateStoremen(Long quantity) {
+        for (int i = 0; i < quantity; i++) {
+            String base = "storeman" + i;
+            Storeman storeman = new Storeman(base);
+            storemanManager.addProduct(storeman);
         }
     }
 }

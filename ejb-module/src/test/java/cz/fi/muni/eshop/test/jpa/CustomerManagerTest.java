@@ -13,7 +13,9 @@ import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.model.Storeman;
 import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.CustomerManager;
+import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.test.TestResources;
+import cz.fi.muni.eshop.util.DataGenerator;
 
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -40,10 +42,12 @@ public class CustomerManagerTest {
     private CustomerManager customerManager;
     @Inject
     private Customer customer;
+    @Inject
+    private DataGenerator generator;
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "customer-test.war").addClasses(OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Storeman.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+        return ShrinkWrap.create(WebArchive.class, "customer-test.war").addClasses(ProductManager.class, DataGenerator.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Storeman.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
 
@@ -55,6 +59,12 @@ public class CustomerManagerTest {
     @After
     public void cleanUp() {
         customerManager.clearCustomersTable();
+    }
+
+    @Test
+    public void getCustomerTableCountTest() {
+        generator.generateCustomers(20L);
+        Assert.assertEquals(customerManager.getCustomers().size(), (long) customerManager.getCustomerTableCount());
     }
 
     @Test

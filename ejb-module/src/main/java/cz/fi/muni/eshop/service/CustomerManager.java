@@ -5,6 +5,7 @@
 package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.Customer;
+import cz.fi.muni.eshop.model.Invoice;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -85,6 +86,15 @@ public class CustomerManager {
             log.info("Unable to verify customer: email=" + email + " password=" + password);
         }
         return cust;
+    }
+    
+        public Long getCustomerTableCount() {
+        log.info("Get customers table status");
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
+        Root<Customer> customer = criteria.from(Customer.class);
+        criteria.select(cb.count(customer));
+        return em.createQuery(criteria).getSingleResult().longValue();
     }
 
     public void clearCustomersTable() {

@@ -5,6 +5,7 @@
 package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.Customer;
+import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.Product;
 import java.util.List;
 import java.util.logging.Logger;
@@ -62,6 +63,15 @@ public class ProductManager {
         Root<Product> product = criteria.from(Product.class);
         criteria.select(product);
         return em.createQuery(criteria).getResultList();
+    }
+    
+     public Long getProductTableCount() {
+        log.info("Get product table status");
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
+        Root<Product> product = criteria.from(Product.class);
+        criteria.select(cb.count(product));
+        return em.createQuery(criteria).getSingleResult().longValue();
     }
 
     public void clearProductsTable() {

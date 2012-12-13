@@ -4,8 +4,8 @@
  */
 package cz.fi.muni.eshop.service;
 
+import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.Order;
-import cz.fi.muni.eshop.model.Product;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -56,12 +56,20 @@ public class OrderManager {
         return em.createQuery(criteria).getResultList();
     }
 
+    
+    public Long getOrderTableCount() {
+        log.info("Get orders table status");
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
+        Root<Order> order = criteria.from(Order.class);
+        criteria.select(cb.count(order));
+        return em.createQuery(criteria).getSingleResult().longValue();
+    }
+
+    
     public void clearOrdersTable() {
         for (Order order : getOrders()) {
             em.remove(order);
         }
     }
-    
-    
-    
 }

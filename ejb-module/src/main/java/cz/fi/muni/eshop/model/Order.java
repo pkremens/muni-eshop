@@ -38,7 +38,7 @@ public class Order implements Serializable {
     private Storeman storeman;
     
     @OneToMany(cascade = {CascadeType.ALL})
-    private List<OrderItem> orderLines;
+    private List<OrderItem> orderItems;
     
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
@@ -86,14 +86,15 @@ public class Order implements Serializable {
         this.invoice = invoice;
     }
 
-    public List<OrderItem> getOrderLines() {
-        return orderLines;
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
     }
 
-    public void setOrderLines(List<OrderItem> orderLines) {
-        this.orderLines = orderLines;
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
-
+    
+    
     public Storeman getStoreman() {
         return storeman;
     }
@@ -120,7 +121,7 @@ public class Order implements Serializable {
         if (this.storeman != other.storeman && (this.storeman == null || !this.storeman.equals(other.storeman))) {
             return false;
         }
-        if (this.orderLines != other.orderLines && (this.orderLines == null || !this.orderLines.equals(other.orderLines))) {
+        if (this.orderItems != other.orderItems && (this.orderItems == null || !this.orderItems.equals(other.orderItems))) {
             return false;
         }
         if (this.creationDate != other.creationDate && (this.creationDate == null || !this.creationDate.equals(other.creationDate))) {
@@ -138,7 +139,7 @@ public class Order implements Serializable {
         hash = 41 * hash + (this.id != null ? this.id.hashCode() : 0);
         hash = 41 * hash + (this.customer != null ? this.customer.hashCode() : 0);
         hash = 41 * hash + (this.storeman != null ? this.storeman.hashCode() : 0);
-        hash = 41 * hash + (this.orderLines != null ? this.orderLines.hashCode() : 0);
+        hash = 41 * hash + (this.orderItems != null ? this.orderItems.hashCode() : 0);
         hash = 41 * hash + (this.creationDate != null ? this.creationDate.hashCode() : 0);
         hash = 41 * hash + (this.invoice != null ? this.invoice.hashCode() : 0);
         return hash;
@@ -146,7 +147,7 @@ public class Order implements Serializable {
 
     @Override
     public String toString() {
-        return "Order{" + "id=" + id + ", customer=" + customer + ", storeman=" + storeman + ", orderLines=" + orderLines + ", creationDate=" + creationDate + ", invoice=" + invoice + '}';
+        return "Order{" + "id=" + id + ", customer=" + customer + ", storeman=" + storeman + ", orderItems=" + orderItems + ", creationDate=" + creationDate + ", invoice=" + invoice + '}';
     }
     
     

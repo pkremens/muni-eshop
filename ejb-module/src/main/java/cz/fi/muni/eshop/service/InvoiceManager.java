@@ -71,8 +71,7 @@ public class InvoiceManager {
         }
     }
 
-    // TEST!!!
-    public Long getInvoiceTableStatus() {
+    public Long getInvoiceTableCount() {
         log.info("Get invoices table status");
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
