@@ -11,7 +11,7 @@ import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.model.Storeman;
 import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.util.EntityValidator;
-import cz.fi.muni.eshop.util.exceptions.InvalidEntryException;
+import cz.fi.muni.eshop.util.InvalidEntryException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -47,16 +47,17 @@ public class EntityValidatorTest {
     public void productValidationTest() throws InvalidEntryException {
         Product product = new Product("test", 8L, Category.TYPE1);
         product.setId(1L);
-
+        product.setStored(4L);
+        product.setReserved(5L);
         validator = new EntityValidator<Product>();
         Assert.assertTrue(validator.validate(product));
-
-        // TODO some invalid data
     }
 
     @Test
     public void productValidationMissingIdTest() throws InvalidEntryException {
         Product product = new Product("test", 8L, Category.TYPE1);
+        product.setStored(4L);
+        product.setReserved(5L);
         validator = new EntityValidator<Product>();
         Assert.assertTrue(validator.validateIgnoreId(product));
 

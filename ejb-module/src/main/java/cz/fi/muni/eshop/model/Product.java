@@ -73,11 +73,11 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public Long getOnStore() {
+    public Long getStored() {
         return stored;
     }
 
-    public void setOnStore(Long stored) {
+    public void setStored(Long stored) {
         this.stored = stored;
     }
 

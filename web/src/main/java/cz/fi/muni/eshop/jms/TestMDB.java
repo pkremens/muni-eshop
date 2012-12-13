@@ -5,7 +5,6 @@
 package cz.fi.muni.eshop.jms;
 
 import cz.fi.muni.eshop.util.ControlMessage;
-import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
@@ -26,7 +25,6 @@ import javax.jms.MessageListener;
 public class TestMDB implements MessageListener {
 
     @Inject
-    @MuniEshopLogger
     private Logger log;
 
     @Override

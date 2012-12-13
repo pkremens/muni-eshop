@@ -5,9 +5,18 @@
 package cz.fi.muni.eshop.test.jpa;
 
 import cz.fi.muni.eshop.model.Customer;
+import cz.fi.muni.eshop.model.Invoice;
+import cz.fi.muni.eshop.model.InvoiceItem;
+import cz.fi.muni.eshop.model.Order;
+import cz.fi.muni.eshop.model.OrderItem;
+import cz.fi.muni.eshop.model.Product;
+import cz.fi.muni.eshop.model.Storeman;
+import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.CustomerManager;
+import cz.fi.muni.eshop.test.TestResources;
 import cz.fi.muni.eshop.util.EntityValidator;
-import cz.fi.muni.eshop.util.exceptions.InvalidEntryException;
+import cz.fi.muni.eshop.util.InvalidEntryException;
+
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import junit.framework.Assert;
@@ -30,15 +39,13 @@ import org.junit.runner.RunWith;
 public class CustomerManagerTest {
 
     @Inject
-    private Logger log;
-    @Inject
     private CustomerManager customerManager;
     @Inject
     private Customer customer;
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "customer-test.war").addClasses(Customer.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+        return ShrinkWrap.create(WebArchive.class, "customer-test.war").addClasses(EntityValidator.class,OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Storeman.class, Order.class, Customer.class ,InvalidEntryException.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
 
@@ -71,6 +78,7 @@ public class CustomerManagerTest {
 
     @Test
     public void getByIdTest() {
+        setUp();
         long id = customer.getId();
         customer = customerManager.getCustomerById(id);
         Assert.assertNotNull(customer);
@@ -78,11 +86,13 @@ public class CustomerManagerTest {
 
     @Test
     public void verifyTest() {
+        setUp();
         customer = customerManager.verifyCustomer("rambo.john@foogle.com", "phoenix");
         Assert.assertNotNull(customer);
     }
 
     public void getCustomersTest() {
+        setUp();
         customer = new Customer("ssss@ddd.cc", "SDSADS", "ASDSADA");
         customerManager.addCustomer(customer);
         Assert.assertEquals(customerManager.getCustomers().size(), 2);
@@ -104,21 +114,14 @@ public class CustomerManagerTest {
 
     @Test
     @InSequence(2)
-    public void updateTest() throws InvalidEntryException {
-        Assert.assertTrue(customer.getEmail() == null);
+    public void updateTest(){
+        setUp();
         customer = customerManager.verifyCustomer("rambo.john@foogle.com", "phoenix");
         Assert.assertEquals("Rocky Balboa", customer.getName());
         customer.setName("John Spartan");
         customerManager.updateCustomer(customer);
     }
 
-    @Test
-    @InSequence(3)
-    public void fetchAfterUpdateTest() throws InvalidEntryException {
-        customer = customerManager.verifyCustomer("rambo.john@foogle.com", "phoenix");
-        Assert.assertEquals("John Spartan", customer.getName());
-
-    }
 
     @Test
     @InSequence(5)
@@ -128,11 +131,18 @@ public class CustomerManagerTest {
         Assert.assertNull(customer);
     }
 
-    @Test(expected = InvalidEntryException.class)
+    @Test // Can not expect my own exception here in Test header :/
     @InSequence(5)
     public void addingCustomerWithInvalidEmailTest() throws InvalidEntryException {
         customer = new Customer("invalidMail", "name", "password");
         EntityValidator<Customer> validator = new EntityValidator<Customer>();
+        boolean caught = false;
+        try {
         validator.validate(customer);
+        } catch (InvalidEntryException iee) {
+            caught = true;
+        }
+        Assert.assertTrue(caught);
+        
     }
 }

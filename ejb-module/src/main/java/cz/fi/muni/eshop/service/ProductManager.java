@@ -66,10 +66,8 @@ public class ProductManager {
     
         public void clearProductsTable() {
         List<Product> products = getProducts();
-        em.getTransaction().begin();
         for (Product product : products) {
             em.remove(product);
         }
-        em.getTransaction().commit();
     } 
 }

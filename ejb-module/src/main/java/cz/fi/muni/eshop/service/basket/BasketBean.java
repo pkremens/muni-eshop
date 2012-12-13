@@ -3,8 +3,8 @@ package cz.fi.muni.eshop.service.basket;
 import cz.fi.muni.eshop.model.Product;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 
 import javax.enterprise.context.SessionScoped;
@@ -86,7 +86,7 @@ public class BasketBean {
 
     public void initNewBasket() {
         totalPrice = 0L;
-        basket = new TreeMap<Product, Long>();
+        basket = new HashMap<Product, Long>();
 
     }
 

@@ -4,7 +4,6 @@
  */
 package cz.fi.muni.eshop.util;
 
-import cz.fi.muni.eshop.util.exceptions.InvalidEntryException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

@@ -76,7 +76,7 @@ public class CustomerManager {
         CriteriaQuery<Customer> criteria = cb.createQuery(Customer.class);
         Root<Customer> customer = criteria.from(Customer.class);
         Predicate emailPredicate = cb.equal(customer.get("email"), email);
-        Predicate passwordPredicate = cb.equal(customer.get("email"), email);
+        Predicate passwordPredicate = cb.equal(customer.get("password"), password);
         criteria.select(customer).where(cb.and(emailPredicate, passwordPredicate));
         Customer cust = null;
         try {
@@ -84,15 +84,13 @@ public class CustomerManager {
         } catch (NoResultException nre) {
             log.info("Unable to verify customer: email=" + email + " password=" + password);
         }
-        return null;
+        return cust;
     }
-    
+
     public void clearCustomersTable() {
         List<Customer> customers = getCustomers();
-        em.getTransaction().begin();
         for (Customer customer : customers) {
             em.remove(customer);
         }
-        em.getTransaction().commit();
-    } 
+    }
 }
