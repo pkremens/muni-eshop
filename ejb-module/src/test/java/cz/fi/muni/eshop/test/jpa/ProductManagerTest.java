@@ -13,7 +13,9 @@ import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.model.Storeman;
 import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.CustomerManager;
+import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
+import cz.fi.muni.eshop.service.StoremanManager;
 import cz.fi.muni.eshop.test.TestResources;
 import cz.fi.muni.eshop.util.DataGenerator;
 
@@ -48,7 +50,7 @@ public class ProductManagerTest {
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Storeman.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+        return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(StoremanManager.class,OrderManager.class,DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Storeman.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
 

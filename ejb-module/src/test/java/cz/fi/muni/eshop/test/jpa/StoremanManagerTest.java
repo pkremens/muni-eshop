@@ -85,8 +85,6 @@ public class StoremanManagerTest {
         storemanManager.updateStoreman(storeman);
         storeman = storemanManager.getStoremanByName("xxx");
         Assert.assertEquals((long) storeman.getId(), id);
-
-
     }
 
     @Test

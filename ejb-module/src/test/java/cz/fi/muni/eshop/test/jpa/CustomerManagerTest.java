@@ -13,16 +13,16 @@ import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.model.Storeman;
 import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.CustomerManager;
+import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
+import cz.fi.muni.eshop.service.StoremanManager;
 import cz.fi.muni.eshop.test.TestResources;
 import cz.fi.muni.eshop.util.DataGenerator;
 
-import java.util.logging.Logger;
 import javax.inject.Inject;
 import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.junit.InSequence;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -44,10 +44,11 @@ public class CustomerManagerTest {
     private Customer customer;
     @Inject
     private DataGenerator generator;
+    
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "customer-test.war").addClasses(ProductManager.class, DataGenerator.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Storeman.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+        return ShrinkWrap.create(WebArchive.class, "customer-test.war").addClasses(OrderManager.class,Storeman.class, StoremanManager.class, ProductManager.class, DataGenerator.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Storeman.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
 

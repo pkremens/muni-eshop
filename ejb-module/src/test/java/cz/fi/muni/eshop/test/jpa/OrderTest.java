@@ -15,13 +15,17 @@ import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
+import cz.fi.muni.eshop.service.StoremanManager;
 import cz.fi.muni.eshop.test.TestResources;
+import cz.fi.muni.eshop.util.DataGenerator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.inject.Inject;
+import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit.InSequence;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -51,16 +55,27 @@ public class OrderTest {
     private OrderManager orderManager;
     @Inject
     private CustomerManager customerManager;
-    @Inject 
+    @Inject
     private ProductManager productManager;
+    @Inject
+    private DataGenerator generator;
+    private long testId;
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(OrderManager.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Storeman.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+        return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(StoremanManager.class, DataGenerator.class, OrderManager.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Storeman.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
 
+    private void setUp() {
+        generator.generateCustomers(20L);
+        generator.generateProducts(20L, 20L, 20L);
+        generator.generateOrders(20L, 20L);
+
+    }
+
     @Test
+    @InSequence(2)
     public void addOrderTest() {
         order = new Order();
         customer = new Customer("xxx@xxx.xx", "xxx", "xxx");
@@ -73,5 +88,28 @@ public class OrderTest {
         items.add(orderItem);
         order.setOrderItems(items);
         orderManager.addOrder(order);
+        testId = order.getId();
+        Assert.assertNotNull(testId);
+        log.info(order.toString());
+
     }
+
+    @Test
+    @InSequence(1)
+    public void setUpTest() {
+        setUp();
+    }
+    @Test
+    @InSequence(3)
+    @Ignore
+    public void updateTest() {
+        
+        order = orderManager.getOrderById(463L); // TOTO MUSIM CO NEJDRIV ZMENIT AT NENI HARDCODED!!!!
+        String customersName = order.getCustomer().getName();
+        order.getCustomer().setName("xxx");
+        orderManager.update(order);
+        order = orderManager.getOrderById(testId);
+        Assert.assertEquals(order.getCustomer().getName(), "xxx");
+    }
+
 }

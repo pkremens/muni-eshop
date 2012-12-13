@@ -8,6 +8,7 @@ import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.InvoiceManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
+import cz.fi.muni.eshop.service.StoremanManager;
 import java.util.logging.Logger;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
@@ -29,6 +30,8 @@ public class ControllerBean {
     @Inject
     private OrderManager orderManager;
     @Inject
+    private StoremanManager storemanManager;
+    @Inject
     private Logger log;
 
     public void generateData() {
@@ -45,5 +48,6 @@ public class ControllerBean {
         customerManager.clearCustomersTable();
         invoiceManager.clearInvoiceTable(); 
         orderManager.clearOrdersTable();
+        storemanManager.clearStoremanTable();
     }
 }

@@ -39,9 +39,9 @@ public class BasketBean {
     public void productQuantityDecrement(Product product, Long toRemove) {
         long maxRemove = (basket.get(product) - 1);
         if (maxRemove == 0) {
-            throw new IllegalArgumentException("Can not remove negative value.");
+            // Can not decrease quantity => ignore
         } else {
-            long update = (toRemove > maxRemove) ? maxRemove : toRemove;	// how many will I actually remove		
+            long update = (toRemove > maxRemove) ? maxRemove : toRemove;	// how many will I actually remove
             totalPrice -= product.getPrice() * (update);
             long newQuantity = basket.get(product) - update;
             updateInBasket(product, newQuantity);
