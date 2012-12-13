@@ -14,8 +14,6 @@ import cz.fi.muni.eshop.model.Storeman;
 import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.test.TestResources;
-import cz.fi.muni.eshop.util.EntityValidator;
-import cz.fi.muni.eshop.util.InvalidEntryException;
 
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -45,7 +43,7 @@ public class CustomerManagerTest {
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "customer-test.war").addClasses(EntityValidator.class,OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Storeman.class, Order.class, Customer.class ,InvalidEntryException.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
+        return ShrinkWrap.create(WebArchive.class, "customer-test.war").addClasses(OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Storeman.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml", "test-ds.xml");
     }
 
@@ -97,52 +95,5 @@ public class CustomerManagerTest {
         customerManager.addCustomer(customer);
         Assert.assertEquals(customerManager.getCustomers().size(), 2);
         Assert.assertTrue(customerManager.getCustomers().contains(customer));
-    }
-
-    // OLD
-    // #########################################################################
-    // OLD
-    @Test
-    @InSequence(1)
-    public void addCustomerXTest() {
-        Assert.assertTrue(customerManager.getCustomers().isEmpty());
-        customer = new Customer("rambo.john@foogle.com", "Rocky Balboa", "phoenix");
-        Assert.assertNull(customer.getId());
-        customerManager.addCustomer(customer);
-        Assert.assertNotNull(customer.getId());
-    }
-
-    @Test
-    @InSequence(2)
-    public void updateTest(){
-        setUp();
-        customer = customerManager.verifyCustomer("rambo.john@foogle.com", "phoenix");
-        Assert.assertEquals("Rocky Balboa", customer.getName());
-        customer.setName("John Spartan");
-        customerManager.updateCustomer(customer);
-    }
-
-
-    @Test
-    @InSequence(5)
-    public void verificationWrongUserTest() throws InvalidEntryException {
-        Customer customer;
-        customer = customerManager.verifyCustomer("Dummy", "not-important");
-        Assert.assertNull(customer);
-    }
-
-    @Test // Can not expect my own exception here in Test header :/
-    @InSequence(5)
-    public void addingCustomerWithInvalidEmailTest() throws InvalidEntryException {
-        customer = new Customer("invalidMail", "name", "password");
-        EntityValidator<Customer> validator = new EntityValidator<Customer>();
-        boolean caught = false;
-        try {
-        validator.validate(customer);
-        } catch (InvalidEntryException iee) {
-            caught = true;
-        }
-        Assert.assertTrue(caught);
-        
     }
 }

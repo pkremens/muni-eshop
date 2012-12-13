@@ -88,8 +88,8 @@ public class CustomerManager {
     }
 
     public void clearCustomersTable() {
-        List<Customer> customers = getCustomers();
-        for (Customer customer : customers) {
+        log.info("Clear customers ");
+        for (Customer customer : getCustomers()) {
             em.remove(customer);
         }
     }

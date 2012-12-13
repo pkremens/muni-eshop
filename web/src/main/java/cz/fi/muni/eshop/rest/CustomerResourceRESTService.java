@@ -6,13 +6,11 @@ package cz.fi.muni.eshop.rest;
 
 import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.service.CustomerManager;
-import cz.fi.muni.eshop.util.exceptions.InvalidEntryException;
-import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
-import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -30,10 +28,8 @@ import javax.ws.rs.core.Response;
 public class CustomerResourceRESTService {
 
     @Inject
-    @MuniEshopLogger
     private Logger log;
     @Inject
-    @TypeResolved
     private CustomerManager customerManager;
 
     @GET
@@ -49,11 +45,8 @@ public class CustomerResourceRESTService {
         log.info("lookupProductById");
         Customer customer;
         try {
-            customer = customerManager.isRegistered(email);
-            if (customer == null) {
-                throw new WebApplicationException(Response.Status.NOT_FOUND);
-            }
-        } catch (InvalidEntryException nre) {
+            customer = customerManager.getCustomerByEmail(email);
+        } catch (NoResultException nre) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
         return customer;

@@ -2,8 +2,6 @@ package cz.fi.muni.eshop.rest;
 
 import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.service.ProductManager;
-import cz.fi.muni.eshop.util.qualifier.MuniEshopLogger;
-import cz.fi.muni.eshop.util.qualifier.TypeResolved;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
@@ -22,10 +20,8 @@ import javax.ws.rs.core.Response;
 public class ProductResourceRESTService {
 
     @Inject
-    @MuniEshopLogger
     private Logger log;
     @Inject
-    @TypeResolved
     private ProductManager productManager;
 
     @GET
@@ -42,7 +38,7 @@ public class ProductResourceRESTService {
         log.info("lookupProductById");
         Product product;
         try {
-            product = productManager.findProductById(id);
+            product = productManager.getProductById(id);
         } catch (NoResultException nre) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }

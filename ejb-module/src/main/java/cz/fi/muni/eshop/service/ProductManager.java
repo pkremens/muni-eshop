@@ -26,48 +26,48 @@ public class ProductManager {
     private EntityManager em;
     @Inject
     private Logger log;
-    
+
     public void addProduct(Product product) {
         log.info("Adding product: " + product);
         em.persist(product);
     }
-    
+
     public void updateProduct(Product product) {
         log.info("Updating product: " + product);
         em.merge(product);
     }
-    
+
     public Product getProductById(Long id) {
         log.info("Find product by id: " + id);
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Product> criteria =  cb.createQuery(Product.class);
+        CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
         Root<Product> product = criteria.from(Product.class);
         criteria.select(product).where(cb.equal(product.get("id"), id));
         return em.createQuery(criteria).getSingleResult();
     }
-    
+
     public Product getProductByName(String name) {
         log.info("Get product by name: " + name);
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Product> criteria =  cb.createQuery(Product.class);
+        CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
         Root<Product> product = criteria.from(Product.class);
         criteria.select(product).where(cb.equal(product.get("name"), name));
         return em.createQuery(criteria).getSingleResult();
     }
-    
+
     public List<Product> getProducts() {
         log.info("Get all products");
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Product> criteria =  cb.createQuery(Product.class);
+        CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
         Root<Product> product = criteria.from(Product.class);
         criteria.select(product);
         return em.createQuery(criteria).getResultList();
     }
-    
-        public void clearProductsTable() {
-        List<Product> products = getProducts();
-        for (Product product : products) {
+
+    public void clearProductsTable() {
+        log.info("Clear products table");
+        for (Product product : getProducts()) {
             em.remove(product);
         }
-    } 
+    }
 }

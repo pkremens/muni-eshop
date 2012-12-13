@@ -32,7 +32,7 @@ public class Product implements Serializable {
     @NotNull
     private Long stored;
     @NotNull
-    private Long reserved;
+    private Long reserved = 0L;
 
     public Product() {
     }

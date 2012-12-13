@@ -5,6 +5,7 @@
 package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.Order;
+import cz.fi.muni.eshop.model.Product;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -45,8 +46,8 @@ public class OrderManager {
         criteria.select(order).where(cb.equal(order.get("id"), id));
         return em.createQuery(criteria).getSingleResult();
     }
-    
-    public List<Order> getOrders(){
+
+    public List<Order> getOrders() {
         log.info("Get all orders");
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Order> criteria = cb.createQuery(Order.class);
@@ -54,4 +55,13 @@ public class OrderManager {
         criteria.select(order);
         return em.createQuery(criteria).getResultList();
     }
+
+    public void clearOrdersTable() {
+        for (Order order : getOrders()) {
+            em.remove(order);
+        }
+    }
+    
+    
+    
 }
