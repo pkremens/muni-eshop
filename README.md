@@ -97,3 +97,6 @@ from now I must full profile to support jms: ./standalone.sh -c standalone-full.
 datasource adding: https://zorq.net/b/2011/07/12/adding-a-mysql-datasource-to-jboss-as-7/
 !change modul version to 1.1
 run MySQL server before start
+
+remove branch from origin:
+git push origin --delete <branchName>
