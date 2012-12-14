@@ -2,36 +2,40 @@ package cz.fi.muni.eshop.model;
 
 import cz.fi.muni.eshop.model.enums.Category;
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Entity
-@XmlRootElement
 public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotNull
+    @Column(unique = true)
     private String name;
     @NotNull
+    @Min(1)
     private Long price;
     @NotNull
     @Enumerated(EnumType.STRING)
     private Category category;
     @NotNull
+    @Min(0)
     private Long stored;
     @NotNull
+    @Min(0)
     private Long reserved = 0L;
 
     public Product() {
@@ -48,7 +52,7 @@ public class Product implements Serializable {
         this.stored = stored;
         this.reserved = reserved;
     }
-
+    
     public Long getPrice() {
         return price;
     }

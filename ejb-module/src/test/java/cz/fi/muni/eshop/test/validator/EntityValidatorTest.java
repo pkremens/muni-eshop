@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.fi.muni.eshop.validator;
+package cz.fi.muni.eshop.test.validator;
 
 import org.junit.Ignore;
 import org.junit.Test;

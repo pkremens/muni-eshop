@@ -9,13 +9,13 @@ import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.InvoiceItem;
 import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
+import cz.fi.muni.eshop.model.OrderRoot;
 import cz.fi.muni.eshop.model.Product;
-import cz.fi.muni.eshop.model.Storeman;
 import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
-import cz.fi.muni.eshop.service.StoremanManager;
+import cz.fi.muni.eshop.test.DummyMDB;
 import cz.fi.muni.eshop.test.TestResources;
 import cz.fi.muni.eshop.util.DataGenerator;
 
@@ -50,61 +50,62 @@ public class ProductManagerTest {
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(StoremanManager.class,OrderManager.class,DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Storeman.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
-                .addAsWebInfResource("test-ds.xml", "test-ds.xml");
+        return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(DummyMDB.class,OrderRoot.class, OrderManager.class, DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     private void setUp() {
-        product = new Product("name", 5L, Category.TYPE1);
-        product.setStored(5L);
-        product.setReserved(6L);
-        productManager.addProduct(product);
+        product = productManager.addProduct("name", 44L, Category.TYPE1, 343L, 23L);
     }
 
     @After
     public void cleanUp() {
         productManager.clearProductsTable();
     }
-    
-    @Test
-    public void getProductTableCountTest() {
-        dataGenerator.generateProducts(20L, 20L, 20L);
-        Assert.assertEquals(productManager.getProducts().size(),(long) productManager.getProductTableCount());
-    }
 
     @Test
     public void addProductTest() {
-        product = new Product("name", 5L, Category.TYPE1);
-        product.setStored(5L);
-        product.setReserved(6L);
-        Assert.assertNull(product.getId());
-        productManager.addProduct(product);
+        setUp();
         Assert.assertNotNull(product.getId());
     }
 
     @Test
-    public void updateTest() {
+    public void refillProductTest() {
         setUp();
-        long id = product.getId();
-        product.setProductName("ASD");
-        productManager.updateProduct(product);
-        product = productManager.getProductByName("ASD");
-        int hash = productManager.hashCode();
-        product = productManager.getProductById(id);
-        Assert.assertEquals((long) product.getId(), id);
-
+        productManager.refillProduct(product.getId(), 1000L);
+        product = productManager.getProductById(product.getId());
+        Assert.assertEquals(1343L, (long) product.getStored());
     }
 
     @Test
-    public void getAllTest() {
+    public void orderProductTest() {
         setUp();
-        product = new Product("xxx", 5L, Category.TYPE1);
-        product.setStored(5L);
-        product.setReserved(6L);
-        productManager.addProduct(product);
-        Assert.assertEquals(productManager.getProducts().size(), 2L);
-        Assert.assertTrue(productManager.getProducts().contains(product));
+        long oldQ = product.getReserved();
+        productManager.orderProduct(product.getId(), 1000L);
+        product = productManager.getProductById(product.getId());
+        Assert.assertEquals(1000L + oldQ, (long) product.getReserved());
     }
-    
+
+    @Test
+    public void invoiceProductFalseTest() {
+        product = productManager.addProduct("name", 44L, Category.TYPE1, 3L, 23L);
+        Assert.assertFalse(productManager.invoiceProduct(product.getId(), product.getStored() + 1));
+    }
+
+    @Test
+    public void invoiceProductTrueTest() {
+        product = productManager.addProduct("Test", 2L, Category.TYPE1, 20L, 20L);
+        Assert.assertTrue(productManager.invoiceProduct(product.getId(), 20L));
+        product = productManager.getProductById(product.getId());
+        Assert.assertEquals(0L, (long) product.getReserved());
+        Assert.assertEquals(0L, (long) product.getStored());
+    }
+
+    @Test
+    public void getProductTableCountTest() {
+        dataGenerator.generateProducts(20L, 20L, 20L);
+        Assert.assertEquals(productManager.getProducts().size(), (long) productManager.getProductTableCount());
+        Assert.assertEquals(20L, (long) productManager.getProductTableCount());
+    }
+
     
 }

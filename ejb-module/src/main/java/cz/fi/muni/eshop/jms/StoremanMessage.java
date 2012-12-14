@@ -2,21 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.fi.muni.eshop.util;
+package cz.fi.muni.eshop.jms;
 
 /**
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
-public enum ControlMessage {  // POUZIVAM JI V TOM MOJEM JMS TESTU TAK PROTO TU JESTE JE, PAK JI HNED SMAZNU
+public enum StoremanMessage {
 
-    TOO_MANY_CLOSED("There are too many closed orders in database, make a clean up!"),
-    FILL_THE_STORE("There are too many orders, which can not be closed, fill the store!"),
+    CLOSE_ORDER("New order has been registered, close it!"),
+    FILL_THE_STORE("There is some product missing on store, refill!"),
     JMS_CONTROL_MESSAGE("This is my test message for JMS, see you on the other side!");
-    
     private final String message;
 
-    private ControlMessage(String message) {
+    private StoremanMessage(String message) {
         this.message = message;
     }
 

@@ -8,12 +8,10 @@ import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
 import cz.fi.muni.eshop.model.Product;
-import cz.fi.muni.eshop.model.Storeman;
 import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
-import cz.fi.muni.eshop.service.StoremanManager;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
@@ -33,11 +31,8 @@ public class DataGenerator {
     private ProductManager productManager;
     @Inject
     private OrderManager orderManager;
-    @Inject
-    private StoremanManager storemanManager;
-    
-    // private Random random = new Random();
 
+    // private Random random = new Random();
     public void generateCustomers(Long quantity) {
         for (int i = 0; i < quantity; i++) {
             String base = "customer" + i;
@@ -45,11 +40,15 @@ public class DataGenerator {
             customer.setEmail(base + "@mail.xx");
             customer.setName(base);
             customer.setPassword(base);
-            customerManager.addCustomer(customer);
+            customerManager.addCustomer(customer.getEmail(), customer.getName(), customer.getPassword());
         }
     }
 
     public void generateProducts(Long quantity, Long price, Long stored) {
+        generateProducts(quantity, price, stored, false);
+    }
+
+    public void generateProducts(Long quantity, Long price, Long stored, boolean randomStored) {
         for (int i = 0; i < quantity; i++) {
             String base = "product" + i;
             Product product = new Product();
@@ -79,10 +78,14 @@ public class DataGenerator {
                 default:
                     throw new IllegalStateException("Debugg me!");
             }
-            product.setPrice(((long) Math.random() * price + 1) - 1);
-            product.setStored(stored);
+            product.setPrice(((long) (Math.random() * (price - 1))) + 1);// we don't want 0 as price // mel sem tu brouka, proto tolik zavorek
+            if (!randomStored) {
+                product.setStored(stored);
+            } else {
+                product.setStored(((long) (Math.random() * (stored - 1))) + 1);
+            }
             product.setProductName(base);
-            productManager.addProduct(product);
+            productManager.addProduct(product.getProductName(), product.getPrice(), product.getCategory(), product.getStored(), product.getReserved());
         }
     }
 
@@ -92,31 +95,33 @@ public class DataGenerator {
      * @param quantity number of orders to be generated
      */
     public void generateOrders(Long quantity, Long itemsPerOrder) {
-        List<Customer> customers = customerManager.getCustomers();
-        List<Product> products = productManager.getProducts();
-        long productsCount = products.size();
-        long customersCount = customers.size();
-        OrderItem orderItem;
-        Order order;
-        List<OrderItem> items;
-        for (int i = 0; i < quantity; i++) {
-            order = new Order();
-            items = new ArrayList<OrderItem>();
-            order.setCustomer(customers.get((int) (Math.random() * customersCount)));
-            for (int j = 0; j < itemsPerOrder; j++) {
-                orderItem = new OrderItem(products.get((int) (Math.random() * productsCount)), ((long) Math.random() * quantity + 1) - 1); // don't want zeros!
-                items.add(orderItem);
-            }
-            order.setOrderItems(items);
-            orderManager.addOrder(order);
-        }
+        generateOrders(quantity, itemsPerOrder, true);
     }
 
-    public void generateStoremen(Long quantity) {
+    public void generateOrders(long quantity, long itemCount, boolean randomItems) {
+        List<String> emails = customerManager.getCustomerEmails();
+        List<String> productNames = productManager.getProductNames();
+        OrderItem orderItem;
+        Order order;
+        String email;
+        String productName;
+        List<OrderItem> orderItems;
+        long itemsPerOrder;
         for (int i = 0; i < quantity; i++) {
-            String base = "storeman" + i;
-            Storeman storeman = new Storeman(base);
-            storemanManager.addProduct(storeman);
+            if (randomItems) {
+                itemsPerOrder = ((long) (Math.random() * (itemCount - 1))) + 1;
+            } else {
+                itemsPerOrder = itemCount;
+            }
+            orderItems = new ArrayList<OrderItem>();
+            order = new Order();
+            email = emails.get((int) (Math.random() * emails.size()));
+            for (int j = 0; j < itemsPerOrder; j++) {
+                productName = productNames.get((int) (Math.random() * productNames.size()));
+                orderItem = new OrderItem(productManager.getProductByName(productName), (((long) (Math.random() * (quantity - 1))) + 1)); // don't want zeros!
+                orderItems.add(orderItem);
+            }
+            orderManager.addOrderWithOrderItems(email, orderItems);
         }
     }
 }

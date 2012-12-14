@@ -5,9 +5,10 @@
 package cz.fi.muni.eshop.controller;
 
 import cz.fi.muni.eshop.util.Identity;
-import cz.fi.muni.eshop.controller.main.ControllerBean;
+import cz.fi.muni.eshop.util.ControllerBean;
 import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.service.CustomerManager;
+import cz.fi.muni.eshop.service.ProductManager;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -24,6 +25,9 @@ import javax.inject.Named;
 @Model
 public class CustomerController {
 
+    private String email;
+    private String name;
+    private String password;
     @Inject
     private ControllerBean controller;
     @Inject
@@ -33,51 +37,47 @@ public class CustomerController {
     @Inject
     private FacesContext facesContext;
     @Inject
-    private Customer newCustomer;
-    private List<Customer> customers;
-    @Inject
     private Identity identity;
 
-    @PostConstruct
-    public void getAllCustomers() {
-        customers = customerManager.getCustomers();
-        initNewCustomer();
-    }
-
-    private void initNewCustomer() {
-        newCustomer = new Customer();
-    }
-
-    @Produces
-    @Named
-    public Customer getNewCustomer() {
-        return newCustomer;
+    public void register() {
+        identity.logIn(customerManager.addCustomer(email, name, password));
     }
 
     @Produces
     @Named
     List<Customer> getCustomerList() {
-        return customers;
-    }
-
-    public void register() {
-        customerManager.addCustomer(newCustomer);
-        identity.logIn(newCustomer);
+        return customerManager.getCustomers();
     }
 
     public void logIn() {
-        log.warning("Trying to log as: email=" + newCustomer.getEmail() + " password=" + newCustomer.getPassword());
-        Customer customer = customerManager.verifyCustomer(newCustomer.getEmail(), newCustomer.getPassword());
-        if (customer != null) {
-            identity.logIn(newCustomer);
-        } else {
-            log.warning("Failed to log in");
-            initNewCustomer();
-        }
+        identity.logIn(customerManager.verifyCustomer(email, password));
     }
 
     public void logOut() {
         identity.logOut();
-        initNewCustomer();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

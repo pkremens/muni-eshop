@@ -24,7 +24,6 @@ PROBLEM SOLVING:
 WELD-000072 Managed bean declaring a passivating scope must be passivation capable
 solution = missing: implements Serializable
 
-
 16:50:12,428 ERROR [org.jboss.msc.service.fail] (MSC service thread 1-3) MSC00001: Failed to start service jboss.deployment.unit."muni-esho.ear".WeldStartService: org.jboss.msc.service.StartException in service jboss.deployment.unit."muni-esho.ear".WeldStartService: Failed to start service
 	at org.jboss.msc.service.ServiceControllerImpl$StartTask.run(ServiceControllerImpl.java:1767) [jboss-msc-1.0.2.GA.jar:1.0.2.GA]
 	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886) [rt.jar:1.6.0_31]
@@ -63,7 +62,38 @@ web.xml was automaticali created, but I delete it, there it is if needed:
   </welcome-file-list>
 
 
-datasource adding:
+jmssource adding:
 http://www.jboss.org/jdf/quickstarts/jboss-as-quickstart/helloworld-jms/
+using CLI:
+[standalone@localhost:9999 /] jms-queue add --queue-address=testQueue --entries=queue/test,java:jboss/exported/jms/queue/test
+[standalone@localhost:9999 /] jms-topic add --topic-address=testTopic --entries=topic/test,java:jboss/exported/jms/topic/test
+
+Modify the Server JMS Configuration Manually
+
+    Open the file: JBOSS_HOME/standalone/configuration/standalone-full.xml
+    Add the JMS test queue as follows:
+
+        Find the messaging subsystem:
+
+          <subsystem xmlns="urn:jboss:domain:messaging:1.1">
+
+        Scroll to the end of this section and add the following XML after the </jms-connection-factories> end tag but before the </hornetq-server> element:
+
+              <jms-destinations>
+                  <jms-queue name="testQueue">
+                      <entry name="queue/test"/>
+                      <entry name="java:jboss/exported/jms/queue/test"/>
+                  </jms-queue>
+                  <jms-topic name="testTopic">
+                      <entry name="topic/test"/>
+                      <entry name="java:jboss/exported/jms/topic/test"/>
+                  </jms-topic>
+              </jms-destinations>
+
+
 
 from now I must full profile to support jms: ./standalone.sh -c standalone-full.xml
+
+datasource adding: https://zorq.net/b/2011/07/12/adding-a-mysql-datasource-to-jboss-as-7/
+!change modul version to 1.1
+run MySQL server before start

@@ -9,13 +9,13 @@ import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.InvoiceItem;
 import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
+import cz.fi.muni.eshop.model.OrderRoot;
 import cz.fi.muni.eshop.model.Product;
-import cz.fi.muni.eshop.model.Storeman;
 import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
-import cz.fi.muni.eshop.service.StoremanManager;
+import cz.fi.muni.eshop.test.DummyMDB;
 import cz.fi.muni.eshop.test.TestResources;
 import cz.fi.muni.eshop.util.DataGenerator;
 
@@ -44,17 +44,14 @@ public class CustomerManagerTest {
     private Customer customer;
     @Inject
     private DataGenerator generator;
-    
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "customer-test.war").addClasses(OrderManager.class,Storeman.class, StoremanManager.class, ProductManager.class, DataGenerator.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Storeman.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") // Deploy our test datasource
-                .addAsWebInfResource("test-ds.xml", "test-ds.xml");
+        return ShrinkWrap.create(WebArchive.class, "customer-test.war").addClasses(DummyMDB.class,OrderManager.class, ProductManager.class, DataGenerator.class, OrderItem.class, Product.class, InvoiceItem.class, OrderRoot.class,Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     private void setUp() {
-        customer = new Customer("rambo.john@foogle.com", "Rocky Balboa", "phoenix");
-        customerManager.addCustomer(customer);
+        customer = customerManager.addCustomer("customer@customer.xx", "cusName", "cusPas");
     }
 
     @After
@@ -66,23 +63,32 @@ public class CustomerManagerTest {
     public void getCustomerTableCountTest() {
         generator.generateCustomers(20L);
         Assert.assertEquals(customerManager.getCustomers().size(), (long) customerManager.getCustomerTableCount());
+        Assert.assertEquals(20L, (long)customerManager.getCustomerTableCount());
     }
 
     @Test
     public void addCustomerTest() {
-        customer = new Customer("rambo.john@foogle.com", "Rocky Balboa", "phoenix");
-        Assert.assertNull(customer.getId());
-        customerManager.addCustomer(customer);
+        Customer customer = customerManager.addCustomer("customer@customer.xx", "cusName", "cusPas");
         Assert.assertNotNull(customer.getId());
+    }
+    
+    @Test
+    public void getCustomerEmails() {
+        setUp();
+        customerManager.addCustomer("customer@customer.xy", "cusName", "cusPas");
+        Assert.assertTrue(customerManager.getCustomerEmails().contains("customer@customer.xy"));
+        Assert.assertTrue(customerManager.getCustomerEmails().contains("customer@customer.xx"));
+        Assert.assertTrue(customerManager.getCustomerEmails().size()==2);
+        
+                
     }
 
     @Test
-    public void updateCustomerTest() {
+    public void updateCustomerNameTest() {
         setUp();
-        Assert.assertNotNull(customer.getId());
-        customer.setEmail("xxxx@yyyy.zz");
-        customerManager.updateCustomer(customer);
-        Assert.assertNotNull(customerManager.getCustomerByEmail("xxxx@yyyy.zz"));
+        customerManager.updateCustomerName("customer@customer.xx", "newName");
+        customer = customerManager.getCustomerByEmail("customer@customer.xx");
+        Assert.assertEquals("newName", customer.getName());
     }
 
     @Test
@@ -96,15 +102,9 @@ public class CustomerManagerTest {
     @Test
     public void verifyTest() {
         setUp();
-        customer = customerManager.verifyCustomer("rambo.john@foogle.com", "phoenix");
+        customer = customerManager.verifyCustomer("customer@customer.xx", "cusPas");
         Assert.assertNotNull(customer);
-    }
-
-    public void getCustomersTest() {
-        setUp();
-        customer = new Customer("ssss@ddd.cc", "SDSADS", "ASDSADA");
-        customerManager.addCustomer(customer);
-        Assert.assertEquals(customerManager.getCustomers().size(), 2);
-        Assert.assertTrue(customerManager.getCustomers().contains(customer));
+        customer = customerManager.verifyCustomer("xxx@yyyy.zz", "abcd");
+        Assert.assertNull(customer);
     }
 }

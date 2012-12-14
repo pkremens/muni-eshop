@@ -2,13 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.fi.muni.eshop.controller.main;
+package cz.fi.muni.eshop.util;
 
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.InvoiceManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
-import cz.fi.muni.eshop.service.StoremanManager;
 import java.util.logging.Logger;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
@@ -26,15 +25,16 @@ public class ControllerBean {
     @Inject
     private CustomerManager customerManager;
     @Inject
-    private InvoiceManager invoiceManager;
-    @Inject
     private OrderManager orderManager;
     @Inject
-    private StoremanManager storemanManager;
-    @Inject
     private Logger log;
+    @Inject
+    private DataGenerator dataGenerator;
 
     public void generateData() {
+        dataGenerator.generateCustomers(1L);
+        dataGenerator.generateProducts(1L, 1L, 1L);
+        dataGenerator.generateOrders(1L, 1L);
     }
 
     @Schedule(minute = "1")
@@ -42,12 +42,12 @@ public class ControllerBean {
         log.warning("Coontroll bean action log");
     }
 
-    public void clearTables() {
-        log.warning("Cleaning all tables");
-        productManager.clearProductsTable();
+    public void clearDB() {
+        log.warning("Deleteng all entries from db");
         customerManager.clearCustomersTable();
-        invoiceManager.clearInvoiceTable(); 
-        orderManager.clearOrdersTable();
-        storemanManager.clearStoremanTable();
+        productManager.clearProductsTable();
+        if (orderManager.getOrderTableCount() > 0) {
+            throw new IllegalStateException("Order table data should be deleted with customers!");
+        }
     }
 }

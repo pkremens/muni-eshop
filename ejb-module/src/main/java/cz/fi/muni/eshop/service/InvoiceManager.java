@@ -5,10 +5,17 @@
 package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.Invoice;
+import cz.fi.muni.eshop.model.InvoiceItem;
+import cz.fi.muni.eshop.model.Order;
+import cz.fi.muni.eshop.model.OrderItem;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.jms.ConnectionFactory;
+import javax.jms.Queue;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -25,16 +32,40 @@ public class InvoiceManager {
     private EntityManager em;
     @Inject
     private Logger log;
-    
-    
-    public void addInvoice(Invoice invoice) {
-        log.info("Adding invoice: " + invoice);
+    @Inject
+    private OrderManager orderManager;
+    private static final int MSG_COUNT = 5; // TODO what is this for???
+    @Resource(mappedName = "java:/ConnectionFactory")
+    private ConnectionFactory connectionFactory;
+    @Resource(mappedName = "java:/queue/test")
+    private Queue queue;
+    @Inject
+    private ProductManager productManager;
+//    @Inject
+//    private SessionContext context;
 
+   // @TransactionAttribute(TransactionAttributeType.REQUIRED) 
+    public Invoice closeOrder(Long orderId) {
+        log.info("Closing order id: " + orderId);
+  //      try {
+        Invoice invoice = new Invoice();
+        Order order = orderManager.getOrderById(orderId);
+        List<InvoiceItem> invoiceItems = new ArrayList<InvoiceItem>();
+        for (OrderItem orderItem : order.getOrderItems()) {
+            if(productManager.invoiceProduct(orderItem.getProduct().getId(), orderItem.getId())){
+//                context.setRollbackOnly();
+                log.warning("XX");
+    //            log.warning("Closing of order: " + orderId + " has been cancelled as there are some products missing on store, \nStoreman has been called so try it later.");
+            }  // jeste sem to netestoval
+            invoiceItems.add(new InvoiceItem(orderItem.getProduct(), orderItem.getQuantity()));
+        }
+        
         em.persist(invoice);
-    }
-    
-    public void updateInvoice(Invoice invoice) {
-        log.info("Updating invoice: " + invoice);
+        return invoice;
+ //       } catch (Exception ex) {
+//            context.setRollbackOnly();
+   //         return null;
+    //    }
     }
 
     public Invoice getInvoiceById(Long id) {

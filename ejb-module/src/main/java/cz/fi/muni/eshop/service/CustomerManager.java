@@ -5,7 +5,6 @@
 package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.Customer;
-import cz.fi.muni.eshop.model.Invoice;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -16,6 +15,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
+import javax.persistence.metamodel.SingularAttribute;
 
 /**
  *
@@ -29,14 +31,40 @@ public class CustomerManager {
     @Inject
     private Logger log;
 
-    public void addCustomer(Customer customer) {
+    public Customer addCustomer(String email, String name, String password) {
+        Customer customer = new Customer(email, name, password);
         log.info("Adding customer: " + customer);
         em.persist(customer);
+        return customer;
     }
 
-    public void updateCustomer(Customer customer) {
-        log.info("Updating customer: " + customer);
+    public void updateCustomerName(String email, String name) {
+        log.info("Updating customer: email=" + email + " name=" + name);
+        Customer customer = getCustomerByEmail(email);
+        customer.setName(name);
         em.merge(customer);
+    }
+
+    /**
+     * Use to verify customer.
+     *
+     * @return customer instance if email and password matches, else null
+     */
+    public Customer verifyCustomer(String email, String password) {
+        log.info("Verify customer: email=" + email + " password=" + password);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Customer> criteria = cb.createQuery(Customer.class);
+        Root<Customer> customer = criteria.from(Customer.class);
+        Predicate emailPredicate = cb.equal(customer.get("email"), email);
+        Predicate passwordPredicate = cb.equal(customer.get("password"), password);
+        criteria.select(customer).where(cb.and(emailPredicate, passwordPredicate));
+        Customer cust = null;
+        try {
+            cust = em.createQuery(criteria).getSingleResult();
+        } catch (NoResultException nre) {
+            log.info("Unable to verify customer: email=" + email + " password=" + password);
+        }
+        return cust;
     }
 
     public Customer getCustomerById(Long id) {
@@ -65,34 +93,39 @@ public class CustomerManager {
         criteria.select(customer);
         return em.createQuery(criteria).getResultList();
     }
-
-    /**
-     * Use to verify customer.
-     *
-     * @return customer instance if email and password matches, else null
-     */
-    public Customer verifyCustomer(String email, String password) {
-        log.info("Verify customer: email=" + email + " password=" + password);
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Customer> criteria = cb.createQuery(Customer.class);
-        Root<Customer> customer = criteria.from(Customer.class);
-        Predicate emailPredicate = cb.equal(customer.get("email"), email);
-        Predicate passwordPredicate = cb.equal(customer.get("password"), password);
-        criteria.select(customer).where(cb.and(emailPredicate, passwordPredicate));
-        Customer cust = null;
-        try {
-            cust = em.createQuery(criteria).getSingleResult();
-        } catch (NoResultException nre) {
-            log.info("Unable to verify customer: email=" + email + " password=" + password);
-        }
-        return cust;
-    }
     
-        public Long getCustomerTableCount() {
+        public List<Long> getCustomerIds() {
+        log.info("Get all customer Ids");
+        Metamodel mm = em.getMetamodel();
+        EntityType<Customer> mcustomer = mm.entity(Customer.class);
+        SingularAttribute<Customer, Long> id =
+                mcustomer.getDeclaredSingularAttribute("id", Long.class);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
+        Root<Customer> customer = criteria.from(Customer.class);
+        criteria.select(customer.get(id));
+        return em.createQuery(criteria).getResultList();
+    }
+
+    public List<String> getCustomerEmails() {
+        log.info("Get all emails");
+        Metamodel mm = em.getMetamodel();
+        EntityType<Customer> mcustomer = mm.entity(Customer.class);
+        SingularAttribute<Customer, String> email =
+                mcustomer.getDeclaredSingularAttribute("email", String.class);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<String> criteria = cb.createQuery(String.class);
+        Root<Customer> customer = criteria.from(Customer.class);
+        criteria.select(customer.get(email));
+        return em.createQuery(criteria).getResultList();
+    }
+
+    public Long getCustomerTableCount() {
         log.info("Get customers table status");
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
         Root<Customer> customer = criteria.from(Customer.class);
+
         criteria.select(cb.count(customer));
         return em.createQuery(criteria).getSingleResult().longValue();
     }

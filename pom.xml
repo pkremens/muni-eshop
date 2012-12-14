@@ -20,10 +20,9 @@
    
     <modules>
         <module>ejb-module</module>
-        <module>web</module>
-        <module>application</module>
-        <module>dummy-test-module</module>
-	
+	<module>web</module>
+	<module>application</module>
+	<module>dummy-test-module</module>
     </modules>
 
     <properties>

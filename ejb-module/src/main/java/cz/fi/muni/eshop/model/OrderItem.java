@@ -3,27 +3,28 @@ package cz.fi.muni.eshop.model;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Entity
-@XmlRootElement
 public class OrderItem implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     
-    @OneToOne
+    @ManyToOne 
     private Product product;
     
     @NotNull
+    @Min(1)
     private Long quantity;
 
     public OrderItem() {
