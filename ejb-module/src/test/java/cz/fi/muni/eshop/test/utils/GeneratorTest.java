@@ -18,6 +18,7 @@ import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.test.DummyMDB;
 import cz.fi.muni.eshop.test.TestResources;
 import cz.fi.muni.eshop.util.DataGenerator;
+import java.util.List;
 
 import javax.inject.Inject;
 import junit.framework.Assert;
@@ -51,6 +52,7 @@ public class GeneratorTest {
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(WebArchive.class, "generator-test.war").addClasses(DummyMDB.class, OrderRoot.class, OrderManager.class, ProductManager.class, DataGenerator.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
+    
 
     @Test
     @InSequence(1)
@@ -90,12 +92,12 @@ public class GeneratorTest {
         for (Order order : orderManager.getOrders()) {
             Assert.assertEquals(10L, order.getOrderItems().size());
         } // TODO already spent too much time!
-//        orderManager.clearOrderTable();
-//        long itemCount = 3L;
-//        generator.generateOrders(20L, itemCount, true);
-//        List<OrderItem> orderItems;
-//        for (Order order : orderManager.getOrders()) {
-//             Assert.assertTrue("Generator generated invalid orderItems count: " + orderItems.size(), (order.getOrderItems().size() > 0L && order.getOrderItems().size() < itemCount + 1));
-//        }
+        orderManager.clearOrderTable();
+        long itemCount = 3L;
+        generator.generateOrders(20L, itemCount, true);
+        List<OrderItem> orderItems = null;
+        for (Order order : orderManager.getOrders()) {
+             Assert.assertTrue("Generator generated invalid orderItems count: " + orderItems.size(), (order.getOrderItems().size() > 0L && order.getOrderItems().size() < itemCount + 1));
+        }
     }
 }

@@ -29,10 +29,10 @@ public class InvoiceManagerTest {
     private OrderManager orderManager;
     
 
-    public Invoice addInvoice(long orderId) {
-        Invoice invoice = new Invoice();
-        invoice.setCreationDate(Calendar.getInstance().getTime());
-        Order order = orderManager.getOrderById(orderId);
-        return invoice;
-    }
+//    public Invoice addInvoice(long orderId) {
+//        Invoice invoice = new Invoice();
+//        invoice.setCreationDate(Calendar.getInstance().getTime());
+//        Order order = orderManager.getOrderById(orderId);
+//        return invoice;
+//    }
 }

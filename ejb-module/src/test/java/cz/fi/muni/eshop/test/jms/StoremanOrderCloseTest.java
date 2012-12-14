@@ -21,6 +21,7 @@ import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.test.TestResources;
 import cz.fi.muni.eshop.util.ControllerBean;
 import cz.fi.muni.eshop.util.DataGenerator;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import junit.framework.Assert;
@@ -62,13 +63,18 @@ public class StoremanOrderCloseTest {
     @Before
     public void storemanCloseOrderTest() {
         controllerBean.clearDB();
-        dataGenerator.generateCustomers(2L);
-        dataGenerator.generateProducts(2L, 10L, 10000L); // to ensuer that every order can be closed
+        dataGenerator.generateCustomers(1L);
+        dataGenerator.generateProducts(1L, 10000L, 10000L); // to ensuer that every order can be closed
         dataGenerator.generateOrders(10L, 1L);
     }
 
     @Test
     public void lookForClosedOrders() {
-        Assert.assertEquals(product, this); // TODO test
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(StoremanOrderCloseTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Assert.assertTrue(invoiceManager.getInvoiceTableCount() == 10L);
     }
 }
