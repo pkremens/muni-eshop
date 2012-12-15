@@ -19,6 +19,7 @@ import javax.inject.Named;
 public class Identity implements Serializable {
 
     private Customer customer = null;
+    
 
     /**
      * Do not allow to log in if already logged

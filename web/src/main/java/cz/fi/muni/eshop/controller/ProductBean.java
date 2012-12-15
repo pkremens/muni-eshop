@@ -58,6 +58,7 @@ public class ProductBean {
 		if (validate()) {
 			productManager.addProduct(name, price, category, stored, reserved);
 		}
+		clearBean();
 	}
 
 	public List<Product> getProducts() {

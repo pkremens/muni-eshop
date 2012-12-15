@@ -6,37 +6,9 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
-		<h:form id="loginForm" rendered="#{not identity.loggedIn}">
-
-			
-			// TODO pokryt duplicate entry		
-			<p:growl id="messages" />
-			<p:panelGrid columns="2">
-				<f:facet name="header">  
-        Log in  
-    </f:facet>
-				<h:outputLabel for="email" value="Email: " />
-				<p:inputText id="email" value="#{customerBean.email}"
-					label="Firstname" />
-
-				<h:outputLabel for="password" value="Password: " />
-				<p:inputText id="password" value="#{customerBean.password}"
-					label="password" />
-
-				<f:facet name="footer">
-					<p:commandButton value="Log in" update="@form, :loginInfo"
-						actionListener="#{customerBean.logIn()}"
-						styleClass="ui-priority-primary" />
-				</f:facet>
-			</p:panelGrid>
-		</h:form>
-
-
-		<br />
-
 		<h:form id="customers">
 			<p:dataTable var="_customer" value="#{customerBean.customers}"
-				paginator="true" rows="10"
+				style="width: 70%" paginator="true" rows="10"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="5,10,15">
 				<f:facet name="header">  
@@ -91,34 +63,28 @@
 			<p:growl id="messages" />
 			<p:panelGrid id="addCustomer" columns="2">
 				<f:facet name="header">  
-        Add Customer
-    </f:facet>
+   				     Add Customer
+  	    		</f:facet>
 
 				<h:outputLabel value="Email: " for="email" />
-				<h:inputText id="email" value="#{customerBean.email}" />
+				<p:inputText id="email" value="#{customerBean.email}" />
 
 				<h:outputLabel value="Name: " for="name" />
-				<h:inputText id="name" value="#{customerBean.name}" />
+				<p:inputText id="name" value="#{customerBean.name}" />
 
 				<h:outputLabel value="Password: " for="password" />
-				<h:inputSecret id="password" value="#{customerBean.password}" />
+				<p:password id="password" value="#{customerBean.password}" />
 
 				<f:facet name="footer">
-
 					<p:commandButton value="Add" update=":customers, @form, :loginInfo"
 						actionListener="#{customerBean.addCustomer()}"
 						styleClass="ui-priority-primary" />
-					<p:commandButton value="Add and Login" update=":customers, @form, :loginInfo"
-						actionListener="#{customerBean.register()}"
-						styleClass="ui-priority-primary" />
+
 					<p:commandButton value="Random" update=":customers"
 						actionListener="#{customerBean.generateRandomCustomer()}"
 						styleClass="ui-priority-primary" />
 
 				</f:facet>
-
-
-
 			</p:panelGrid>
 		</h:form>
 		<br />

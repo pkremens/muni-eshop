@@ -37,8 +37,7 @@ public class CustomerBean {
 	private CustomerManager customerManager;
 	@Inject
 	private FacesContext facesContext;
-	@Inject
-	private Identity identity;
+
 	private List<Customer> customers;
 	@Inject
 	private Logger log;
@@ -48,12 +47,7 @@ public class CustomerBean {
 	@Inject
 	private EntityValidator<Customer> validator;
 
-	public void register() {
-		if (validate()) {
-			identity.logIn(customerManager.addCustomer(email, name, password));
-			clearBean();
-		}
-	}
+
 
 	public List<Customer> getCustomers() {
 		return customerManager.getCustomers();
@@ -72,22 +66,7 @@ public class CustomerBean {
 		}
 	}
 
-	public void logIn() {
-		log.warning("trying to log in: " + "email=" + email + " password="
-				+ password);
-		this.name = "dummy";
-		if (validate()) {
-			identity.logIn(customerManager.verifyCustomer(email, password));
-			clearBean();
-		} else {
-			addMessage("Unable to verify customer");
-			clearBean();
-		}
-	}
 
-	public void logOut() {
-		identity.logOut();
-	}
 
 	public String getEmail() {
 		return email;
