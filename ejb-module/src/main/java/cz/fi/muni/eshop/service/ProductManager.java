@@ -87,11 +87,15 @@ public class ProductManager {
     public void orderProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
         product.setReserved(product.getReserved() + quantity); // delat toto tady nebo muzu i v Product
-        log.warning("Updating Product: " + product + " quantity: " + quantity + " and raising stored value to be +100 in compare to reserved");
+        log.warning(product.toString());
+        //log.warning("Updating Product: " + product + " quantity: " + quantity + " and raising stored value to be +100 in compare to reserved");
         // we get into state whe we would not be able to close the order, so storeman must refill the store to getReserver() + 100.
         if (product.getStored() < product.getReserved()) {
-            noticeStoreman(id);
+   //         noticeStoreman(id);
+            product.setStored(product.getReserved() + 100L);
+            log.warning("refill: " + product.toString());
         }
+        
         em.merge(product);
     }
 
