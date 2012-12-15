@@ -1,4 +1,4 @@
-package cz.fi.muni.eshop.service.basket;
+package cz.fi.muni.eshop.test.basket;
 
 import cz.fi.muni.eshop.model.Product;
 

@@ -22,7 +22,9 @@ import cz.fi.muni.eshop.test.TestResources;
 import cz.fi.muni.eshop.util.ControllerBean;
 import cz.fi.muni.eshop.util.DataGenerator;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -71,6 +73,7 @@ public class StoremanSingleOrderCloseTest {
     }
 
     @Test
+    @Ignore
     public void storemanCloseTest() throws InterruptedException {
         customerManager.addCustomer("xxxxx@yyyyy.zz", "customer", "password");
         productManager.addProduct("product", 200L, Category.TYPE1, 100L, 0L);
@@ -83,6 +86,22 @@ public class StoremanSingleOrderCloseTest {
     }
 
     @Test
+    public void storemanCloseWithBasketTest() throws InterruptedException {
+        customerManager.addCustomer("xxxxx@yyyyy.zz", "customer", "password");
+        productManager.addProduct("product", 200L, Category.TYPE1, 100L, 0L);
+        productManager.addProduct("product2", 200L, Category.TYPE1, 100L, 0L);
+        Map<Long, Long> profilesWithQuantity = new HashMap<Long, Long>();
+        for (Long productId : productManager.getProductIds()) {
+            profilesWithQuantity.put(productId, 10L);
+        }
+
+        Order order = orderManager.addOrder("xxxxx@yyyyy.zz", profilesWithQuantity);
+        log.warning(order.toString());
+        Thread.sleep(500);
+    }
+
+    @Test
+    @Ignore
     public void autoRefillTest() throws InterruptedException {
         customerManager.addCustomer("xxxxx@yyyyy.zz", "customer", "password");
         productManager.addProduct("product", 200L, Category.TYPE1, 4L, 0L);

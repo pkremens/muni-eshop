@@ -4,9 +4,9 @@
  */
 package cz.fi.muni.eshop.test.basket;
 
+
 import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.model.enums.Category;
-import cz.fi.muni.eshop.service.basket.BasketBean;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Test;
