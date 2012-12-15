@@ -79,7 +79,10 @@
 					<p:commandButton value="Add" update=":customers, @form, :loginInfo"
 						actionListener="#{customerBean.addCustomer()}"
 						styleClass="ui-priority-primary" />
-
+					<p:commandButton value="Add and Login"
+						update=":customers, @form, :loginInfo, :navigationMenu"
+						actionListener="#{customerBean.register()}"
+						styleClass="ui-priority-primary" />
 					<p:commandButton value="Random" update=":customers"
 						actionListener="#{customerBean.generateRandomCustomer()}"
 						styleClass="ui-priority-primary" />

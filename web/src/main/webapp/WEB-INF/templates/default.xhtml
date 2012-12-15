@@ -22,8 +22,8 @@
 	</h:form>
 	<h:form id="loginInfo">
 		<h5 align="right">
-			<p:messages id="messages" showDetail="true" autoUpdate="true"
-				closable="true" />
+			<p:messages id="messages" autoUpdate="true"
+				 />
 			<h:form id="loginForm" rendered="#{not identity.loggedIn}">
 				<h:outputLabel for="email" value="Email: " />
 				<p:inputText id="email" value="#{loginBean.email}" label="Firstname" />
@@ -34,7 +34,7 @@
 
 
 				<p:commandButton value="Log in" disabled="#{identity.loggedIn}"
-					update="@form" actionListener="#{loginBean.logIn()}"
+					update="@all" actionListener="#{loginBean.logIn()}"
 					styleClass="ui-priority-primary" />
 
 

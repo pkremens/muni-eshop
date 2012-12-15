@@ -39,21 +39,23 @@ public class LoginBean {
 		if (validate()) {
 			Customer customer = customerManager.verifyCustomer(email, password);
 			if (customer == null) {
+				clearBean();
 				FacesContext.getCurrentInstance().addMessage(
 						null,
-						new FacesMessage(FacesMessage.SEVERITY_INFO,
-								"Wrong input", "inserted wrong data"));
-				clearBean();
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Wrong input", "user with given email and password was not found"));
+				
 			} else {
-				identity.logIn(customerManager.verifyCustomer(email, password));
+				identity.logIn(customerManager.getCustomerByEmail(email));
 				clearBean();
 			}
 		} else {
+			clearBean();
 			FacesContext.getCurrentInstance().addMessage(
 					null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Wrong input",
+					new FacesMessage(FacesMessage.SEVERITY_WARN, "Invalid input",
 							"inserted invalid data"));
-			clearBean();
+			
 		}
 	}
 

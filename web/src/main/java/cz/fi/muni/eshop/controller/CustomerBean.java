@@ -30,6 +30,8 @@ public class CustomerBean {
 	private String email;
 	private String name;
 	private String password;
+	@Inject
+	private Identity identity;
 
 	@Inject
 	private ControllerBean controller;
@@ -47,8 +49,6 @@ public class CustomerBean {
 	@Inject
 	private EntityValidator<Customer> validator;
 
-
-
 	public List<Customer> getCustomers() {
 		return customerManager.getCustomers();
 	}
@@ -65,8 +65,6 @@ public class CustomerBean {
 			clearBean();
 		}
 	}
-
-
 
 	public String getEmail() {
 		return email;
@@ -99,7 +97,7 @@ public class CustomerBean {
 	}
 
 	private void addMessage(String summary) {
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,
 				summary, null);
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
@@ -111,6 +109,13 @@ public class CustomerBean {
 	public void generateRandomCustomer() {
 		log.info("generating random customer");
 		dataGenerator.generateRandomCustomer();
+	}
+
+	public void register() {
+		if (validate()) {
+			identity.logIn(customerManager.addCustomer(email, name, password));
+			clearBean();
+		}
 	}
 
 	// DO NOT USE required="true" property in input text widgets, unable to
