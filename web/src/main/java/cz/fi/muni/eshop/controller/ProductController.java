@@ -48,6 +48,6 @@ public class ProductController {
     }
     
     public void refillProduct(Long id, long quantity) {
-            productManager.refillProduct(id, quantity);
+            productManager.hardRefillProduct(id, quantity);
     }
 }
