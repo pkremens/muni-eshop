@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -22,7 +24,8 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotNull
+    @Size(min = 1, max = 25, message = "May not be null")
+    @Pattern(regexp = "[A-Za-z0-9 ]*", message = "Must contain only letters, numbers and spaces")
     @Column(unique = true)
     private String name;
     @NotNull

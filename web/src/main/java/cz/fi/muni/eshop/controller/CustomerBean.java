@@ -119,7 +119,7 @@ public class CustomerBean {
 		customerManager.clearCustomersTable();
 	}
 
-	public void addMessage(String summary) {
+	private void addMessage(String summary) {
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
 				summary, null);
 		FacesContext.getCurrentInstance().addMessage(null, message);
@@ -136,6 +136,7 @@ public class CustomerBean {
 
 	// DO NOT USE required="true" property in input text widgets, unable to
 	// generate random then without filling the form
+	// just front end validation
 	private boolean validate() {
 		Set<ConstraintViolation<Customer>> violations = validator
 				.validate(new Customer(email, name, password));
