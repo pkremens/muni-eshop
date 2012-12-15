@@ -9,6 +9,7 @@ import cz.fi.muni.eshop.model.InvoiceItem;
 import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -52,14 +53,17 @@ public class InvoiceManager {
         Order order = orderManager.getOrderById(orderId);
         List<InvoiceItem> invoiceItems = new ArrayList<InvoiceItem>();
         for (OrderItem orderItem : order.getOrderItems()) {
-            if(productManager.invoiceProduct(orderItem.getProduct().getId(), orderItem.getId())){
+            if(!productManager.invoiceProduct(orderItem.getProduct().getId(), orderItem.getQuantity())){
 //                context.setRollbackOnly();
                 log.warning("XX");
     //            log.warning("Closing of order: " + orderId + " has been cancelled as there are some products missing on store, \nStoreman has been called so try it later.");
             }  // jeste sem to netestoval
             invoiceItems.add(new InvoiceItem(orderItem.getProduct(), orderItem.getQuantity()));
         }
-        
+        invoice.setCustomer(order.getCustomer());
+        invoice.setCreationDate(Calendar.getInstance().getTime());
+        invoice.setOrder(order);
+        log.warning(invoice.toString());
         em.persist(invoice);
         return invoice;
  //       } catch (Exception ex) {

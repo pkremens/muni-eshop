@@ -85,11 +85,17 @@ public class ProductManager {
 
     public void orderProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
-        log.info("Udating Product: " + product + " quantity: " + quantity);
+        log.info("Upating Product: " + product + " quantity: " + quantity);
         product.setReserved(product.getReserved() + quantity); // delat toto tady nebo muzu i v Product
         em.merge(product);
     }
 
+/**
+ * 
+ * @param id
+ * @param quantity
+ * @return true if product orderItem containing this product can be closed, false if no products on store -> calling storeman
+ */
     public boolean invoiceProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
         log.info("Invoice product: " + product + " quantity: " + quantity);

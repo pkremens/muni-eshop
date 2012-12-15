@@ -57,6 +57,8 @@ public class OrderManager {
         for (Long productId : basket.keySet()) {
             productManager.orderProduct(productId, basket.get(productId));
         }
+        order.setOrderItems(orderItems);
+        log.warning(order.toString());
         em.persist(order);
         noticeStoreman(order.getId());
         return order;
@@ -80,6 +82,10 @@ public class OrderManager {
         order.setCustomer(customerManager.getCustomerByEmail(email));
         order.setCreationDate(Calendar.getInstance().getTime());
         order.setOrderItems(orderItems);
+        for (OrderItem orderItem : orderItems) {
+            productManager.orderProduct(orderItem.getProduct().getId(), orderItem.getQuantity());
+            em.persist(orderItem);
+        }
         em.persist(order);
         noticeStoreman(order.getId());
         return order;

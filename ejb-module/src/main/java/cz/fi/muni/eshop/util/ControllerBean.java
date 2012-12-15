@@ -5,7 +5,6 @@
 package cz.fi.muni.eshop.util;
 
 import cz.fi.muni.eshop.service.CustomerManager;
-import cz.fi.muni.eshop.service.InvoiceManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
 import java.util.logging.Logger;
