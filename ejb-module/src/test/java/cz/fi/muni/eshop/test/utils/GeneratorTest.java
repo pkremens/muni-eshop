@@ -86,7 +86,7 @@ public class GeneratorTest {
 
     @Test
     @InSequence(2)
-    public void ordersGenerationTest() {
+    public void ordersGenerationTest() { // TODO failing because of lazy initialization
         generator.generateOrders(20L, 10L);
         Assert.assertEquals(orderManager.getOrders().size(), 20L);
         for (Order order : orderManager.getOrders()) {
@@ -100,4 +100,6 @@ public class GeneratorTest {
              Assert.assertTrue("Generator generated invalid orderItems count: " + orderItems.size(), (order.getOrderItems().size() > 0L && order.getOrderItems().size() < itemCount + 1));
         }
     }
+    
+    
 }

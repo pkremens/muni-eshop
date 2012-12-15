@@ -44,7 +44,11 @@ public class StoremanMDB implements MessageListener {
                 switch (message) {
                     case CLOSE_ORDER:
                         log.info(StoremanMessage.CLOSE_ORDER.getMessage());
-                        invoiceManager.closeOrder(msg.getLongProperty("orderId"));
+                        long id = msg.getLongProperty("orderId");
+                        log.warning("Storeman Should close order with id: " + id);
+                        invoiceManager.closeOrder(id);
+                        log.warning("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                        log.warning("Storeman closed order: " + id);
                         break;
                     case FILL_THE_STORE:
                         log.info(StoremanMessage.FILL_THE_STORE.getMessage());
