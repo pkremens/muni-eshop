@@ -3,3 +3,18 @@ dummy-test-module/target
 application/target
 web/target
 target
+/.settings/
+/ejb-module/.settings/
+/application/.settings/
+/web/.settings/
+#jbds file
+.project
+application/.project
+dummy-test-module/.classpath
+dummy-test-module/.project
+dummy-test-module/.settings/
+ejb-module/.classpath
+ejb-module/.project
+web/.classpath
+web/.project
+

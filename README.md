@@ -100,3 +100,10 @@ run MySQL server before start
 
 remove branch from origin:
 git push origin --delete <branchName>
+
+Hibernate ddl possible values:
+    validate: validate the schema, makes no changes to the database.
+    update: update the schema.
+    create: creates the schema, destroying previous data.
+    create-drop: drop the schema at the end of the session.
+

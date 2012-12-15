@@ -2,6 +2,7 @@ package cz.fi.muni.eshop.service.basket;
 
 import cz.fi.muni.eshop.model.Product;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +13,7 @@ import javax.inject.Named;
 
 @SessionScoped
 @Named
-public class BasketBean {
+public class BasketBean implements Serializable{
 
     private Map<Product, Long> basket;
     private Long totalPrice;
