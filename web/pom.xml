@@ -72,13 +72,7 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>dummy-ear-test</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.seam.security</groupId>
-            <artifactId>seam-security</artifactId>
-            <version>${version.org.jboss.seam.security}</version>
-            <type>jar</type>
-        </dependency>            
+        </dependency>         
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>

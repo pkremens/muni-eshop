@@ -1,52 +1,47 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-    <h:head>
-        <title>Title</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <h:outputStylesheet name="css/table-style.css" />
-    </h:head>
-    <h:body>
-        <div id="container">
-            <div id="log">
-                <h5 align="right">
-                    <h:outputLabel value="You are logged as"
-                                   rendered="#{identity.loggedIn}" />
-                    <h:outputLabel value="#{identity.user.name}"
-                                   rendered="#{identity.loggedIn}" />
-                    <h:outputText value="Not logged in" rendered="#{!identity.loggedIn}" />
-                    <h:form id="logoutForm">
-                        <h:commandButton id="logout" value="Logout"
-                                         action="#{identity.logout}" rendered="#{identity.loggedIn}" />
-                    </h:form>
-                </h5>
-                <li>Dummy pages:</li> <a href="#{request.contextPath}/InitServlet">Servlet
-                    for generating dummy data</a>
-                <a href="#{request.contextPath}/JmsTestServlet">Jms Test Servlet</a>
-                <br />
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 
+<h:head>
+	<title>Eshop</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<h:outputStylesheet name="css/table-style.css" />
+</h:head>
+<h:body>
+	<h:form id="navigationMenu">
+		<p:breadCrumb>
+			<p:menuitem value="Categories" url="#" />
+			<p:menuitem value="Customers" url="/customerTEST.jsf" />
 
-                <h:panelGrid columns="7" >			
-                    <a href="#{request.contextPath}/index.jsf">login</a>							
-                    <a href="#{request.contextPath}/productsTEST.jsf">products</a>				
-                    <a href="#{request.contextPath}/customerTEST.jsf">customers</a>				
-                    <a href="#{request.contextPath}/mainTEST.jsf">catalog</a>				
-                    <a href="#{request.contextPath}/basketTEST.jsf">basket</a>				
-                    <a href="#{request.contextPath}/ordersTEST.jsf">orders</a>				
-                </h:panelGrid>
+		</p:breadCrumb>
+	</h:form>
+	<h:form id="loginInfo">
+		<h5 align="right">
+			<h:outputLabel value="You are logged as: #{identity.customer.email}"
+				rendered="#{identity.loggedIn}" />&#160;
+			<h:outputText value="Not logged in" rendered="#{!identity.loggedIn}" />
+			<p:commandButton id="logout" value="Logout"
+				action="#{identity.logOut()}" update="@form" rendered="#{identity.loggedIn}" />
+		</h5>
+	</h:form>
 
-                <hr />
+	<li>Dummy pages:</li>
+	<a href="#{request.contextPath}/InitServlet">Servlet for generating
+		dummy data</a>
 
-            </div>
-
-            <div id="content">
-                <ui:insert name="content">
+	<div id="content">
+		<ui:insert name="content">
                     [Template content will be inserted here]
                 </ui:insert>
-            </div>
-            <div id="footer"><br /><hr />Footer from template</div>
-        </div>
-    </h:body>
+	</div>
+	<div id="footer">
+		<br />
+		<hr />
+		Footer from template
+	</div>
+
+</h:body>
 </html>

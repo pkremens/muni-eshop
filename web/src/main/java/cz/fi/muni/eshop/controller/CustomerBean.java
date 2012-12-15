@@ -51,6 +51,7 @@ public class CustomerBean {
 	public void register() {
 		if (validate()) {
 			identity.logIn(customerManager.addCustomer(email, name, password));
+			clearBean();
 		}
 	}
 
@@ -58,14 +59,30 @@ public class CustomerBean {
 		return customerManager.getCustomers();
 	}
 
+	private void clearBean() {
+		email = "";
+		name = "";
+		password = "";
+	}
+
 	public void addCustomer() {
 		if (validate()) {
 			customerManager.addCustomer(email, name, password);
+			clearBean();
 		}
 	}
 
 	public void logIn() {
-		identity.logIn(customerManager.verifyCustomer(email, password));
+		log.warning("trying to log in: " + "email=" + email + " password="
+				+ password);
+		this.name = "dummy";
+		if (validate()) {
+			identity.logIn(customerManager.verifyCustomer(email, password));
+			clearBean();
+		} else {
+			addMessage("Unable to verify customer");
+			clearBean();
+		}
 	}
 
 	public void logOut() {
@@ -102,7 +119,6 @@ public class CustomerBean {
 		customerManager.clearCustomersTable();
 	}
 
-
 	public void addMessage(String summary) {
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
 				summary, null);
@@ -112,19 +128,23 @@ public class CustomerBean {
 	public void deleteCustomer(String email) {
 		customerManager.deleteCustomer(email);
 	}
-	
+
 	public void generateRandomCustomer() {
+		log.info("generating random customer");
 		dataGenerator.generateRandomCustomer();
 	}
 
+	// DO NOT USE required="true" property in input text widgets, unable to
+	// generate random then without filling the form
 	private boolean validate() {
-		Set<ConstraintViolation<Customer>> violations = validator.validate(new Customer(email, name,
-				password));
+		Set<ConstraintViolation<Customer>> violations = validator
+				.validate(new Customer(email, name, password));
 		if (violations.isEmpty()) {
 			return true;
 		} else {
 			for (ConstraintViolation<Customer> constraintViolation : violations) {
-				addMessage(constraintViolation.getPropertyPath() + " " + constraintViolation.getMessageTemplate());
+				addMessage(constraintViolation.getPropertyPath() + " "
+						+ constraintViolation.getMessageTemplate());
 			}
 		}
 		return false;

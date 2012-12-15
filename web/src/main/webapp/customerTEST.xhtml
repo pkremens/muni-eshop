@@ -6,13 +6,35 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
-		<h1>Customers</h1>
+		<h:form id="loginForm" rendered="#{not identity.loggedIn}">
+
+			
+			// TODO pokryt duplicate entry		
+			<p:growl id="messages" />
+			<p:panelGrid columns="2">
+				<f:facet name="header">  
+        Log in  
+    </f:facet>
+				<h:outputLabel for="email" value="Email: " />
+				<p:inputText id="email" value="#{customerBean.email}"
+					label="Firstname" />
+
+				<h:outputLabel for="password" value="Password: " />
+				<p:inputText id="password" value="#{customerBean.password}"
+					label="password" />
+
+				<f:facet name="footer">
+					<p:commandButton value="Log in" update="@form, :loginInfo"
+						actionListener="#{customerBean.logIn()}"
+						styleClass="ui-priority-primary" />
+				</f:facet>
+			</p:panelGrid>
+		</h:form>
+
+
 		<br />
-            REST URL for all customers<a
-			href="#{request.contextPath}/rest/customers">/rest/customers</a>
 
 		<h:form id="customers">
-
 			<p:dataTable var="_customer" value="#{customerBean.customers}"
 				paginator="true" rows="10"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -52,45 +74,56 @@
 						<h:outputText value="Action" />
 					</f:facet>
 					<p:commandButton value="Remove"
-						action="#{customerBean.deleteCustomer(_customer.email)}" update="@form" />
+						action="#{customerBean.deleteCustomer(_customer.email)}"
+						update="@form" />
 				</p:column>
 			</p:dataTable>
 		</h:form>
-
 		<br />
-		<h:form id="fooorm">
+		<h:form id="clearForm">
+			<p:commandButton value="Clear all customers" update=":customers"
+				id="crear" actionListener="#{customerBean.clearCustomers()}"
+				styleClass="ui-priority-primary" />
+			<br />
+			<br />
+		</h:form>
+		<h:form id="addForm">
 			<p:growl id="messages" />
 			<p:panelGrid id="addCustomer" columns="2">
 				<f:facet name="header">  
         Add Customer
     </f:facet>
 
-				<h:outputLabel value="Email" for="email" />
+				<h:outputLabel value="Email: " for="email" />
 				<h:inputText id="email" value="#{customerBean.email}" />
 
-				<h:outputLabel value="Name" for="name" />
+				<h:outputLabel value="Name: " for="name" />
 				<h:inputText id="name" value="#{customerBean.name}" />
 
-				<h:outputLabel value="Password" for="password" />
+				<h:outputLabel value="Password: " for="password" />
 				<h:inputSecret id="password" value="#{customerBean.password}" />
 
 				<f:facet name="footer">
-					<p:commandButton value="Add" update="addCustomer, @form"
+
+					<p:commandButton value="Add" update=":customers, @form, :loginInfo"
 						actionListener="#{customerBean.addCustomer()}"
 						styleClass="ui-priority-primary" />
-					<p:commandButton value="Add and Login" update="addCustomer, @form"
+					<p:commandButton value="Add and Login" update=":customers, @form, :loginInfo"
 						actionListener="#{customerBean.register()}"
 						styleClass="ui-priority-primary" />
 					<p:commandButton value="Random" update=":customers"
 						actionListener="#{customerBean.generateRandomCustomer()}"
 						styleClass="ui-priority-primary" />
+
 				</f:facet>
 
 
 
 			</p:panelGrid>
 		</h:form>
-
+		<br />
+            REST URL for all customers<a
+			href="#{request.contextPath}/rest/customers">/rest/customers</a>
 
 
 	</ui:define>

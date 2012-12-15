@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  *
