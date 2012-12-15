@@ -21,9 +21,6 @@ import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.test.TestResources;
 import cz.fi.muni.eshop.util.ControllerBean;
 import cz.fi.muni.eshop.util.DataGenerator;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 import javax.inject.Inject;
 import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -41,24 +38,14 @@ import org.junit.runner.RunWith;
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @RunWith(Arquillian.class)
-public class StoremanMultiOrderTest {
+public class LongRunSingleGenerateTest {
 
-    @Inject
-    private Logger log;
-    @Inject
-    private ProductManager productManager;
-    @Inject
-    private Product product;
-    @Inject
-    private DataGenerator dataGenerator;
     @Inject
     private ControllerBean controllerBean;
     @Inject
+    private DataGenerator dataGenerator;
+    @Inject
     private InvoiceManager invoiceManager;
-    @Inject
-    private CustomerManager customerManager;
-    @Inject
-    private OrderManager orderManager;
 
     @Deployment
     public static Archive<?> createTestArchive() {
@@ -71,38 +58,11 @@ public class StoremanMultiOrderTest {
     }
 
     @Test
-    public void testMultiOrderCloseNoAutoRefill() throws InterruptedException {
-        dataGenerator.generateCustomers(5L);
-        dataGenerator.generateProducts(5L, 200L, 1000L);
-        dataGenerator.generateOrders(5L, 5L);
-        Thread.sleep(1000);
-        Assert.assertEquals(5L, (long) invoiceManager.getInvoiceTableCount());
-    }
-
-    @Test
     public void testMultiOrderCloseAutoRefill() throws InterruptedException {
         dataGenerator.generateCustomers(20L);
-        dataGenerator.generateProducts(5L, 200L, 10L, true);
-        dataGenerator.generateOrders(20L, 5L);
+        dataGenerator.generateProducts(100L, 200L, 10L, true);
+        dataGenerator.generateOrders(200L, 5L);
         Thread.sleep(1000);
-        Assert.assertEquals(20L, (long) invoiceManager.getInvoiceTableCount());
+        Assert.assertEquals(200L, (long) invoiceManager.getInvoiceTableCount());
     }
-
-    @Test
-    public void singleOrderGeneratorTest() throws InterruptedException {
-        dataGenerator.generateCustomers(5L);
-        dataGenerator.generateProducts(5L, 200L, 1000L);
-        List<String> emails = customerManager.getCustomerEmails();
-        List<OrderItem> orderItems = new ArrayList<OrderItem>();
-        OrderItem orderItem = new OrderItem(productManager.getProductByName(productManager.getProductNames().get(0)), 5L);
-        orderItems.add(orderItem);
-        dataGenerator.generateOrder(emails.get(0), orderItems);
-        Thread.sleep(1000);
-        Assert.assertEquals(1L, (long) invoiceManager.getInvoiceTableCount());
-    }
-    // create mor orders see if store man works, 
-//    @Test
-//    public void testOrderOrphanRemoveInvoice() {
-//        // delete all orders, see that no invoice left
-//    }
 }

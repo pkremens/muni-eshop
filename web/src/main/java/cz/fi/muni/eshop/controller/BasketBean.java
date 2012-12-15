@@ -37,7 +37,7 @@ public class BasketBean implements Serializable {
 		for (Product product : basket.keySet()) {
 			productWithQuantity.put(product.getId(), basket.get(product));
 		}
-		orderManager.addOrder(identity.getCustomer().getEmail(),
+		orderManager.addOrderWithMap(identity.getCustomer().getEmail(),
 				productWithQuantity);
 	}
 

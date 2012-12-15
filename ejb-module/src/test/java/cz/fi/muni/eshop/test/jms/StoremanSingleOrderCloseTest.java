@@ -94,7 +94,7 @@ public class StoremanSingleOrderCloseTest {
             profilesWithQuantity.put(productId, 10L);
         }
 
-        Order order = orderManager.addOrder("xxxxx@yyyyy.zz", profilesWithQuantity);
+        Order order = orderManager.addOrderWithMap("xxxxx@yyyyy.zz", profilesWithQuantity);
         log.warning(order.toString());
         Thread.sleep(500);
     }

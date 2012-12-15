@@ -50,7 +50,7 @@ public class OrderManager {
 	@Resource(mappedName = "java:/queue/test")
 	private Queue queue;
 
-	public Order addOrder(String email, Map<Long, Long> productsWithQuantity) {
+	public Order addOrderWithMap(String email, Map<Long, Long> productsWithQuantity) {
 		List<OrderItem> orderItems = new ArrayList<OrderItem>();
 		for (Long productId : productsWithQuantity.keySet()) {
 			orderItems.add(new OrderItem(productManager.getProductById(productId), productsWithQuantity.get(productId)));
@@ -71,6 +71,7 @@ public class OrderManager {
 		log.warning(order.toString());
 		em.persist(order);
                 em.flush(); // TODO je toto OK???
+                
 		log.warning(order.toString());
 		 noticeStoreman(order.getId()); // jak to udelat aby se to zavolalo az
 		// po ulozeni?
