@@ -34,6 +34,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -76,20 +77,37 @@ public class StoremanOrderCloseTest {
     }
 
     @Test
-    public void manualCloseTest() {
+    //@Ignore("working")
+    public void manualCloseTest() throws InterruptedException {
         customerManager.addCustomer("xxxxx@yyyyy.zz", "customer", "password");
         productManager.addProduct("product", 200L, Category.TYPE1, 100L, 0L);
         Map<Long, Long> basket = new HashMap<Long, Long>();
         log.warning(productManager.getProductByName("product").toString());
         basket.put(productManager.getProductByName("product").getId(), 5L);
-        
+
         List<OrderItem> orderItems = new ArrayList<OrderItem>();
-        OrderItem orderItem = new OrderItem(productManager.getProductByName("product"), 5L); // don't want zeros!
+        OrderItem orderItem = new OrderItem(productManager.getProductByName("product"), 5L);
         orderItems.add(orderItem);
         Order order = orderManager.addOrderWithOrderItems("xxxxx@yyyyy.zz", orderItems);
 //        Order order = orderManager.addOrder("xxxxx@yyyyy.zz", basket);
         log.warning(order.toString());
-        invoiceManager.closeOrder(order.getId());
+        Thread.sleep(500);
+        //     invoiceManager.closeOrder(order.getId());
+    }
+
+    @Test
+    @Ignore
+    public void storemanRefillTest() throws InterruptedException {
+        customerManager.addCustomer("xxxxx@yyyyy.zz", "customer", "password");
+        productManager.addProduct("product", 200L, Category.TYPE1, 20L, 0L);
+        log.warning(productManager.getProductByName("product").toString());
+        List<OrderItem> orderItems = new ArrayList<OrderItem>();
+        OrderItem orderItem = new OrderItem(productManager.getProductByName("product"), 5L);
+        orderItems.add(orderItem);
+        Order order = orderManager.addOrderWithOrderItems("xxxxx@yyyyy.zz", orderItems);
+        log.warning(order.toString());
+        Thread.sleep(500); // check storeman
+        //invoiceManager.closeOrder(order.getId());
     }
 //    @Test
 //    public void lookForClosedOrders() {

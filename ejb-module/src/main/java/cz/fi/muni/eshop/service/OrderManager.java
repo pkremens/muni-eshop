@@ -4,6 +4,7 @@
  */
 package cz.fi.muni.eshop.service;
 
+import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
 import cz.fi.muni.eshop.model.Product;
@@ -87,6 +88,7 @@ public class OrderManager {
             em.persist(orderItem);
         }
         em.persist(order);
+        
         noticeStoreman(order.getId());
         return order;
     }
@@ -142,13 +144,19 @@ public class OrderManager {
         criteria.select(cb.count(order));
         return em.createQuery(criteria).getSingleResult().longValue();
     }
-    
-
 
     public void clearOrderTable() {
         log.info("Clear orders ");
         for (Order order : getOrders()) {
             em.remove(order);
         }
+    }
+
+    public void updateOrdersInvoice(Long orderId, Long invoiceId) {
+        log.info("Updating order: " + orderId + " with invoice: " + invoiceId);
+        Order order = em.find(Order.class, orderId);
+        Invoice invoice = em.find(Invoice.class, invoiceId);
+        order.setInvoice(invoice);
+        em.persist(order);
     }
 }

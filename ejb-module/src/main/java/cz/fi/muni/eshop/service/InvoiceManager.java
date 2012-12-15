@@ -55,16 +55,19 @@ public class InvoiceManager {
         for (OrderItem orderItem : order.getOrderItems()) {
             if(!productManager.invoiceProduct(orderItem.getProduct().getId(), orderItem.getQuantity())){
 //                context.setRollbackOnly();
-                log.warning("XX");
+                log.warning("Should Roll back");
     //            log.warning("Closing of order: " + orderId + " has been cancelled as there are some products missing on store, \nStoreman has been called so try it later.");
             }  // jeste sem to netestoval
+            
             invoiceItems.add(new InvoiceItem(orderItem.getProduct(), orderItem.getQuantity()));
         }
+        invoice.setInvoiceItems(invoiceItems);
         invoice.setCustomer(order.getCustomer());
         invoice.setCreationDate(Calendar.getInstance().getTime());
         invoice.setOrder(order);
         log.warning(invoice.toString());
         em.persist(invoice);
+        orderManager.updateOrdersInvoice(order.getId(), invoice.getId());
         return invoice;
  //       } catch (Exception ex) {
 //            context.setRollbackOnly();

@@ -78,24 +78,30 @@ public class ProductManager {
 
     public void refillProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
-        log.info("Refilling product: " + product + " new quantity: " + quantity);
-        product.setStored(product.getStored() + quantity);
+        log.warning(product.toString());
+        product.setStored(product.getReserved() + quantity);
+        log.warning("Refilling product: " + product + " new quantity: " + product.getStored());
         em.merge(product);
     }
 
     public void orderProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
-        log.info("Upating Product: " + product + " quantity: " + quantity);
         product.setReserved(product.getReserved() + quantity); // delat toto tady nebo muzu i v Product
+        log.warning("Updating Product: " + product + " quantity: " + quantity + " and raising stored value to be +100 in compare to reserved");
+        // we get into state whe we would not be able to close the order, so storeman must refill the store to getReserver() + 100.
+        if (product.getStored() < product.getReserved()) {
+            noticeStoreman(id);
+        }
         em.merge(product);
     }
 
-/**
- * 
- * @param id
- * @param quantity
- * @return true if product orderItem containing this product can be closed, false if no products on store -> calling storeman
- */
+    /**
+     *
+     * @param id
+     * @param quantity
+     * @return true if product orderItem containing this product can be closed,
+     * false if no products on store -> calling storeman
+     */
     public boolean invoiceProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
         log.info("Invoice product: " + product + " quantity: " + quantity);
@@ -103,8 +109,7 @@ public class ProductManager {
             throw new IllegalArgumentException("Can not invoice non-reserve products, we are somewhere loosing data!");
         }
         if (product.getStored() - quantity < 0) { // pokud bych sel do zaporu na sklade
-            noticeStoreman(id);
-            return false;
+            throw new NullPointerException("Not enough products on store to invoice order, storeman failed!");
         } else {
             product.setStored(product.getStored() - quantity);
             product.setReserved(product.getReserved() - quantity);

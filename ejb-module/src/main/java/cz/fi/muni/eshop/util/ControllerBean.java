@@ -18,6 +18,7 @@ import javax.inject.Inject;
  */
 @Singleton // Nebo application scoped???
 public class ControllerBean {
+    private static long STOREMAN_REFILL=100; // to tell storeman how much to refill store
 
     @Inject
     private ProductManager productManager;
