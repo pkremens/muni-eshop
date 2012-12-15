@@ -48,7 +48,7 @@ public class ControllerBeanTest {
         
         @Before
         public void cleanBefore() {
-            controller.clearDB();
+            controller.wipeOutDB();
         }
         @Test
         public void clearDbTest() {

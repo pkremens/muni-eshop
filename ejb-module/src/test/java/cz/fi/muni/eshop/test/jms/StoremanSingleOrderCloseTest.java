@@ -67,7 +67,7 @@ public class StoremanSingleOrderCloseTest {
 
     @Before
     public void storemanCloseOrderTest() {
-        controllerBean.clearDB();
+        controllerBean.wipeOutDB();
     }
 
     @Test
