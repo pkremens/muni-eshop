@@ -160,13 +160,13 @@ public class DataGenerator {
 				orderItems.add(orderItem);
 			}
 			order = orderManager.addOrder(email, orderItems);
-			noticeStoreman(order.getId());
+			//noticeStoreman(order.getId());
 		}
 	}
 
 	public void generateOrder(String customersEmail, List<OrderItem> orderItems) {
 		Order order = orderManager.addOrder(customersEmail, orderItems);
-		noticeStoreman(order.getId());
+		//noticeStoreman(order.getId());
 	}
 
 	private void noticeStoreman(Long orderId) {

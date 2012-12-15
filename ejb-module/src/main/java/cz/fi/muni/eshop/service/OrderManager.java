@@ -70,37 +70,38 @@ public class OrderManager {
 		}
 		log.warning(order.toString());
 		em.persist(order);
+                em.flush(); // TODO je toto OK???
 		log.warning(order.toString());
-		// noticeStoreman(order.getId()); // jak to udelat aby se to zavolalo az
+		 noticeStoreman(order.getId()); // jak to udelat aby se to zavolalo az
 		// po ulozeni?
 		return order;
 	}
 
-	// private void noticeStoreman(Long orderId) {
-	// Connection connection = null;
-	// try {
-	// connection = connectionFactory.createConnection();
-	// Session session = connection.createSession(false,
-	// Session.AUTO_ACKNOWLEDGE);
-	// MessageProducer messageProducer = session.createProducer(queue);
-	// connection.start();
-	// MapMessage message = session.createMapMessage();
-	// message.setStringProperty("type", "CLOSE_ORDER");
-	// log.warning("Notifing storeman, sending order Id: " + orderId);
-	// message.setLongProperty("orderId", orderId);
-	// messageProducer.send(message);
-	// } catch (JMSException e) {
-	// log.warning("A problem occurred during the delivery of this message");
-	// } finally {
-	// if (connection != null) {
-	// try {
-	// connection.close();
-	// } catch (JMSException e) {
-	// log.warning(e.getMessage());
-	// }
-	// }
-	// }
-	// }
+	   private void noticeStoreman(Long orderId) {
+        Connection connection = null;
+        try {
+            connection = connectionFactory.createConnection();
+            Session session = connection.createSession(false,
+                    Session.AUTO_ACKNOWLEDGE);
+            MessageProducer messageProducer = session.createProducer(queue);
+            connection.start();
+            MapMessage message = session.createMapMessage();
+            message.setStringProperty("type", "CLOSE_ORDER");
+            log.warning("Notifing storeman, sending order Id: " + orderId);
+            message.setLongProperty("orderId", orderId);
+            messageProducer.send(message);
+        } catch (JMSException e) {
+            log.warning("A problem occurred during the delivery of this message");
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (JMSException e) {
+                    log.warning(e.getMessage());
+                }
+            }
+        }
+    }
 
 	public Order getOrderById(Long id) {
 		log.warning("Get order by id: " + id);

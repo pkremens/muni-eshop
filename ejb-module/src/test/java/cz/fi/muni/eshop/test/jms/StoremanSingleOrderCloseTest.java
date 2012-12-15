@@ -73,7 +73,6 @@ public class StoremanSingleOrderCloseTest {
     }
 
     @Test
-    @Ignore
     public void storemanCloseTest() throws InterruptedException {
         customerManager.addCustomer("xxxxx@yyyyy.zz", "customer", "password");
         productManager.addProduct("product", 200L, Category.TYPE1, 100L, 0L);
@@ -101,7 +100,6 @@ public class StoremanSingleOrderCloseTest {
     }
 
     @Test
-    @Ignore
     public void autoRefillTest() throws InterruptedException {
         customerManager.addCustomer("xxxxx@yyyyy.zz", "customer", "password");
         productManager.addProduct("product", 200L, Category.TYPE1, 4L, 0L);
