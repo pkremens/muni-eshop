@@ -50,7 +50,7 @@ public class ProductManagerTest {
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(DummyMDB.class,OrderRoot.class, OrderManager.class, DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+        return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(DummyMDB.class, OrderRoot.class, OrderManager.class, DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     private void setUp() {
@@ -71,7 +71,15 @@ public class ProductManagerTest {
     @Test
     public void refillProductTest() {
         setUp();
-        productManager.refillProduct(product.getId(), 1000L);
+        productManager.refillProductWithReserved(product.getId(), 1000L);
+        product = productManager.getProductById(product.getId());
+        Assert.assertEquals(1023L, (long) product.getStored());
+    }
+
+    @Test
+    public void hardRefillTest() {
+        setUp();
+        productManager.hardRefillProduct(product.getId(), 1000L);
         product = productManager.getProductById(product.getId());
         Assert.assertEquals(1343L, (long) product.getStored());
     }
@@ -87,14 +95,21 @@ public class ProductManagerTest {
 
     @Test
     public void invoiceProductFalseTest() {
-        product = productManager.addProduct("name", 44L, Category.TYPE1, 3L, 23L);
-        Assert.assertFalse(productManager.invoiceProduct(product.getId(), product.getStored() + 1));
+
+        boolean caught = false;
+        try {
+            product = productManager.addProduct("name", 44L, Category.TYPE1, 3L, 23L);
+            productManager.invoiceProduct(product.getId(), product.getStored() + 1);
+        } catch (Exception npe) { // unable to catch just NPE
+            caught = true;
+        }
+        Assert.assertTrue(caught);
     }
 
     @Test
     public void invoiceProductTrueTest() {
         product = productManager.addProduct("Test", 2L, Category.TYPE1, 20L, 20L);
-        Assert.assertTrue(productManager.invoiceProduct(product.getId(), 20L));
+        productManager.invoiceProduct(product.getId(), 20L);
         product = productManager.getProductById(product.getId());
         Assert.assertEquals(0L, (long) product.getReserved());
         Assert.assertEquals(0L, (long) product.getStored());
@@ -106,6 +121,4 @@ public class ProductManagerTest {
         Assert.assertEquals(productManager.getProducts().size(), (long) productManager.getProductTableCount());
         Assert.assertEquals(20L, (long) productManager.getProductTableCount());
     }
-
-    
 }

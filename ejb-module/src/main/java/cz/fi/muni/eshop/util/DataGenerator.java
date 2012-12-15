@@ -121,7 +121,7 @@ public class DataGenerator {
                 orderItem = new OrderItem(productManager.getProductByName(productName), (((long) (Math.random() * (quantity - 1))) + 1)); // don't want zeros!
                 orderItems.add(orderItem);
             }
-            orderManager.addOrderWithOrderItems(email, orderItems);
+            orderManager.addOrder(email, orderItems);
         }
     }
 }

@@ -45,20 +45,15 @@ public class InvoiceManager {
 //    @Inject
 //    private SessionContext context;
 
-   // @TransactionAttribute(TransactionAttributeType.REQUIRED) 
+    // @TransactionAttribute(TransactionAttributeType.REQUIRED) 
     public Invoice closeOrder(Long orderId) {
         log.info("Closing order id: " + orderId);
-  //      try {
+
         Invoice invoice = new Invoice();
         Order order = orderManager.getOrderById(orderId);
         List<InvoiceItem> invoiceItems = new ArrayList<InvoiceItem>();
         for (OrderItem orderItem : order.getOrderItems()) {
-            if(!productManager.invoiceProduct(orderItem.getProduct().getId(), orderItem.getQuantity())){
-//                context.setRollbackOnly();
-                log.warning("Should Roll back");
-    //            log.warning("Closing of order: " + orderId + " has been cancelled as there are some products missing on store, \nStoreman has been called so try it later.");
-            }  // jeste sem to netestoval
-            
+            productManager.invoiceProduct(orderItem.getProduct().getId(), orderItem.getQuantity());
             invoiceItems.add(new InvoiceItem(orderItem.getProduct(), orderItem.getQuantity()));
         }
         invoice.setInvoiceItems(invoiceItems);
@@ -69,10 +64,10 @@ public class InvoiceManager {
         em.persist(invoice);
         orderManager.updateOrdersInvoice(order.getId(), invoice.getId());
         return invoice;
- //       } catch (Exception ex) {
+        //       } catch (Exception ex) {
 //            context.setRollbackOnly();
-   //         return null;
-    //    }
+        //         return null;
+        //    }
     }
 
     public Invoice getInvoiceById(Long id) {

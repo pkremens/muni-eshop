@@ -48,7 +48,7 @@ public class StoremanMDB implements MessageListener {
                         break;
                     case FILL_THE_STORE:
                         log.info(StoremanMessage.FILL_THE_STORE.getMessage());
-                        productManager.refillProduct(msg.getLongProperty("productId"), 100L);
+                        productManager.refillProductWithReserved(msg.getLongProperty("productId"), 100L);
                         break;
                     default:
                         log.warning("Recieved unknown storeman message!");

@@ -44,31 +44,6 @@ public class ProductManager {
     @Resource(mappedName = "java:/queue/test")
     private Queue queue;
 
-    private void noticeStoreman(Long id) {
-        Connection connection = null;
-        try {
-            connection = connectionFactory.createConnection();
-            Session session = connection.createSession(false,
-                    Session.AUTO_ACKNOWLEDGE);
-            MessageProducer messageProducer = session.createProducer(queue);
-            connection.start();
-            MapMessage message = session.createMapMessage();
-            message.setStringProperty("type", "FILL_THE_STORE");
-            message.setLongProperty("productId", id);
-            messageProducer.send(message);
-        } catch (JMSException e) {
-            log.warning("A problem occurred during the delivery of this message");
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (JMSException e) {
-                    log.warning(e.getMessage());
-                }
-            }
-        }
-    }
-
     public Product addProduct(String name, Long price, Category category, Long stored, Long reserved) {
         Product product = new Product(name, price, category, stored, reserved);
         log.info("Adding product: " + product);
@@ -76,10 +51,18 @@ public class ProductManager {
         return product;
     }
 
-    public void refillProduct(Long id, Long quantity) {
+    public void refillProductWithReserved(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
         log.warning(product.toString());
         product.setStored(product.getReserved() + quantity);
+        log.warning("Refilling product: " + product + " new quantity: " + product.getStored());
+        em.merge(product);
+    }
+
+    public void hardRefillProduct(Long id, Long quantity) {
+        Product product = em.find(Product.class, id);
+        log.warning(product.toString());
+        product.setStored(product.getStored() + quantity);
         log.warning("Refilling product: " + product + " new quantity: " + product.getStored());
         em.merge(product);
     }
@@ -91,11 +74,11 @@ public class ProductManager {
         //log.warning("Updating Product: " + product + " quantity: " + quantity + " and raising stored value to be +100 in compare to reserved");
         // we get into state whe we would not be able to close the order, so storeman must refill the store to getReserver() + 100.
         if (product.getStored() < product.getReserved()) {
-   //         noticeStoreman(id);
+            //         noticeStoreman(id);
             product.setStored(product.getReserved() + 100L);
             log.warning("refill: " + product.toString());
         }
-        
+
         em.merge(product);
     }
 
@@ -106,19 +89,18 @@ public class ProductManager {
      * @return true if product orderItem containing this product can be closed,
      * false if no products on store -> calling storeman
      */
-    public boolean invoiceProduct(Long id, Long quantity) {
+    public void invoiceProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
         log.info("Invoice product: " + product + " quantity: " + quantity);
         if (quantity > product.getReserved()) {
             throw new IllegalArgumentException("Can not invoice non-reserve products, we are somewhere loosing data!");
         }
         if (product.getStored() - quantity < 0) { // pokud bych sel do zaporu na sklade
-            throw new NullPointerException("Not enough products on store to invoice order, storeman failed!");
+            throw new NullPointerException("Auto-refill failed!");
         } else {
             product.setStored(product.getStored() - quantity);
             product.setReserved(product.getReserved() - quantity);
             em.merge(product);
-            return true;
         }
     }
 
@@ -188,6 +170,31 @@ public class ProductManager {
         log.info("Clear products table");
         for (Product product : getProducts()) {
             em.remove(product);
+        }
+    }
+
+    private void noticeStoreman(Long id) {
+        Connection connection = null;
+        try {
+            connection = connectionFactory.createConnection();
+            Session session = connection.createSession(false,
+                    Session.AUTO_ACKNOWLEDGE);
+            MessageProducer messageProducer = session.createProducer(queue);
+            connection.start();
+            MapMessage message = session.createMapMessage();
+            message.setStringProperty("type", "FILL_THE_STORE");
+            message.setLongProperty("productId", id);
+            messageProducer.send(message);
+        } catch (JMSException e) {
+            log.warning("A problem occurred during the delivery of this message");
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (JMSException e) {
+                    log.warning(e.getMessage());
+                }
+            }
         }
     }
 }

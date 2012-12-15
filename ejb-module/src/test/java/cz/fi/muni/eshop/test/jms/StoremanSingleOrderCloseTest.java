@@ -68,31 +68,21 @@ public class StoremanSingleOrderCloseTest {
     @Before
     public void storemanCloseOrderTest() {
         controllerBean.clearDB();
-
-        //   dataGenerator.generateCustomers(1L);
-        //   dataGenerator.generateProducts(1L, 10000L, 10000L); // to ensuer that every order can be closed
-        //   dataGenerator.generateOrders(1L, 1L);
     }
 
     @Test
     public void storemanCloseTest() throws InterruptedException {
         customerManager.addCustomer("xxxxx@yyyyy.zz", "customer", "password");
         productManager.addProduct("product", 200L, Category.TYPE1, 100L, 0L);
- //       Map<Long, Long> basket = new HashMap<Long, Long>();
-        //log.warning(productManager.getProductByName("product").toString());
-  //      basket.put(productManager.getProductByName("product").getId(), 5L);
-
         List<OrderItem> orderItems = new ArrayList<OrderItem>();
         OrderItem orderItem = new OrderItem(productManager.getProductByName("product"), 5L);
         orderItems.add(orderItem);
-        Order order = orderManager.addOrderWithOrderItems("xxxxx@yyyyy.zz", orderItems);
-//        Order order = orderManager.addOrder("xxxxx@yyyyy.zz", basket);
+        Order order = orderManager.addOrder("xxxxx@yyyyy.zz", orderItems);
         log.warning(order.toString());
         Thread.sleep(500);
-        //invoiceManager.closeOrder(order.getId()); cannot call invoice if not using DummyMDB !!!!!!
     }
-    
-        @Test
+
+    @Test
     public void autoRefillTest() throws InterruptedException {
         customerManager.addCustomer("xxxxx@yyyyy.zz", "customer", "password");
         productManager.addProduct("product", 200L, Category.TYPE1, 4L, 0L);
@@ -100,33 +90,8 @@ public class StoremanSingleOrderCloseTest {
         List<OrderItem> orderItems = new ArrayList<OrderItem>();
         OrderItem orderItem = new OrderItem(productManager.getProductByName("product"), 5L);
         orderItems.add(orderItem);
-        Order order = orderManager.addOrderWithOrderItems("xxxxx@yyyyy.zz", orderItems);
+        Order order = orderManager.addOrder("xxxxx@yyyyy.zz", orderItems);
         log.warning(order.toString());
         Thread.sleep(500); // check storeman
-        //invoiceManager.closeOrder(order.getId()); cannot call invoice if not using DummyMDB !!!!!!
     }
-
-    @Test
-    @Ignore
-    public void storemanRefillTest() throws InterruptedException {
-        customerManager.addCustomer("xxxxx@yyyyy.zz", "customer", "password");
-        productManager.addProduct("product", 200L, Category.TYPE1, 20L, 0L);
-        log.warning(productManager.getProductByName("product").toString());
-        List<OrderItem> orderItems = new ArrayList<OrderItem>();
-        OrderItem orderItem = new OrderItem(productManager.getProductByName("product"), 5L);
-        orderItems.add(orderItem);
-        Order order = orderManager.addOrderWithOrderItems("xxxxx@yyyyy.zz", orderItems);
-        log.warning(order.toString());
-        Thread.sleep(500); // check storeman
-        //invoiceManager.closeOrder(order.getId());
-    }
-//    @Test
-//    public void lookForClosedOrders() {
-//        try {
-//            Thread.sleep(20000);
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(StoremanSingleOrderCloseTest.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        Assert.assertTrue(invoiceManager.getInvoiceTableCount() == 10L);
-//    }
 }

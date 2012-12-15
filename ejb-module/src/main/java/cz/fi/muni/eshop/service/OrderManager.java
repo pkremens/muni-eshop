@@ -50,35 +50,7 @@ public class OrderManager {
     @Resource(mappedName = "java:/queue/test")
     private Queue queue;
 
-    public Order addOrder(String email, Map<Long, Long> basket) { // Na co zmenit order lines??? nebo tu brat jen kosik???
-        Order order = new Order();
-        order.setCustomer(customerManager.getCustomerByEmail(email));
-        order.setCreationDate(Calendar.getInstance().getTime());
-        List<OrderItem> orderItems = new ArrayList<OrderItem>();
-        for (Long productId : basket.keySet()) {
-            productManager.orderProduct(productId, basket.get(productId));
-        }
-        order.setOrderItems(orderItems);
-        log.warning(order.toString());
-        em.persist(order);
-        noticeStoreman(order.getId());
-        return order;
-    }
-
-    public Order addOrderWithBasket(String email, Map<Product, Long> basket) {
-        Order order = new Order();
-        order.setCustomer(customerManager.getCustomerByEmail(email));
-        order.setCreationDate(Calendar.getInstance().getTime());
-        for (Product product : basket.keySet()) {
-            productManager.orderProduct(product.getId(), basket.get(product));
-            order.addOrderItem(new OrderItem(product, basket.get(product)));
-        }
-        em.persist(order);
-        noticeStoreman(order.getId());
-        return order;
-    }
-
-    public Order addOrderWithOrderItems(String email, List<OrderItem> orderItems) {
+    public Order addOrder(String email, List<OrderItem> orderItems) {
         Order order = new Order();
         order.setCustomer(customerManager.getCustomerByEmail(email));
         order.setCreationDate(Calendar.getInstance().getTime());
@@ -88,7 +60,6 @@ public class OrderManager {
             em.persist(orderItem);
         }
         em.persist(order);
-        
         noticeStoreman(order.getId());
         return order;
     }
