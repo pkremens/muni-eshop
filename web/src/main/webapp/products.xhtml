@@ -6,9 +6,9 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
-		<h:form id="products">
+		<h:form id="loginRelated">
 			<p:dataTable value="#{productBean.products}" var="_product"
-				style="width: 70%" paginator="true" rows="10"
+				style="width: 80%" paginator="true" rows="10"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="5,10,15">
 				<f:facet name="header">  
@@ -64,11 +64,17 @@
 						action="#{productBean.deleteProduct(_product.productName)}"
 						update="@form" />
 				</p:column>
+				<p:column id="basketcol" rendered="#{identity.loggedIn}">
+					<f:facet name="header">
+						<h:outputText value="Basket Action" />
+					</f:facet>
+					<p:commandButton value="Add" disabled="#{basketBean.isInBasket(_product.id)}" action="#{basketBean.addToBasket(_product)}"  update="@form @this basketcol :loginRelated" />
+					</p:column>
 			</p:dataTable>
 		</h:form>
 		<br />
 		<h:form id="clearForm">
-			<p:commandButton value="Clear all products" update=":products"
+			<p:commandButton value="Clear all products" update=":loginRelated"
 				id="clear" actionListener="#{productBean.clearProducts()}"
 				styleClass="ui-priority-primary" />
 			<br />
@@ -95,7 +101,7 @@
 				<p:inputText id="reserved" value="#{productBean.reserved}" />
 
 				<h:outputLabel value="Category: " for="category" />
-				<p:selectOneMenu value="#{productBean.category}">
+				<p:selectOneMenu id="category" value="#{productBean.category}">
 					<f:selectItem itemLabel="Type1" itemValue="TYPE1" />
 					<f:selectItem itemLabel="Type2" itemValue="TYPE2" />
 					<f:selectItem itemLabel="Type3" itemValue="TYPE3" />
@@ -105,10 +111,10 @@
 					<f:selectItem itemLabel="Type7" itemValue="TYPE7" />
 				</p:selectOneMenu>
 				<f:facet name="footer">
-					<p:commandButton value="Add" update=":products, @form"
+					<p:commandButton value="Add" update=":loginRelated, addForm"
 						actionListener="#{productBean.addProduct()}"
 						styleClass="ui-priority-primary" />
-					<p:commandButton value="Random" update=":products"
+					<p:commandButton value="Random" update=":loginRelated"
 						actionListener="#{productBean.generateRandomCustomer()}"
 						styleClass="ui-priority-primary" />
 				</f:facet>

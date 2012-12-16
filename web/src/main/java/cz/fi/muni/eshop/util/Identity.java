@@ -6,8 +6,10 @@ package cz.fi.muni.eshop.util;
 
 import java.io.Serializable;
 
+import cz.fi.muni.eshop.controller.BasketBean;
 import cz.fi.muni.eshop.model.Customer;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -20,6 +22,8 @@ public class Identity implements Serializable {
 
     private Customer customer = null;
     
+    @Inject
+    private BasketBean basket;
 
     /**
      * Do not allow to log in if already logged
@@ -28,6 +32,7 @@ public class Identity implements Serializable {
     public void logIn(Customer customer) {
         if (customer != null) {
             this.customer = customer;
+            basket.initNewBasket();
         }
     }
     public Customer getCustomer() {
@@ -36,6 +41,7 @@ public class Identity implements Serializable {
 
     public void logOut() {
         this.customer = null;
+        basket.clearBasket();
     }
 
     public boolean isLoggedIn() {

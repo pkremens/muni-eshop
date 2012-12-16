@@ -13,17 +13,16 @@
 <h:body>
 	<h:form id="navigationMenu">
 		<p:breadCrumb>
-			<p:menuitem update="content" value="Categories" url="#" />
+			<p:menuitem update="content" value="Categories" url="/#" />
 			<p:menuitem update="content" value="Customers" url="/customers.jsf" />
 			<p:menuitem update="content" value="Products" url="/products.jsf" />
+			<p:menuitem update="content" disabled="#{!identity.loggedIn}" value="Basket" url="/basket.jsf" />
 			<p:menuitem update="content" value="History"
 				disabled="#{!identity.loggedIn}" url="#" />
 		</p:breadCrumb>
 	</h:form>
 	<h:form id="loginInfo">
 		<h5 align="right">
-			<p:messages id="messages" autoUpdate="true"
-				 />
 			<h:form id="loginForm" rendered="#{not identity.loggedIn}">
 				<h:outputLabel for="email" value="Email: " />
 				<p:inputText id="email" value="#{loginBean.email}" label="Firstname" />
@@ -34,7 +33,7 @@
 
 
 				<p:commandButton value="Log in" disabled="#{identity.loggedIn}"
-					update="@all" actionListener="#{loginBean.logIn()}"
+					update="email password :loginInfo :navigationMenu :loginRelated" actionListener="#{loginBean.logIn()}"
 					styleClass="ui-priority-primary" />
 
 
@@ -44,7 +43,7 @@
 			&#160;
 
 			<p:commandButton id="logout" value="Logout"
-				action="#{identity.logOut()}" update="@all"
+				action="#{identity.logOut()}" update="loginInfo :navigationMenu :loginRelated" 
 				rendered="#{identity.loggedIn}" />
 		</h5>
 	</h:form>

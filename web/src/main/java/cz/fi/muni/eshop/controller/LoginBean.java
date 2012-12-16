@@ -40,22 +40,13 @@ public class LoginBean {
 			Customer customer = customerManager.verifyCustomer(email, password);
 			if (customer == null) {
 				clearBean();
-				FacesContext.getCurrentInstance().addMessage(
-						null,
-						new FacesMessage(FacesMessage.SEVERITY_WARN,
-								"Wrong input", "user with given email and password was not found"));
-				
+								
 			} else {
 				identity.logIn(customerManager.getCustomerByEmail(email));
 				clearBean();
 			}
 		} else {
 			clearBean();
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_WARN, "Invalid input",
-							"inserted invalid data"));
-			
 		}
 	}
 

@@ -111,8 +111,8 @@ public class ProductBean {
 	}
 
 	public void generateRandomCustomer() {
-		log.info("generating random customer");
-		dataGenerator.generateRandomCustomer();
+		log.info("generating random product");
+		dataGenerator.generateRandomProduct();
 	}
 
 	public String getName() {
