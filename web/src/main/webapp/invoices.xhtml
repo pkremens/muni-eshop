@@ -52,6 +52,11 @@
                 </p:column>
             </p:dataTable>
         </h:form>
+        <br />
+		<p:commandButton value="Clear orders" update=":invoices"
+			actionListener="#{invoiceBean.clearInvoices()}"
+			styleClass="ui-priority-primary" />
+		
         <h:form id="loginRelated" />
 
     </ui:define>

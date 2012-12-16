@@ -56,7 +56,7 @@ public class Controller {
 	public void controlData() {
 		if (automatiCleanUp) {
 			log.warning("Cleaning invoices, count=" +invoiceManager.getInvoiceTableCount().toString());
-			invoiceManager.clearInvoiceTable();
+			orderManager.clearOrderTable();
 		} else {
 			log.warning("Auto cleanup is turned off, invoices="+invoiceManager.getInvoiceTableCount().toString());
 		}
@@ -92,7 +92,7 @@ public class Controller {
 	 */
 	public boolean switchAutoClean() {
 		automatiCleanUp = !automatiCleanUp;
-		log.warning("Automatic cleanUp was switched: "
+		log.warning("Automatic cleanUp was switched to: "
 				+ ((automatiCleanUp) ? "on" : "off"));
 		return automatiCleanUp;
 	}

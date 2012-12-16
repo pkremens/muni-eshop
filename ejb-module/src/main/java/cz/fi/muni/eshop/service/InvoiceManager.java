@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.jms.ConnectionFactory;
 import javax.jms.Queue;
@@ -45,7 +47,7 @@ public class InvoiceManager {
 //    @Inject
 //    private SessionContext context;
 
-    // @TransactionAttribute(TransactionAttributeType.REQUIRED) 
+    @TransactionAttribute(TransactionAttributeType.REQUIRED) 
     public Invoice closeOrder(Long orderId) {
         log.warning("Closing order id: " + orderId);
         Invoice invoice = new Invoice();

@@ -39,13 +39,13 @@ public class StoremanMDB implements MessageListener {
         try {
             if (rcvMessage instanceof MapMessage) {
                 MapMessage msg = (MapMessage) rcvMessage;
-                log.info("Received Message");
+              //  log.info("Received Message");
                 StoremanMessage message = StoremanMessage.valueOf(msg.getStringProperty("type"));
                 switch (message) {
                     case CLOSE_ORDER:
                         log.info(StoremanMessage.CLOSE_ORDER.getMessage());
                         long id = msg.getLongProperty("orderId");
-                        log.warning("Storeman Should close order with id: " + id);
+                      //  log.warning("Storeman Should close order with id: " + id);
                         invoiceManager.closeOrder(id);
                         log.warning("Storeman closed order: " + id);
                         break;
@@ -54,7 +54,7 @@ public class StoremanMDB implements MessageListener {
                         productManager.refillProductWithReserved(msg.getLongProperty("productId"), 100L);
                         break;
                     default:
-                        log.warning("Recieved unknown storeman message!");
+                        throw new IllegalArgumentException("Recieved unknown storeman message!");
                 }
                 log.info(message.toString());
             } else {

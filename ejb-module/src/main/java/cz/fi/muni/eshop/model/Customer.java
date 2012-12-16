@@ -6,6 +6,8 @@ package cz.fi.muni.eshop.model;
 
 import java.io.Serializable;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,10 +36,10 @@ public class Customer implements Serializable {
     @NotNull
     private String password;
     
-    @OneToMany(mappedBy = "customer", orphanRemoval=true)
+    @OneToMany(mappedBy = "customer", orphanRemoval=true, cascade = CascadeType.ALL)
     private List<Order> order;
     
-    @OneToMany(mappedBy = "customer", orphanRemoval=true)
+    @OneToMany(mappedBy = "customer", orphanRemoval=true, cascade = CascadeType.ALL)
     private List<Invoice> invoice;
 
     public Customer() {

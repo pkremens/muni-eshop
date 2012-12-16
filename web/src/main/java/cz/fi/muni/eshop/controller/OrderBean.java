@@ -10,6 +10,7 @@ import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.OrderManager;
+import cz.fi.muni.eshop.util.DataGenerator;
 import cz.fi.muni.eshop.util.Identity;
 
 @Model
@@ -18,6 +19,13 @@ public class OrderBean {
 	private Identity identity;
 	@Inject
 	private CustomerManager customerManager;
+	@Inject
+	private OrderManager orderManager;
+	@Inject
+	private DataGenerator dataGenerator;
+
+	@Inject
+	private Logger log;
 
 	public List<Order> getCustomerOrders() {
 		return customerManager.getCustomerOrders(identity.getEmail());
@@ -26,10 +34,6 @@ public class OrderBean {
 	private boolean detail = false; // Show order detail
 	private Long zoomOrderId = null;
 	private Long totalPrice = 0L;
-	@Inject
-	private Logger log;
-	@Inject
-	private OrderManager orderManager;
 
 	public List<OrderItem> getItemDetails() {
 		List<OrderItem> items = orderManager
@@ -55,13 +59,25 @@ public class OrderBean {
 	public Long getTotalPrice() {
 		return totalPrice;
 	}
-	
+
 	public Long getZoomOrderId() {
 		return zoomOrderId;
 	}
 
 	public boolean isDetail() {
 		return detail;
+	}
+
+	public List<Order> getOrders() {
+		return orderManager.getOrders();
+	}
+
+	public void generateRanomOrder() {
+		dataGenerator.generateRandomOrder();
+	}
+
+	public void clearOrders() {
+		orderManager.clearOrderTable();
 	}
 
 }

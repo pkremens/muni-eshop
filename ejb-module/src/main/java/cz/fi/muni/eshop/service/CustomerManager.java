@@ -33,7 +33,8 @@ public class CustomerManager {
 	private EntityManager em;
 	@Inject
 	private Logger log;
-
+        
+        
 	public Customer addCustomer(String email, String name, String password) {
 		Customer customer = new Customer(email, name, password);
 		log.info("Adding customer: " + customer);

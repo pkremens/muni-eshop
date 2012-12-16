@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -62,11 +64,11 @@ public class OrderManager {
 		}
 		return addOrder(email, orderItems);
 	}
-
+        @TransactionAttribute(TransactionAttributeType.REQUIRED) 
 	public Order addOrder(String email, List<OrderItem> orderItems) {
 		Order order = new Order();
+                order.setCreationDate(Calendar.getInstance().getTime());
 		order.setCustomer(customerManager.getCustomerByEmail(email));
-		order.setCreationDate(Calendar.getInstance().getTime());
 		order.setOrderItems(orderItems);
 		Long price = 0L;
 		for (OrderItem orderItem : orderItems) {
@@ -76,13 +78,11 @@ public class OrderManager {
 					orderItem.getQuantity());
 			em.persist(orderItem);
 		}
-		log.warning(price.toString());
 		order.setTotalPrice(price);
-		log.warning(order.toString());
 		em.persist(order);
-		em.flush(); // TODO je toto OK???
-		noticeStoreman(order.getId()); // jak to udelat aby se to zavolalo az
-		// po ulozeni?
+		
+		noticeStoreman(order.getId()); 
+		
 		return order;
 	}
 

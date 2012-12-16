@@ -13,11 +13,12 @@
 <h:body>
 	<h:form id="navigationMenu">
 		<p:breadCrumb>
-			<p:menuitem update="content" value="Categories" url="/#" />
+			<p:menuitem update="content" value="Categories" url="/index.jsf" />
 			<p:menuitem update="content" value="Customers" url="/customers.jsf" />
 			<p:menuitem update="content" value="Products" url="/products.jsf" />
 			<p:menuitem update="content" disabled="#{!identity.loggedIn}"
 				value="Basket" url="/basket.jsf" />
+							<p:menuitem update="content" value="Orders" url="/orders.jsf" />
 			<p:menuitem update="content" value="Invoices" url="/invoices.jsf" />
 			<p:menuitem update="content" value="History" disabled="#{!identity.loggedIn}" url="/history.jsf" />
 		</p:breadCrumb>

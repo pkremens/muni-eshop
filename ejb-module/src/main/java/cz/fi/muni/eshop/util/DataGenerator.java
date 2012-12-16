@@ -43,11 +43,6 @@ public class DataGenerator {
     private ProductManager productManager;
     @Inject
     private OrderManager orderManager;
-    private static final int MSG_COUNT = 5; // TODO what is this for???
-    @Resource(mappedName = "java:/ConnectionFactory")
-    private ConnectionFactory connectionFactory;
-    @Resource(mappedName = "java:/queue/test")
-    private Queue queue;
 
     // private Random random = new Random();
     public void generateCustomers(Long quantity) {
@@ -92,6 +87,20 @@ public class DataGenerator {
     public void generateOrders(Long quantity, Long itemsPerOrder) {
         generateOrders(quantity, itemsPerOrder, false);
     }
+    
+    
+    public void generateRandomOrder() {
+    	long productsCount = productManager.getProductTableCount(); 
+    	if (productsCount < 20) {
+    		generateRandomOrder(productsCount);
+    	} else {
+    		generateRandomOrder(20L);
+    	}
+    	
+    }
+    public void generateRandomOrder(Long itemCount) {
+    	generateOrders(1L, itemCount, true);
+    }
 
     /**
      * Take all customer emails and store them in list. In for cycle for
@@ -110,7 +119,10 @@ public class DataGenerator {
      */
     public void generateOrders(long quantity, long itemCount,
             boolean randomItems) {
+    	
         List<String> emails = customerManager.getCustomerEmails();
+        
+        
         OrderItem orderItem;
         String email;
         List<OrderItem> orderItems;
