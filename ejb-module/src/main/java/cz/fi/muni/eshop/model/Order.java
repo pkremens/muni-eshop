@@ -23,7 +23,7 @@ public class Order extends OrderRoot implements Serializable {
     private List<OrderItem> orderItems;
     @OneToOne(orphanRemoval = true) 
     private Invoice invoice;
-
+    private Long totalPrice;
     public Order() {
     }
 
@@ -43,6 +43,16 @@ public class Order extends OrderRoot implements Serializable {
         this.orderItems = orderItems;
     }
 
+    public Long getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Long totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+    
+    
+
     @Override
     public boolean equals(Object obj) {
 
@@ -60,6 +70,9 @@ public class Order extends OrderRoot implements Serializable {
         if (this.invoice != other.invoice && (this.invoice == null || !this.invoice.equals(other.invoice))) {
             return false;
         }
+        if (this.totalPrice != other.totalPrice && (this.totalPrice == null || !this.totalPrice.equals(other.totalPrice))) {
+            return false;
+        }
         return true;
     }
 
@@ -73,6 +86,7 @@ public class Order extends OrderRoot implements Serializable {
     @Override
     public int hashCode() {
         int hash = super.hashCode();
+        hash = 97 * hash + (this.totalPrice != null ? this.totalPrice.hashCode() : 0);
         hash = 97 * hash + (this.orderItems != null ? this.orderItems.hashCode() : 0);
         hash = 97 * hash + (this.invoice != null ? this.invoice.hashCode() : 0);
         return hash;
@@ -80,6 +94,6 @@ public class Order extends OrderRoot implements Serializable {
 
     @Override
     public String toString() {
-        return super.toString() + " Order{" + "orderItems=" + orderItems + ", invoice=" + invoice + '}';
+        return super.toString() + " Order{" + "orderItems=" + orderItems + ", totalPrice=" + totalPrice + ", invoice=" + invoice + '}';
     }
 }

@@ -63,11 +63,15 @@ public class OrderManager {
         order.setCustomer(customerManager.getCustomerByEmail(email));
         order.setCreationDate(Calendar.getInstance().getTime());
         order.setOrderItems(orderItems);
+        Long price = 0L;
         for (OrderItem orderItem : orderItems) {
+            price += orderItem.getQuantity() * orderItem.getProduct().getPrice();
             productManager.orderProduct(orderItem.getProduct().getId(),
                     orderItem.getQuantity());
             em.persist(orderItem);
         }
+        log.warning(price.toString());
+        order.setTotalPrice(price);
         log.warning(order.toString());
         em.persist(order);
         em.flush(); // TODO je toto OK???
