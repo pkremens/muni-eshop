@@ -23,6 +23,7 @@ import javax.inject.Inject;
 @Startup
 @Singleton
 public class Controller {
+	private boolean automatiCleanUp = false;
 
 	@Inject
 	private ProductManager productManager;
@@ -51,11 +52,16 @@ public class Controller {
 	/**
 	 * Every minute clean oldest orders together with invoices
 	 */
-	@Schedule(minute="*", hour="*")
+	@Schedule(minute = "*", hour = "*")
 	public void controlData() {
-		log.warning("I am alive");
+		if (automatiCleanUp) {
+			log.warning("Cleaning invoices, count=" +invoiceManager.getInvoiceTableCount().toString());
+			invoiceManager.clearInvoiceTable();
+		} else {
+			log.warning("Auto cleanup is turned off, invoices="+invoiceManager.getInvoiceTableCount().toString());
+		}
 	}
-	
+
 	/**
 	 * To completely remove all data from db
 	 */
@@ -66,7 +72,8 @@ public class Controller {
 		boolean empty = true;
 		if (orderManager.getOrderTableCount() > 0) {
 			empty = false;
-		}if (productManager.getProductTableCount() > 0) {
+		}
+		if (productManager.getProductTableCount() > 0) {
 			empty = false;
 		}
 		if (customerManager.getCustomerTableCount() > 0) {
@@ -76,5 +83,21 @@ public class Controller {
 			empty = false;
 		}
 		return empty;
+	}
+
+	/**
+	 * Switch value of automatic database cleanup.
+	 * 
+	 * @return actual automatiCleanUp value.
+	 */
+	public boolean switchAutoClean() {
+		automatiCleanUp = !automatiCleanUp;
+		log.warning("Automatic cleanUp was switched: "
+				+ ((automatiCleanUp) ? "on" : "off"));
+		return automatiCleanUp;
+	}
+
+	public boolean isAutoClean() {
+		return automatiCleanUp;
 	}
 }

@@ -16,7 +16,6 @@ import cz.fi.muni.eshop.service.InvoiceManager;
 public class InvoiceBean {
 	private boolean detail = false; // Show order detail
 	private Long zoomInvoice = null;
-	private Long totalPrice = 0L;
 
 	@Inject
 	private Logger log;
@@ -30,7 +29,6 @@ public class InvoiceBean {
 	public void hideDetail() {
 		detail = false;
 		zoomInvoice = null;
-		totalPrice = 0L;
 	}
 
 	public void showDetail(Long id) {
@@ -45,7 +43,8 @@ public class InvoiceBean {
 	@Produces
 	@Named("invoiceDetails")
 	public List<InvoiceItem> invoiceItems() {
-	return null;	//return invoiceManager.getInvoiceItemsByInvoiceId(zoomInvoice);
+		return null; // return
+						// invoiceManager.getInvoiceItemsByInvoiceId(zoomInvoice);
 	}
 
 }

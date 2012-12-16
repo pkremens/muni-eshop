@@ -32,7 +32,9 @@ public class LoginBean {
 	private EntityValidator<Customer> validator;
 	@Inject
 	private FacesContext facesContext;
-
+	
+	
+	// do some data validation before accessing back end
 	public void logIn() {
 		log.warning("trying to log in: " + "email=" + email + " password="
 				+ password);

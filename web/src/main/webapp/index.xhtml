@@ -6,12 +6,42 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
-<p:commandButton value="Wipe out db" action="#{controllerBean.wipeOutDb()}" />
-
-
-
-
-
-<h:form id="loginRelated" />
+		<p:accordionPanel multiple="true">
+			<p:tab title="Global configuration" id="global">
+				<p:panelGrid columns="2" cellpadding="10">
+					<h:outputText value="Manually clean database" />
+					<p:commandButton value="clean"
+						action="#{controllerBean.wipeOutDb()}" />
+					<h:outputText value="Automatic db cleanup" />
+					<p:commandButton value="#{controllerBean.autoCleanUpString()}"
+						action="#{controllerBean.switchCleanUp()}" update="@this" />
+				</p:panelGrid>
+			</p:tab>
+			<p:tab title="Customer generation configuration" id="Godfather2">
+				<h:outputText id="customerCount"
+					value="Customer table count: #{customerBean.customersCount()}" />
+				<br />generate random customer
+<br />generate n random customer
+<br />clear customers db
+</p:tab>
+			<p:tab title="Product generation configuration" id="products">
+				<h:outputText id="productsCount"
+					value="Product table count: #{customerBean.customersCount()}" />
+				<br />generate random product
+<br />generate n random products
+<br />allow to set some parameters for random creation
+<br />clear customers db
+</p:tab>
+			<p:tab title="Order generation configuration" id="orders">
+				<h:outputText id="ordersCount"
+					value="Order table count: #{customerBean.customersCount()}" />
+				<br />generate random order
+<br />generate n random orders
+<br />allow to set some parameters for random creation
+<br />clear order db
+<br />create orders in new thread
+</p:tab>
+		</p:accordionPanel>
+		<h:form id="loginRelated" />
 	</ui:define>
 </ui:composition>

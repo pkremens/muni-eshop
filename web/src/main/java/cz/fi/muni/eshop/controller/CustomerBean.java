@@ -135,4 +135,7 @@ public class CustomerBean {
 		return false;
 
 	}
+	public Long customersCount() {
+		return customerManager.getCustomerTableCount();
+	}
 }

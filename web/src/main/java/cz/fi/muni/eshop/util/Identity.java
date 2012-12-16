@@ -47,4 +47,8 @@ public class Identity implements Serializable {
     public boolean isLoggedIn() {
         return (customer == null ? false : true);
     }
+    
+    public String getEmail() {
+    	return customer.getEmail();
+    }
 }

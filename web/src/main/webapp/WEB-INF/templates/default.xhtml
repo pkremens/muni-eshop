@@ -18,10 +18,8 @@
 			<p:menuitem update="content" value="Products" url="/products.jsf" />
 			<p:menuitem update="content" disabled="#{!identity.loggedIn}"
 				value="Basket" url="/basket.jsf" />
-			<p:menuitem update="content" value="Orders" url="/orders.jsf" />
 			<p:menuitem update="content" value="Invoices" url="/invoices.jsf" />
-			<p:menuitem update="content" value="History"
-				disabled="#{!identity.loggedIn}" url="#" />
+			<p:menuitem update="content" value="History" disabled="#{!identity.loggedIn}" url="/history.jsf" />
 		</p:breadCrumb>
 	</h:form>
 	<h:form id="loginInfo">
