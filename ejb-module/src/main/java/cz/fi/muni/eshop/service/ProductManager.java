@@ -65,22 +65,10 @@ public class ProductManager {
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void hardRefillProduct(Long id, Long quantity) {
-        Product product = em.find(Product.class, id);
-        log.warning(product.toString());
-        product.setStored(product.getStored() + quantity);
-        log.warning("Refilling product: " + product + " new quantity: "
-                + product.getStored());
-        em.merge(product);
-    }
-
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void orderProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
-        product.setReserved(product.getReserved() + quantity);
-        if (product.getStored() < product.getReserved()) {
-            product.setStored(product.getReserved() + 100L);
-            log.warning("refill: " + product.toString());
+        if (product.getStored() < product.addReserved(quantity)) {
+            product.addStored(1000L);
         }
         em.merge(product);
     }
@@ -88,19 +76,14 @@ public class ProductManager {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void invoiceProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
-        log.info("Invoice product: " + product + " quantity: " + quantity);
+        //  log.info("Invoice product: " + product + " quantity: " + quantity);
         if (quantity > product.getReserved()) {
             throw new IllegalArgumentException(
                     "Can not invoice non-reserve products, we are somewhere loosing data! product=" + product.toString() + " quantity");
         }
-        if (product.getStored() - quantity < 0) { // pokud bych sel do zaporu na
-            // sklade
-            throw new NullPointerException("Auto-refill failed!");
-        } else {
-            product.setStored(product.getStored() - quantity);
-            product.setReserved(product.getReserved() - quantity);
-            em.merge(product);
-        }
+        product.setStored(product.getStored() - quantity);
+        product.setReserved(product.getReserved() - quantity);
+        em.merge(product);
     }
 
     public Product getProductById(Long id) {

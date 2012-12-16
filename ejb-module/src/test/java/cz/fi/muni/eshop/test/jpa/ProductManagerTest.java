@@ -76,13 +76,6 @@ public class ProductManagerTest {
         Assert.assertEquals(1023L, (long) product.getStored());
     }
 
-    @Test
-    public void hardRefillTest() {
-        setUp();
-        productManager.hardRefillProduct(product.getId(), 1000L);
-        product = productManager.getProductById(product.getId());
-        Assert.assertEquals(1343L, (long) product.getStored());
-    }
 
     @Test
     public void orderProductTest() {

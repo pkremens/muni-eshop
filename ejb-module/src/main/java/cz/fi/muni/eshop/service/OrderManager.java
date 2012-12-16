@@ -80,9 +80,8 @@ public class OrderManager {
 		}
 		order.setTotalPrice(price);
 		em.persist(order);
-		
+		em.flush();
 		noticeStoreman(order.getId()); 
-		
 		return order;
 	}
 

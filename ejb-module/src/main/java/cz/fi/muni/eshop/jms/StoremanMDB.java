@@ -31,8 +31,6 @@ public class StoremanMDB implements MessageListener {
     private Logger log;
     @Inject
     private InvoiceManager invoiceManager;
-    @Inject
-    private ProductManager productManager;
 
     @Override
     public void onMessage(Message rcvMessage) {
@@ -45,13 +43,7 @@ public class StoremanMDB implements MessageListener {
                     case CLOSE_ORDER:
                         log.info(StoremanMessage.CLOSE_ORDER.getMessage());
                         long id = msg.getLongProperty("orderId");
-                      //  log.warning("Storeman Should close order with id: " + id);
                         invoiceManager.closeOrder(id);
-                        log.warning("Storeman closed order: " + id);
-                        break;
-                    case FILL_THE_STORE:
-                        log.info(StoremanMessage.FILL_THE_STORE.getMessage());
-                        productManager.refillProductWithReserved(msg.getLongProperty("productId"), 100L);
                         break;
                     default:
                         throw new IllegalArgumentException("Recieved unknown storeman message!");

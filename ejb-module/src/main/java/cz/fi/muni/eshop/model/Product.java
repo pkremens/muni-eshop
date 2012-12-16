@@ -55,7 +55,7 @@ public class Product implements Serializable {
         this.stored = stored;
         this.reserved = reserved;
     }
-    
+
     public Long getPrice() {
         return price;
     }
@@ -104,6 +104,14 @@ public class Product implements Serializable {
         this.reserved = reserved;
     }
 
+    public Long addReserved(Long toAdd) {
+        return reserved += toAdd;
+    }
+
+    public Long addStored(Long toAdd) {
+        return stored += toAdd;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -145,12 +153,9 @@ public class Product implements Serializable {
         hash = 47 * hash + (this.reserved != null ? this.reserved.hashCode() : 0);
         return hash;
     }
-    
-    
 
     @Override
     public String toString() {
         return "Product{" + "id=" + id + ", name=" + name + ", price=" + price + ", category=" + category + ", stored=" + stored + ", reserved=" + reserved + '}';
     }
-    
 }

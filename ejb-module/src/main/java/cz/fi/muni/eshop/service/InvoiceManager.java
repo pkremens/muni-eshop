@@ -61,7 +61,7 @@ public class InvoiceManager {
         invoice.setCustomer(order.getCustomer());
         invoice.setCreationDate(Calendar.getInstance().getTime());
         invoice.setOrder(order);
-        log.warning(invoice.toString());
+        //log.warning(invoice.toString());
         em.persist(invoice);
         orderManager.updateOrdersInvoice(order.getId(), invoice.getId());
         return invoice;

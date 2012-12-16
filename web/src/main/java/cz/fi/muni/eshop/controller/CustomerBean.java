@@ -94,6 +94,7 @@ public class CustomerBean {
 		log.warning("Clearing customers data with all orders and invoices");
 		addMessage("Clearing customers data with all orders and invoices");
 		customerManager.clearCustomersTable();
+                identity.logOut();
 	}
 
 	private void addMessage(String summary) {
@@ -104,6 +105,9 @@ public class CustomerBean {
 
 	public void deleteCustomer(String email) {
 		customerManager.deleteCustomer(email);
+                if (identity.getEmail().equals(email)) {
+                    identity.logOut();
+                }
 	}
 
 	public void generateRandomCustomer() {

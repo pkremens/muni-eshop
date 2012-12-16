@@ -65,10 +65,6 @@ public class ProductBean {
 		return productManager.getProducts();
 	}
 
-	public void refillProduct(Long id, long quantity) {
-		productManager.hardRefillProduct(id, quantity);
-	}
-
 	public void initNewProduct() {
 		this.name = "";
 	}

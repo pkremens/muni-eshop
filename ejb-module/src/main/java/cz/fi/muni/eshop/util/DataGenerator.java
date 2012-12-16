@@ -140,7 +140,7 @@ public class DataGenerator {
             for (int j = 0; j < itemsPerOrder; j++) {
                 orderItem = new OrderItem(
                         productManager.getProductById(uniqueProductIds.get(j)),
-                        (((long) (Math.random() * (quantity - 1))) + 1)); // don't want zeros!
+                        (generateLongOneToN(20L))); // don't want zeros!
                 orderItems.add(orderItem);
             }
             orderManager.addOrder(email, orderItems);
