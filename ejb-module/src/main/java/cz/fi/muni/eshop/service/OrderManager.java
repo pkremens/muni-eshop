@@ -29,56 +29,54 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 /**
- * 
+ *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Stateless
 public class OrderManager {
-	// order.setCreationDate(Calendar.getInstance().getTime());
+    // order.setCreationDate(Calendar.getInstance().getTime());
 
-	@Inject
-	private EntityManager em;
-	@Inject
-	private Logger log;
-	@Inject
-	private CustomerManager customerManager;
-	@Inject
-	private ProductManager productManager;
-	private static final int MSG_COUNT = 5; // TODO what is this for???
-	@Resource(mappedName = "java:/ConnectionFactory")
-	private ConnectionFactory connectionFactory;
-	@Resource(mappedName = "java:/queue/test")
-	private Queue queue;
+    @Inject
+    private EntityManager em;
+    @Inject
+    private Logger log;
+    @Inject
+    private CustomerManager customerManager;
+    @Inject
+    private ProductManager productManager;
+    private static final int MSG_COUNT = 5; // TODO what is this for???
+    @Resource(mappedName = "java:/ConnectionFactory")
+    private ConnectionFactory connectionFactory;
+    @Resource(mappedName = "java:/queue/test")
+    private Queue queue;
 
-	public Order addOrderWithMap(String email, Map<Long, Long> productsWithQuantity) {
-		List<OrderItem> orderItems = new ArrayList<OrderItem>();
-		for (Long productId : productsWithQuantity.keySet()) {
-			orderItems.add(new OrderItem(productManager.getProductById(productId), productsWithQuantity.get(productId)));
-		}
-		return addOrder(email, orderItems);
+    public Order addOrderWithMap(String email, Map<Long, Long> productsWithQuantity) {
+        List<OrderItem> orderItems = new ArrayList<OrderItem>();
+        for (Long productId : productsWithQuantity.keySet()) {
+            orderItems.add(new OrderItem(productManager.getProductById(productId), productsWithQuantity.get(productId)));
+        }
+        return addOrder(email, orderItems);
     }
 
-	public Order addOrder(String email, List<OrderItem> orderItems) {
-		Order order = new Order();
-		order.setCustomer(customerManager.getCustomerByEmail(email));
-		order.setCreationDate(Calendar.getInstance().getTime());
-		order.setOrderItems(orderItems);
-		for (OrderItem orderItem : orderItems) {
-			productManager.orderProduct(orderItem.getProduct().getId(),
-					orderItem.getQuantity());
-			em.persist(orderItem);
-		}
-		log.warning(order.toString());
-		em.persist(order);
-                em.flush(); // TODO je toto OK???
-                
-		log.warning(order.toString());
-		 noticeStoreman(order.getId()); // jak to udelat aby se to zavolalo az
-		// po ulozeni?
-		return order;
-	}
+    public Order addOrder(String email, List<OrderItem> orderItems) {
+        Order order = new Order();
+        order.setCustomer(customerManager.getCustomerByEmail(email));
+        order.setCreationDate(Calendar.getInstance().getTime());
+        order.setOrderItems(orderItems);
+        for (OrderItem orderItem : orderItems) {
+            productManager.orderProduct(orderItem.getProduct().getId(),
+                    orderItem.getQuantity());
+            em.persist(orderItem);
+        }
+        log.warning(order.toString());
+        em.persist(order);
+        em.flush(); // TODO je toto OK???
+        noticeStoreman(order.getId()); // jak to udelat aby se to zavolalo az
+        // po ulozeni?
+        return order;
+    }
 
-	   private void noticeStoreman(Long orderId) {
+    private void noticeStoreman(Long orderId) {
         Connection connection = null;
         try {
             connection = connectionFactory.createConnection();
@@ -104,45 +102,50 @@ public class OrderManager {
         }
     }
 
-	public Order getOrderById(Long id) {
-		log.warning("Get order by id: " + id);
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Order> criteria = cb.createQuery(Order.class);
-		Root<Order> order = criteria.from(Order.class);
-		criteria.select(order).where(cb.equal(order.get("id"), id));
-		return em.createQuery(criteria).getSingleResult();
-	}
+    public Order getOrderById(Long id) {
+        log.warning("Get order by id: " + id);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Order> criteria = cb.createQuery(Order.class);
+        Root<Order> order = criteria.from(Order.class);
+        criteria.select(order).where(cb.equal(order.get("id"), id));
+        return em.createQuery(criteria).getSingleResult();
+    }
 
-	public List<Order> getOrders() {
-		log.info("Get all orders");
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Order> criteria = cb.createQuery(Order.class);
-		Root<Order> order = criteria.from(Order.class);
-		criteria.select(order);
-		return em.createQuery(criteria).getResultList();
-	}
+    public List<Order> getOrders() {
+        log.info("Get all orders");
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Order> criteria = cb.createQuery(Order.class);
+        Root<Order> order = criteria.from(Order.class);
+        criteria.select(order);
+        return em.createQuery(criteria).getResultList();
+    }
 
-	public Long getOrderTableCount() {
-		log.info("Get orders table status");
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
-		Root<Order> order = criteria.from(Order.class);
-		criteria.select(cb.count(order));
-		return em.createQuery(criteria).getSingleResult().longValue();
-	}
+    public Long getOrderTableCount() {
+        log.info("Get orders table status");
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
+        Root<Order> order = criteria.from(Order.class);
+        criteria.select(cb.count(order));
+        return em.createQuery(criteria).getSingleResult().longValue();
+    }
 
-	public void clearOrderTable() {
-		log.info("Clear orders ");
-		for (Order order : getOrders()) {
-			em.remove(order);
-		}
-	}
+    public void clearOrderTable() {
+        log.info("Clear orders ");
+        for (Order order : getOrders()) {
+            em.remove(order);
+        }
+    }
+    
+    public List<OrderItem> getOrderItemsOfOrderById(Long orderId) {
+        Order order = getOrderById(orderId);
+        return order.getOrderItems();
+    }
 
-	public void updateOrdersInvoice(Long orderId, Long invoiceId) {
-		log.info("Updating order: " + orderId + " with invoice: " + invoiceId);
-		Order order = em.find(Order.class, orderId);
-		Invoice invoice = em.find(Invoice.class, invoiceId);
-		order.setInvoice(invoice);
-		em.persist(order);
-	}
+    public void updateOrdersInvoice(Long orderId, Long invoiceId) {
+        log.info("Updating order: " + orderId + " with invoice: " + invoiceId);
+        Order order = em.find(Order.class, orderId);
+        Invoice invoice = em.find(Invoice.class, invoiceId);
+        order.setInvoice(invoice);
+        em.persist(order);
+    }
 }

@@ -2,8 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.fi.muni.eshop.test.jms;
+package cz.fi.muni.eshop.test.utils;
 
+/**
+ *
+ * @author Petr Kremensky <207855@mail.muni.cz>
+ */
 import cz.fi.muni.eshop.jms.StoremanMDB;
 import cz.fi.muni.eshop.jms.StoremanMessage;
 import cz.fi.muni.eshop.model.Customer;
@@ -38,7 +42,7 @@ import org.junit.runner.RunWith;
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @RunWith(Arquillian.class)
-public class LongRunSingleGenerateTest {
+public class GeneratorMethodsTest {
 
     @Inject
     private ControllerBean controllerBean;
@@ -47,12 +51,9 @@ public class LongRunSingleGenerateTest {
     @Inject
     private InvoiceManager invoiceManager;
     @Inject
-    private OrderManager orderManager;
-    @Inject
     private CustomerManager customerManager;
     @Inject
     private ProductManager productManager;
-  
 
     @Deployment
     public static Archive<?> createTestArchive() {
@@ -65,15 +66,27 @@ public class LongRunSingleGenerateTest {
     }
 
     @Test
-    public void testMultiOrderCloseAutoRefill() throws InterruptedException {
-        dataGenerator.generateCustomers(100L);
-        dataGenerator.generateProducts(200L, 200L, 10L, true);
-        dataGenerator.generateOrders(500L, 15L, true);
-        Thread.sleep(1000);
-        Assert.assertEquals(500L, (long) invoiceManager.getInvoiceTableCount());
-        Assert.assertEquals(500,(long) orderManager.getOrderTableCount());
-        Assert.assertEquals(200,(long) productManager.getProductTableCount());
-        Assert.assertEquals(100,(long) customerManager.getCustomerTableCount());
-        
+    public void generatorMethodsTest() throws InterruptedException {
+        dataGenerator.generateCustomers(1L);
+        dataGenerator.generateProducts(5L, 200L, 10L, true);
+        dataGenerator.generateOrders(100L, 5L, true);
+        Thread.sleep(400);
+        Assert.assertEquals(100L, (long) invoiceManager.getInvoiceTableCount());
+    }
+
+    @Test
+    public void generateRandomCustomerTest() {
+        for (int i = 0; i < 10; i++) {
+            dataGenerator.generateRandomCustomer();
+        }
+        Assert.assertEquals(10L,(long) customerManager.getCustomerTableCount());
+    }
+
+    @Test
+    public void generateRanomProductTest() {
+        for (int i = 0; i < 10; i++) {
+            dataGenerator.generateRandomProduct();
+        }
+        Assert.assertEquals(10L,(long) productManager.getProductTableCount());
     }
 }

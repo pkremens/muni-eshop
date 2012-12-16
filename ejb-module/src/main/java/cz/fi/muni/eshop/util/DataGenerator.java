@@ -13,212 +13,229 @@ import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 // import java.util.Random;
 import javax.inject.Inject;
-import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
-import javax.jms.MapMessage;
-import javax.jms.MessageProducer;
 import javax.jms.Queue;
-import javax.jms.Session;
 
 /**
- * 
+ *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @RequestScoped
 // kdyz nebylo nic tak me to neslo pouzit v testech, je to OK?
 public class DataGenerator {
-	private static final String charset = "0123456789"
-			+ "abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	@Inject
-	private Logger log;
-	@Inject
-	private CustomerManager customerManager;
-	@Inject
-	private ProductManager productManager;
-	@Inject
-	private OrderManager orderManager;
-	private static final int MSG_COUNT = 5; // TODO what is this for???
-	@Resource(mappedName = "java:/ConnectionFactory")
-	private ConnectionFactory connectionFactory;
-	@Resource(mappedName = "java:/queue/test")
-	private Queue queue;
 
-	// private Random random = new Random();
-	public void generateCustomers(Long quantity) {
-		for (int i = 0; i < quantity; i++) {
-			String base = "customer" + i;
-			customerManager.addCustomer(base + "@mail.xx", base, base);
-		}
-	}
+    private static final String charset = "0123456789"
+            + "abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    @Inject
+    private Logger log;
+    @Inject
+    private CustomerManager customerManager;
+    @Inject
+    private ProductManager productManager;
+    @Inject
+    private OrderManager orderManager;
+    private static final int MSG_COUNT = 5; // TODO what is this for???
+    @Resource(mappedName = "java:/ConnectionFactory")
+    private ConnectionFactory connectionFactory;
+    @Resource(mappedName = "java:/queue/test")
+    private Queue queue;
 
-	public void generateProducts(Long quantity, Long price, Long stored) {
-		generateProducts(quantity, price, stored, false);
-	}
+    // private Random random = new Random();
+    public void generateCustomers(Long quantity) {
+        for (int i = 0; i < quantity; i++) {
+            String base = "customer" + i;
+            customerManager.addCustomer(base + "@mail.xx", base, base);
+        }
+    }
 
-	public void generateProducts(Long quantity, Long price, Long stored,
-			boolean randomStored) {
-		for (int i = 0; i < quantity; i++) {
-			String base = "product" + i;
-			Product product = new Product();
-			int type = (int) Math.random() * 7;
-			switch (type) {
-			case 0:
-				product.setCategory(Category.TYPE1);
-				break;
-			case 1:
-				product.setCategory(Category.TYPE2);
-				break;
-			case 2:
-				product.setCategory(Category.TYPE3);
-				break;
-			case 3:
-				product.setCategory(Category.TYPE4);
-				break;
-			case 4:
-				product.setCategory(Category.TYPE5);
-				break;
-			case 5:
-				product.setCategory(Category.TYPE6);
-				break;
-			case 6:
-				product.setCategory(Category.TYPE7);
-				break;
-			default:
-				throw new IllegalStateException("Debugg me!");
-			}
-			product.setPrice(((long) (Math.random() * (price - 1))) + 1);// we
-																			// don't
-																			// want
-																			// 0
-																			// as
-																			// price
-																			// //
-																			// mel
-																			// sem
-																			// tu
-																			// brouka,
-																			// proto
-																			// tolik
-																			// zavorek
-			if (!randomStored) {
-				product.setStored(stored);
-			} else {
-				product.setStored(((long) (Math.random() * (stored - 1))) + 1);
-			}
-			product.setProductName(base);
-			productManager.addProduct(product.getProductName(),
-					product.getPrice(), product.getCategory(),
-					product.getStored(), product.getReserved());
-		}
-	}
+    public void generateProducts(Long quantity, Long price, Long stored) {
+        generateProducts(quantity, price, stored, false);
+    }
 
-	/**
-	 * MUST BE CALLED AFTER PRODUCTS AND CUSTOMERS GENERATION!!!
-	 * 
-	 * @param quantity
-	 *            number of orders to be generated
-	 */
-	public void generateOrders(Long quantity, Long itemsPerOrder) {
-		generateOrders(quantity, itemsPerOrder, false);
-	}
+    public void generateProducts(Long quantity, Long price, Long stored,
+            boolean randomStored) {
+        for (int i = 0; i < quantity; i++) {
+            String base = "product" + i;
+            Product product = new Product();
+            product.setCategory(generateRandomProductCategory());
+            product.setPrice(generateLongOneToN(price));
+            if (!randomStored) {
+                product.setStored(stored);
+            } else {
+                product.setStored(generateLongOneToN(stored));
+            }
+            product.setProductName(base);
+            productManager.addProduct(product.getProductName(),
+                    product.getPrice(), product.getCategory(),
+                    product.getStored(), product.getReserved());
+        }
+    }
 
-	public void generateOrders(long quantity, long itemCount,
-			boolean randomItems) {
-		List<String> emails = customerManager.getCustomerEmails();
-		List<String> productNames = productManager.getProductNames();
-		OrderItem orderItem;
-		Order order;
-		String email;
-		String productName;
-		List<OrderItem> orderItems;
-		long itemsPerOrder;
-		for (int i = 0; i < quantity; i++) {
-			if (randomItems) {
-				itemsPerOrder = ((long) (Math.random() * (itemCount - 1))) + 1;
-			} else {
-				itemsPerOrder = itemCount;
-			}
-			orderItems = new ArrayList<OrderItem>();
+    private Long generateLongOneToN(Long n) {
+        return ((long) (Math.random() * (n - 1))) + 1;
+    }
 
-			email = emails.get((int) (Math.random() * emails.size()));
-			for (int j = 0; j < itemsPerOrder; j++) {
-				productName = productNames
-						.get((int) (Math.random() * productNames.size()));
-				orderItem = new OrderItem(
-						productManager.getProductByName(productName),
-						(((long) (Math.random() * (quantity - 1))) + 1)); // don't
-																			// want
-																			// zeros!
-				orderItems.add(orderItem);
-			}
-			order = orderManager.addOrder(email, orderItems);
-			//noticeStoreman(order.getId());
-		}
-	}
+    /**
+     * MUST BE CALLED AFTER PRODUCTS AND CUSTOMERS GENERATION!!!
+     *
+     * @param quantity number of orders to be generated
+     */
+    public void generateOrders(Long quantity, Long itemsPerOrder) {
+        generateOrders(quantity, itemsPerOrder, false);
+    }
 
-	public void generateOrder(String customersEmail, List<OrderItem> orderItems) {
-		Order order = orderManager.addOrder(customersEmail, orderItems);
-		//noticeStoreman(order.getId());
-	}
+    /**
+     * Take all customer emails and store them in list. In for cycle for
+     * quantity start creating new orders. In every new order cycle generate
+     * random list of products Id (must be unique inside list!) and take random
+     * customer as orderer. Do inner loop for itemCount and in every loop create
+     * new OrderItem. Use list of random products and use inner loop main
+     * variable to go through the list linearly -> use all products in list. Now
+     * that we have OrderItems generated we can create new Order using
+     * OrderManager.
+     *
+     * @param quantity how many orders we want to generate
+     * @param itemCount how many items will be in each of order
+     * @param randomItems whether can number of items differ between orders (max
+     * itemCount)
+     */
+    public void generateOrders(long quantity, long itemCount,
+            boolean randomItems) {
+        List<String> emails = customerManager.getCustomerEmails();
+        OrderItem orderItem;
+        String email;
+        List<OrderItem> orderItems;
+        List<Long> uniqueProductIds;
+        long itemsPerOrder;
+        for (int i = 0; i < quantity; i++) {
+            if (randomItems) {
+                itemsPerOrder = ((long) (Math.random() * (itemCount - 1))) + 1;
+            } else {
+                itemsPerOrder = itemCount;
+            }
+            uniqueProductIds = randomUniqueProductIds(itemsPerOrder);
+            orderItems = new ArrayList<OrderItem>();
+            email = emails.get((int) (Math.random() * emails.size()));
+            for (int j = 0; j < itemsPerOrder; j++) {
+                orderItem = new OrderItem(
+                        productManager.getProductById(uniqueProductIds.get(j)),
+                        (((long) (Math.random() * (quantity - 1))) + 1)); // don't want zeros!
+                orderItems.add(orderItem);
+            }
+            orderManager.addOrder(email, orderItems);
+        }
+    }
 
-	private void noticeStoreman(Long orderId) {
-		Connection connection = null;
-		try {
-			connection = connectionFactory.createConnection();
-			Session session = connection.createSession(false,
-					Session.AUTO_ACKNOWLEDGE);
-			MessageProducer messageProducer = session.createProducer(queue);
-			connection.start();
-			MapMessage message = session.createMapMessage();
-			message.setStringProperty("type", "CLOSE_ORDER");
-			log.warning("Notifing storeman, sending order Id: " + orderId);
-			message.setLongProperty("orderId", orderId);
-			messageProducer.send(message);
-		} catch (JMSException e) {
-			log.warning("A problem occurred during the delivery of this message");
-		} finally {
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (JMSException e) {
-					log.warning(e.getMessage());
-				}
-			}
-		}
-	}
+    /**
+     * Generate random List of unique products to warrant that we will not try
+     * to put two same products as separate order items into same order.
+     *
+     * @param itemsPerOrder how many products we want
+     * @return List of unique products
+     */
+    private List<Long> randomUniqueProductIds(Long itemsPerOrder) {
+        Set<Long> uniqueProductIds = new HashSet<Long>(); // to secure uniqueness
+        if (itemsPerOrder > productManager.getProductTableCount()) {
+            throw new IllegalArgumentException("Cannot generate order with more Order Items than products on store");
+        }
+        List<Long> productIds = productManager.getProductIds();
+        Random randomGenerator = new Random();
+        while (uniqueProductIds.size() < itemsPerOrder) {
+            uniqueProductIds.add(productIds.remove(randomGenerator.nextInt(productIds.size())));
+        }
+        return new ArrayList<Long>(uniqueProductIds);
+    }
 
-	public Customer generateRandomCustomer() {
-		String base = getRandomString(8);
-		int count = 5;
-		Customer customer;
-		for (int i = 0; i < count; i++) {
-			try {
-				customer = customerManager.addCustomer(base + "@random.xx",
-						base, base);
-				
-				return customer;
-			} catch (Exception ex) { // TODO specialize this one 
-				// ignore
-			}
-		}
-		throw new IllegalStateException("Unable to generate customer with unique name!");
-	}
+    public void generateOrder(String customersEmail, List<OrderItem> orderItems) {
+        Order order = orderManager.addOrder(customersEmail, orderItems);
+    }
 
-	private static String getRandomString(int length) {
-		Random rand = new Random(System.currentTimeMillis());
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i <= length; i++) {
-			int pos = rand.nextInt(charset.length());
-			sb.append(charset.charAt(pos));
-		}
-		return sb.toString();
-	}
+    public Customer generateRandomCustomer() {
+        String base = getRandomString(8);
+        int count = 5;
+        Customer customer;
+        for (int i = 0; i < count; i++) {
+            try {
+                customer = customerManager.addCustomer(base + "@random.xx",
+                        base, base);
+
+                return customer;
+            } catch (Exception ex) { // TODO specialize this one 
+                // ignore, we hit created customer, try again
+            }
+        }
+        throw new IllegalStateException("Unable to generate customer with unique name!");
+    }
+
+    // if we realy don't care
+    public Product generateRandomProduct() {
+        return generateRandomProduct(generateLongOneToN(1000L), generateLongOneToN(1000L));
+    }
+
+    public Product generateRandomProduct(Long price, Long stored) {
+        String base = getRandomString(8);
+        int count = 5;
+        Product product;
+        Category category = generateRandomProductCategory();
+        for (int i = 0; i < count; i++) {
+            try {
+                product = productManager.addProduct("pro" + base, price, category, stored, 0L);
+                return product;
+            } catch (Exception ex) { // TODO specialize this one 
+                // ignore, we hit created customer, try again
+            }
+        }
+        throw new IllegalStateException("Unable to generate customer with unique name!");
+    }
+
+    private Category generateRandomProductCategory() {
+        Category category;
+        int type = (int) Math.random() * 7;
+        switch (type) {
+            case 0:
+                category = Category.TYPE1;
+                break;
+            case 1:
+                category = Category.TYPE2;
+                break;
+            case 2:
+                category = Category.TYPE3;
+                break;
+            case 3:
+                category = Category.TYPE4;
+                break;
+            case 4:
+                category = Category.TYPE5;
+                break;
+            case 5:
+                category = Category.TYPE6;
+                break;
+            case 6:
+                category = Category.TYPE7;
+                break;
+            default:
+                throw new IllegalStateException("Debugg me!");
+        }
+        return category;
+
+    }
+
+    private static String getRandomString(int length) {
+        Random rand = new Random(System.currentTimeMillis());
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i <= length; i++) {
+            int pos = rand.nextInt(charset.length());
+            sb.append(charset.charAt(pos));
+        }
+        return sb.toString();
+    }
 }

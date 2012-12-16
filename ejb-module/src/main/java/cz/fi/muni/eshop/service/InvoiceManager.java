@@ -48,7 +48,6 @@ public class InvoiceManager {
     // @TransactionAttribute(TransactionAttributeType.REQUIRED) 
     public Invoice closeOrder(Long orderId) {
         log.warning("Closing order id: " + orderId);
-
         Invoice invoice = new Invoice();
         Order order = orderManager.getOrderById(orderId);
         List<InvoiceItem> invoiceItems = new ArrayList<InvoiceItem>();
