@@ -21,7 +21,7 @@ public class Order extends OrderRoot implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
     @JoinColumn(name = "order_fk")
     private List<OrderItem> orderItems;
-    @OneToOne(orphanRemoval = true) //TODO TEST aby me stacilo mazat jen objednavky a sebrat sebou vsechny invoice
+    @OneToOne(orphanRemoval = true) 
     private Invoice invoice;
 
     public Order() {

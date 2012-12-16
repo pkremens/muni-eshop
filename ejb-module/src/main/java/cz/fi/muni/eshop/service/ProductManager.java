@@ -82,7 +82,6 @@ public class ProductManager {
 		// we get into state whe we would not be able to close the order, so
 		// storeman must refill the store to getReserver() + 100.
 		if (product.getStored() < product.getReserved()) {
-			// noticeStoreman(id);
 			product.setStored(product.getReserved() + 100L);
 			log.warning("refill: " + product.toString());
 		}
@@ -188,31 +187,5 @@ public class ProductManager {
 		em.remove(product);
 
 	}
-	
-	
-
-	private void noticeStoreman(Long id) {
-		Connection connection = null;
-		try {
-			connection = connectionFactory.createConnection();
-			Session session = connection.createSession(false,
-					Session.AUTO_ACKNOWLEDGE);
-			MessageProducer messageProducer = session.createProducer(queue);
-			connection.start();
-			MapMessage message = session.createMapMessage();
-			message.setStringProperty("type", "FILL_THE_STORE");
-			message.setLongProperty("productId", id);
-			messageProducer.send(message);
-		} catch (JMSException e) {
-			log.warning("A problem occurred during the delivery of this message");
-		} finally {
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (JMSException e) {
-					log.warning(e.getMessage());
-				}
-			}
-		}
-	}
+		
 }

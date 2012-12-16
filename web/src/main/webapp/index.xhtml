@@ -1,60 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html"
-                template="/WEB-INF/templates/default.xhtml">
-    <ui:define name="content">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
 
-        <h1>
-            <h:outputLabel value="Login" rendered="#{!identity.loggedIn}" />
-        </h1>
-        <h2>
-            <h:outputLabel value="Please insert your credentials"
-                           rendered="#{!identity.loggedIn}" />
-        </h2>
-        <h:form id="loginForm" rendered="#{!identity.loggedIn}">
-            <h:message for="loginButton" />
-            <h:panelGrid columns="3">
+		<h1>
+			<h:outputLabel value="Login" rendered="#{!identity.loggedIn}" />
+		</h1>
+		<h2>
+			<h:outputLabel value="Please insert your credentials"
+				rendered="#{!identity.loggedIn}" />
+		</h2>
+		<h:form id="loginForm" rendered="#{!identity.loggedIn}">
+			<h:message for="loginButton" />
+			<h:panelGrid columns="3">
 
-                <h:outputLabel value="Email" for="username" />
-                <h:inputText id="username" value="#{credentials.username}" />
-                <h:message for="username" errorClass="invalid" />
+				<h:outputLabel value="Email" for="username" />
+				<h:inputText id="username" value="#{credentials.username}" />
+				<h:message for="username" errorClass="invalid" />
 
-                <h:outputLabel value="Password" for="password" />
-                <h:inputSecret id="password" value="#{credentials.password}" />
-                <h:message for="password" errorClass="invalid" />
+				<h:outputLabel value="Password" for="password" />
+				<h:inputSecret id="password" value="#{credentials.password}" />
+				<h:message for="password" errorClass="invalid" />
 
-            </h:panelGrid>
-            <h:commandButton id="loginButton" action="#{identity.login}"
-                             value="Login" rendered="#{!identity.loggedIn}" />
-        </h:form>
+			</h:panelGrid>
+			<h:commandButton id="loginButton" action="#{identity.login}"
+				value="Login" rendered="#{!identity.loggedIn}" />
+		</h:form>
 
-        <h1>
-            <h:outputLabel value="
-                           Register" rendered="#{!identity.loggedIn}" />
-        </h1>
-        <h2>
-            <h:outputLabel value="Please insert data about yourself"
-                           rendered="#{!identity.loggedIn}" />
-        </h2>
-        <h:form id="addForm" rendered="#{!identity.loggedIn}">
-            <h:message for="registerButton" />
-            <h:panelGrid columns="3">
+		<h1>
+			<h:outputLabel value="
+                           Register"
+				rendered="#{!identity.loggedIn}" />
+		</h1>
+		<h2>
+			<h:outputLabel value="Please insert data about yourself"
+				rendered="#{!identity.loggedIn}" />
+		</h2>
+		<h:form id="addForm" rendered="#{!identity.loggedIn}">
+			<h:message for="registerButton" />
+			<h:panelGrid columns="3">
 
-                <h:outputLabel value="Email" for="email" />
-                <h:inputText id="email" value="#{newCustomer.email}" />
-                <h:message for="email" errorClass="invalid" />
-                <h:outputLabel value="Name" for="name" />
-                <h:inputText id="name" value="#{newCustomer.name}" />
-                <h:message for="name" errorClass="invalid" />
-                <h:outputLabel value="Password" for="password" />
-                <h:inputSecret id="password" value="#{newCustomer.password}" />
-                <h:message for="password" errorClass="invalid" />
-            </h:panelGrid>
-            <h:commandButton id="registerButton"
-                             action="#{customerController.register()}" value="Register" />
-        </h:form>
-
-    </ui:define>
+				<h:outputLabel value="Email" for="email" />
+				<h:inputText id="email" value="#{newCustomer.email}" />
+				<h:message for="email" errorClass="invalid" />
+				<h:outputLabel value="Name" for="name" />
+				<h:inputText id="name" value="#{newCustomer.name}" />
+				<h:message for="name" errorClass="invalid" />
+				<h:outputLabel value="Password" for="password" />
+				<h:inputSecret id="password" value="#{newCustomer.password}" />
+				<h:message for="password" errorClass="invalid" />
+			</h:panelGrid>
+			<h:commandButton id="registerButton"
+				action="#{customerController.register()}" value="Register" />
+		</h:form>
+		<h:form id="loginRelated" />
+	</ui:define>
 </ui:composition>

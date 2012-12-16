@@ -16,7 +16,10 @@
 			<p:menuitem update="content" value="Categories" url="/#" />
 			<p:menuitem update="content" value="Customers" url="/customers.jsf" />
 			<p:menuitem update="content" value="Products" url="/products.jsf" />
-			<p:menuitem update="content" disabled="#{!identity.loggedIn}" value="Basket" url="/basket.jsf" />
+			<p:menuitem update="content" disabled="#{!identity.loggedIn}"
+				value="Basket" url="/basket.jsf" />
+			<p:menuitem update="content" value="Orders" url="/orders.jsf" />
+			<p:menuitem update="content" value="Invoices" url="/invoices.jsf" />
 			<p:menuitem update="content" value="History"
 				disabled="#{!identity.loggedIn}" url="#" />
 		</p:breadCrumb>
@@ -33,7 +36,8 @@
 
 
 				<p:commandButton value="Log in" disabled="#{identity.loggedIn}"
-					update="email password :loginInfo :navigationMenu :loginRelated" actionListener="#{loginBean.logIn()}"
+					update="email password :loginInfo :navigationMenu :loginRelated"
+					actionListener="#{loginBean.logIn()}"
 					styleClass="ui-priority-primary" />
 
 
@@ -43,15 +47,11 @@
 			&#160;
 
 			<p:commandButton id="logout" value="Logout"
-				action="#{identity.logOut()}" update="loginInfo :navigationMenu :loginRelated" 
+				action="#{identity.logOut()}"
+				update="loginInfo :navigationMenu :loginRelated"
 				rendered="#{identity.loggedIn}" />
 		</h5>
 	</h:form>
-
-	<li>Dummy pages:</li>
-	<a href="#{request.contextPath}/InitServlet">Servlet for generating
-		dummy data</a>
-
 	<div id="content">
 		<ui:insert name="content">
                     [Template content will be inserted here]
