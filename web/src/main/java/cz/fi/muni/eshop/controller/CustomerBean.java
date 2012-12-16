@@ -16,7 +16,7 @@ import javax.validation.ConstraintViolation;
 
 import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.service.CustomerManager;
-import cz.fi.muni.eshop.util.ControllerBean;
+import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
 import cz.fi.muni.eshop.util.EntityValidator;
 import cz.fi.muni.eshop.util.Identity;
@@ -34,7 +34,7 @@ public class CustomerBean {
 	private Identity identity;
 
 	@Inject
-	private ControllerBean controller;
+	private Controller controller;
 	@Inject
 	private CustomerManager customerManager;
 	@Inject

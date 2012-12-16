@@ -23,7 +23,7 @@ import cz.fi.muni.eshop.service.InvoiceManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.test.TestResources;
-import cz.fi.muni.eshop.util.ControllerBean;
+import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
 import javax.inject.Inject;
 import junit.framework.Assert;
@@ -45,7 +45,7 @@ import org.junit.runner.RunWith;
 public class GeneratorMethodsTest {
 
     @Inject
-    private ControllerBean controllerBean;
+    private Controller controllerBean;
     @Inject
     private DataGenerator dataGenerator;
     @Inject
@@ -57,12 +57,12 @@ public class GeneratorMethodsTest {
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(ControllerBean.class, InvoiceManager.class, StoremanMDB.class, StoremanMessage.class, OrderRoot.class, OrderManager.class, DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+        return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(Controller.class, InvoiceManager.class, StoremanMDB.class, StoremanMessage.class, OrderRoot.class, OrderManager.class, DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     @Before
     public void storemanCloseOrderTest() {
-        controllerBean.wipeOutDB();
+        controllerBean.wipeOutDb();
     }
 
     @Test

@@ -5,6 +5,7 @@
 package cz.fi.muni.eshop.util;
 
 import cz.fi.muni.eshop.service.CustomerManager;
+import cz.fi.muni.eshop.service.InvoiceManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
 import java.util.logging.Logger;
@@ -21,7 +22,7 @@ import javax.inject.Inject;
  */
 @Startup
 @Singleton
-public class ControllerBean {
+public class Controller {
 
 	@Inject
 	private ProductManager productManager;
@@ -29,6 +30,8 @@ public class ControllerBean {
 	private CustomerManager customerManager;
 	@Inject
 	private OrderManager orderManager;
+	@Inject
+	private InvoiceManager invoiceManager;
 	@Inject
 	private Logger log;
 	@Inject
@@ -56,13 +59,22 @@ public class ControllerBean {
 	/**
 	 * To completely remove all data from db
 	 */
-	public void wipeOutDB() {
+	public boolean wipeOutDb() {
 		log.warning("Deleteng all entries from db");
 		customerManager.clearCustomersTable();
 		productManager.clearProductsTable();
+		boolean empty = true;
 		if (orderManager.getOrderTableCount() > 0) {
-			throw new IllegalStateException(
-					"Order table data should be deleted with customers!");
+			empty = false;
+		}if (productManager.getProductTableCount() > 0) {
+			empty = false;
 		}
+		if (customerManager.getCustomerTableCount() > 0) {
+			empty = false;
+		}
+		if (invoiceManager.getInvoiceTableCount() > 0) {
+			empty = false;
+		}
+		return empty;
 	}
 }

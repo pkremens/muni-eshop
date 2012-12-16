@@ -18,7 +18,7 @@ import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.test.DummyMDB;
 import cz.fi.muni.eshop.test.TestResources;
-import cz.fi.muni.eshop.util.ControllerBean;
+import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
 import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -39,16 +39,16 @@ import org.junit.runner.RunWith;
 public class ControllerBeanTest {
 //TODO test zkusim udelat nejakou dummy controll bean, ktera bude mazat kazdou sekundu db, neco hodim do db pockam 1100ms Assert prazdnu neco hodim, pockam sekundu a zase assert
     @Inject
-    private ControllerBean controller;
+    private Controller controller;
     
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "generator-test.war").addClasses(ControllerBean.class, DummyMDB.class, OrderRoot.class, OrderManager.class, ProductManager.class, DataGenerator.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+        return ShrinkWrap.create(WebArchive.class, "generator-test.war").addClasses(Controller.class, DummyMDB.class, OrderRoot.class, OrderManager.class, ProductManager.class, DataGenerator.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
         
         @Before
         public void cleanBefore() {
-            controller.wipeOutDB();
+            controller.wipeOutDb();
         }
         @Test
         public void clearDbTest() {
