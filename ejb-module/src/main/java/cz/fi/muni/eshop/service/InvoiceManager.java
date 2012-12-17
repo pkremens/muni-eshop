@@ -101,7 +101,9 @@ public class InvoiceManager {
     public void clearInvoiceTable() {
         log.info("Get invoices table");
         for (Invoice invoice : getInvoices()) {
+            invoice.getOrder().setInvoice(null);
             em.remove(invoice);
+//               em.remove(invoice);
         }
     }
 

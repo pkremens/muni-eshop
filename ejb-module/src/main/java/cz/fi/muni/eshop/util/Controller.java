@@ -56,6 +56,7 @@ public class Controller {
 	public void controlData() {
 		if (automatiCleanUp) {
 			log.warning("Cleaning invoices, count=" +invoiceManager.getInvoiceTableCount().toString());
+                        invoiceManager.clearInvoiceTable();
 			orderManager.clearOrderTable();
 		} else {
 			log.warning("Auto cleanup is turned off, invoices="+invoiceManager.getInvoiceTableCount().toString());

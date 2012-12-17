@@ -75,9 +75,7 @@ public class CustomerManager {
 	}
 
 	public Customer getCustomerById(Long id) {
-		log.info("Find customer by id: " + id); // tady by prece stacilo em.find
-												// ... pak to musim vsude
-												// predelat..
+		log.info("Find customer by id: " + id); // tady by prece stacilo em.find												// ... pak to musim vsude												// predelat..
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Customer> criteria = cb.createQuery(Customer.class);
 		Root<Customer> customer = criteria.from(Customer.class);

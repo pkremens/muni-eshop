@@ -8,6 +8,7 @@ import com.sun.tools.corba.se.idl.InvalidArgument;
 import cz.fi.muni.eshop.service.InvoiceManager;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.util.ControlMessage;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
