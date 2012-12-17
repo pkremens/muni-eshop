@@ -25,7 +25,7 @@ public class ProductResourceRESTService {
     private ProductManager productManager;
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     public List<Product> listAllProducts() {
         log.info("FindAllProducts");
         return productManager.getProducts();
@@ -33,12 +33,25 @@ public class ProductResourceRESTService {
 
     @GET
     @Path("/{id:[0-9][0-9]*}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     public Product lookupProductById(@PathParam("id") long id) {
         log.info("lookupProductById");
         Product product;
         try {
             product = productManager.getProductById(id);
+        } catch (NoResultException nre) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        return product;
+    }
+        @GET
+    @Path("/{name:[A-Za-z0-9]*}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Product lookupProductByName(@PathParam("name") String name) {
+        log.info("lookupProductByName");
+        Product product;
+        try {
+            product = productManager.getProductByName(name);
         } catch (NoResultException nre) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }

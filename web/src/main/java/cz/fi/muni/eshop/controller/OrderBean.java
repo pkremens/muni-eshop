@@ -36,6 +36,7 @@ public class OrderBean {
 	private Long totalPrice = 0L;
 
 	public List<OrderItem> getItemDetails() {
+            totalPrice = 0L; // to ensure correct total price even if method is called more times
 		List<OrderItem> items = orderManager
 				.getOrderItemsOfOrderById(zoomOrderId);
 		for (OrderItem orderItem : items) {
