@@ -39,9 +39,8 @@ public class StoremanMDB implements MessageListener {
                 switch (message) {
                     case CLOSE_ORDER:
                         long id = msg.getLongProperty("orderId");
-                        log.warning(StoremanMessage.CLOSE_ORDER.getMessage() + "id: " + id);
                         invoiceManager.closeOrder(id);
-
+                        log.warning("Order closed id: " +id);
                         break;
                     default:
                         throw new IllegalArgumentException("Recieved unknown storeman message!");

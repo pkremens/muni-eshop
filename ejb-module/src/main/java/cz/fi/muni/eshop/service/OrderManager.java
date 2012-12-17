@@ -113,7 +113,7 @@ public class OrderManager {
     }
 
     public Order getOrderById(Long id) {
-        log.warning("Get order by id: " + id);
+        log.info("Get order by id: " + id);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Order> criteria = cb.createQuery(Order.class);
         Root<Order> order = criteria.from(Order.class);

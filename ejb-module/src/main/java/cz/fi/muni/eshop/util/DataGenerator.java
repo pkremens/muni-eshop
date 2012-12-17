@@ -30,7 +30,6 @@ import javax.jms.Queue;
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @RequestScoped
-// kdyz nebylo nic tak me to neslo pouzit v testech, je to OK?
 public class DataGenerator {
 
     private static final String charset = "0123456789"

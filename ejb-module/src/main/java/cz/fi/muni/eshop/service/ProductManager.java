@@ -53,29 +53,20 @@ public class ProductManager {
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public void refillProductWithReserved(Long id, Long quantity) {
-        Product product = em.find(Product.class, id);
-        product.setStored(product.getReserved() + quantity);
-        log.warning("Refilling product: " + product.getId() + " new quantity: "
-                + product.getStored());
-        em.merge(product);
-    }
-
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void orderProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
         log.info("Old on store: " + product.addStored(id));
         if (product.getStored() < product.addReserved(quantity)) {
             product.addStored(1000L);
         }
-        log.info("Ordering: " + quantity.toString() + ", product: " + product.toString());
+        log.warning("Ordering: " + quantity.toString() + ", product: " + product.toString());
         em.merge(product);
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void invoiceProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
-        log.info("Invoice product: " + product + " quantity: " + quantity);
+        log.warning("Invoice product: " + product + " quantity: " + quantity);
         if (quantity > product.getReserved()) {
             throw new IllegalArgumentException(
                     "Can not invoice non-reserve products, we are somewhere loosing data! product=" + product.toString() + " quantity=" + quantity);

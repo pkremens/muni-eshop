@@ -11,6 +11,7 @@ import cz.fi.muni.eshop.service.ProductManager;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -25,13 +26,13 @@ import javax.inject.Inject;
 public class Controller {
 
     private boolean automatiCleanUp = false;
-    @Inject
+    @EJB
     private ProductManager productManager;
-    @Inject
+    @EJB
     private CustomerManager customerManager;
-    @Inject
+    @EJB
     private OrderManager orderManager;
-    @Inject
+    @EJB
     private InvoiceManager invoiceManager;
     @Inject
     private Logger log;

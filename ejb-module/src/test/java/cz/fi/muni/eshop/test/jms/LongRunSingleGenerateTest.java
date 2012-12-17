@@ -21,6 +21,7 @@ import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.test.TestResources;
 import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
+import javax.ejb.EJB;
 import javax.inject.Inject;
 import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -40,19 +41,18 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class LongRunSingleGenerateTest {
 
-    @Inject
+    @EJB
     private Controller controllerBean;
     @Inject
     private DataGenerator dataGenerator;
-    @Inject
+    @EJB
     private InvoiceManager invoiceManager;
-    @Inject
+    @EJB
     private OrderManager orderManager;
-    @Inject
+    @EJB
     private CustomerManager customerManager;
-    @Inject
+    @EJB
     private ProductManager productManager;
-  
 
     @Deployment
     public static Archive<?> createTestArchive() {
@@ -71,9 +71,9 @@ public class LongRunSingleGenerateTest {
         dataGenerator.generateOrders(500L, 5L, true);
         Thread.sleep(1000);
         Assert.assertEquals(500L, (long) invoiceManager.getInvoiceTableCount());
-        Assert.assertEquals(500,(long) orderManager.getOrderTableCount());
-        Assert.assertEquals(200,(long) productManager.getProductTableCount());
-        Assert.assertEquals(100,(long) customerManager.getCustomerTableCount());
-        
+        Assert.assertEquals(500, (long) orderManager.getOrderTableCount());
+        Assert.assertEquals(200, (long) productManager.getProductTableCount());
+        Assert.assertEquals(100, (long) customerManager.getCustomerTableCount());
+
     }
 }

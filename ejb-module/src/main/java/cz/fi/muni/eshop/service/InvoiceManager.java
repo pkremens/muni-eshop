@@ -48,7 +48,7 @@ public class InvoiceManager {
 //    @Inject
 //    private SessionContext context;
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRED) 
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW) 
     public Invoice closeOrder(Long orderId) {
         log.warning("Closing order id: " + orderId);
         Invoice invoice = new Invoice();
@@ -62,14 +62,9 @@ public class InvoiceManager {
         invoice.setCustomer(order.getCustomer());
         invoice.setCreationDate(Calendar.getInstance().getTime());
         invoice.setOrder(order);
-        //log.warning(invoice.toString());
         em.persist(invoice);
         orderManager.updateOrdersInvoice(order.getId(), invoice.getId());
         return invoice;
-        //       } catch (Exception ex) {
-//            context.setRollbackOnly();
-        //         return null;
-        //    }
     }
 
     public Invoice getInvoiceById(Long id) {
@@ -104,7 +99,6 @@ public class InvoiceManager {
         for (Invoice invoice : getInvoices()) {
             invoice.getOrder().setInvoice(null);
             em.remove(invoice);
-//               em.remove(invoice);
         }
     }
 

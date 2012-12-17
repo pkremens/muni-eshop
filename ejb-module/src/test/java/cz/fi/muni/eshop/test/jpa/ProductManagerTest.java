@@ -69,15 +69,6 @@ public class ProductManagerTest {
     }
 
     @Test
-    public void refillProductTest() {
-        setUp();
-        productManager.refillProductWithReserved(product.getId(), 1000L);
-        product = productManager.getProductById(product.getId());
-        Assert.assertEquals(1023L, (long) product.getStored());
-    }
-
-
-    @Test
     public void orderProductTest() {
         setUp();
         long oldQ = product.getReserved();
