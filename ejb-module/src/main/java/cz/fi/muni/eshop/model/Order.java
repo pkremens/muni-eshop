@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Entity
-@Table(name = "orderEntity")
+@Table(name = "Orders")
 public class Order extends OrderRoot implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)

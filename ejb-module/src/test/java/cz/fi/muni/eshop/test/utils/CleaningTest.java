@@ -72,13 +72,5 @@ public class CleaningTest {
 
     }
 
-    @Test
-    public void testMultiOrderCloseNoAutoRefill() throws InterruptedException {
-        dataGenerator.generateOrders(1L, 1L);
-        Thread.sleep(500); // Must give time to Hornet
-        Assert.assertEquals(1L, (long) invoiceManager.getInvoiceTableCount());
-        System.out.println("test");
-        invoiceManager.clearInvoiceTable();
-        Assert.assertEquals(0L, (long) invoiceManager.getInvoiceTableCount());
-    }
+
 }

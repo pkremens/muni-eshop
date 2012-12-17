@@ -33,22 +33,25 @@ public class CustomerResourceRESTService {
     private CustomerManager customerManager;
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     public List<Customer> listAllProducts() {
-        log.info("FindAllCustomers");
-        return customerManager.getCustomers();
+//        log.info("FindAllCustomers");
+//        return customerManager.getCustomers();
+        return null; // TODO
     }
 
     @GET
-    @Path("/{email:.*}") // TODO fix pattern
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/{email:^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$}") 
     public Customer lookupCustomerById(@PathParam("email") String email) {
-        log.info("lookupProductById");
-        Customer customer;
-        try {
-            customer = customerManager.getCustomerByEmail(email);
-        } catch (NoResultException nre) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
-        }
-        return customer;
+//        log.info("lookupProductById");
+//        Customer customer;
+//        try {
+//            customer = customerManager.getCustomerByEmail(email);
+//        } catch (NoResultException nre) {
+//            throw new WebApplicationException(Response.Status.NOT_FOUND);
+//        }
+//        return customer;
+        return null; // TODO
     }
 }

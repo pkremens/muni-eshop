@@ -54,10 +54,12 @@ public class GeneratorMethodsTest {
     private CustomerManager customerManager;
     @Inject
     private ProductManager productManager;
+    @Inject
+    private OrderManager orderManager;
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(Controller.class, InvoiceManager.class, StoremanMDB.class, StoremanMessage.class, OrderRoot.class, OrderManager.class, DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+        return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(OrderManager.class, Controller.class, InvoiceManager.class, StoremanMDB.class, StoremanMessage.class, OrderRoot.class, OrderManager.class, DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     @Before
@@ -79,7 +81,7 @@ public class GeneratorMethodsTest {
         for (int i = 0; i < 10; i++) {
             dataGenerator.generateRandomCustomer();
         }
-        Assert.assertEquals(10L,(long) customerManager.getCustomerTableCount());
+        Assert.assertEquals(10L, (long) customerManager.getCustomerTableCount());
     }
 
     @Test
@@ -87,6 +89,20 @@ public class GeneratorMethodsTest {
         for (int i = 0; i < 10; i++) {
             dataGenerator.generateRandomProduct();
         }
-        Assert.assertEquals(10L,(long) productManager.getProductTableCount());
+        Assert.assertEquals(10L, (long) productManager.getProductTableCount());
+    }
+
+    @Test
+    public void testMultiOrderCloseNoAutoRefill() throws InterruptedException {
+        dataGenerator.generateCustomers(1L);
+        dataGenerator.generateProducts(1L, 1L, 0L);
+        dataGenerator.generateOrders(1L, 1L);
+        Thread.sleep(500); // Must give time to Hornet
+        Assert.assertEquals(1L, (long) invoiceManager.getInvoiceTableCount());
+        System.out.println("test");
+        invoiceManager.clearInvoiceTable();
+        Assert.assertEquals(0L, (long) invoiceManager.getInvoiceTableCount());
+        orderManager.clearOrderTable();
+        Assert.assertEquals(0L, (long) orderManager.getOrderTableCount());
     }
 }

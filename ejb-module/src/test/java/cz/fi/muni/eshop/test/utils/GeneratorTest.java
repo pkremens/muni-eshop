@@ -17,8 +17,8 @@ import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.test.DummyMDB;
 import cz.fi.muni.eshop.test.TestResources;
+import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
-import java.util.List;
 
 import javax.inject.Inject;
 import junit.framework.Assert;
@@ -29,6 +29,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,6 +44,8 @@ public class GeneratorTest {
     @Inject
     private DataGenerator generator;
     @Inject
+    private Controller controllerBean;
+    @Inject
     private CustomerManager customerManager;
     @Inject
     private ProductManager productManager;
@@ -51,7 +54,11 @@ public class GeneratorTest {
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "generator-test.war").addClasses(DummyMDB.class, OrderRoot.class, OrderManager.class, ProductManager.class, DataGenerator.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+        return ShrinkWrap.create(WebArchive.class, "generator-test.war").addClasses(DummyMDB.class, Controller.class, OrderRoot.class, OrderManager.class, ProductManager.class, DataGenerator.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+    }
+    @Before
+    public void cleanUp() {
+       controllerBean.wipeOutDb();
     }
     
 
