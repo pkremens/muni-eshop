@@ -4,27 +4,21 @@
  */
 package cz.fi.muni.eshop.service;
 
-import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.model.enums.Category;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.jms.ConnectionFactory;
+import javax.jms.Queue;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.annotation.Resource;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.jms.Connection;
-import javax.jms.JMSException;
-import javax.jms.MapMessage;
-import javax.jms.MessageProducer;
-import javax.jms.Queue;
-import javax.jms.Session;
-import javax.jms.ConnectionFactory;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
@@ -48,38 +42,43 @@ public class ProductManager {
 
     public Product addProduct(String name, Long price, Category category,
             Long stored, Long reserved) {
+        if (getProductByNameCount(name) == 1) {
+            log.warning("Product with name=" + name + " is already registered " + Exception.class.getName().toString());
+            return null;
+        }
         Product product = new Product(name, price, category, stored, reserved);
         log.info("Adding product: " + product);
         em.persist(product);
         return product;
     }
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void refillProductWithReserved(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
-        log.warning(product.toString());
         product.setStored(product.getReserved() + quantity);
-        log.warning("Refilling product: " + product + " new quantity: "
+        log.warning("Refilling product: " + product.getId() + " new quantity: "
                 + product.getStored());
         em.merge(product);
     }
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void orderProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
+        log.info("Old on store: " + product.addStored(id));
         if (product.getStored() < product.addReserved(quantity)) {
             product.addStored(1000L);
         }
+        log.info("Ordering: " + quantity.toString() + ", product: " + product.toString());
         em.merge(product);
     }
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void invoiceProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
-        //  log.info("Invoice product: " + product + " quantity: " + quantity);
+        log.info("Invoice product: " + product + " quantity: " + quantity);
         if (quantity > product.getReserved()) {
             throw new IllegalArgumentException(
-                    "Can not invoice non-reserve products, we are somewhere loosing data! product=" + product.toString() + " quantity");
+                    "Can not invoice non-reserve products, we are somewhere loosing data! product=" + product.toString() + " quantity=" + quantity);
         }
         product.setStored(product.getStored() - quantity);
         product.setReserved(product.getReserved() - quantity);
@@ -156,6 +155,14 @@ public class ProductManager {
     public void deleteProduct(String name) {
         Product product = getProductByName(name);
         em.remove(product);
+    }
 
+    public Long getProductByNameCount(String name) {
+        log.info("Get product: " + name + " count in table");
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
+        Root<Product> product = criteria.from(Product.class);
+        criteria.select(cb.count(product)).where(cb.equal(product.get("name"), name));
+        return em.createQuery(criteria).getSingleResult().longValue();
     }
 }

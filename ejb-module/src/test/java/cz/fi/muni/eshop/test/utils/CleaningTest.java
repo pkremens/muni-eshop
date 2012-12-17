@@ -67,10 +67,17 @@ public class CleaningTest {
     public void storemanCloseOrderTest() throws InterruptedException {
         controllerBean.wipeOutDb();
         dataGenerator.generateCustomers(1L);
-        dataGenerator.generateProducts(1L, 200L, 0L);
-
+        dataGenerator.generateProducts(10L, 200L, 1000L);
+        dataGenerator.generateOrders(5L, 4L, false);
+        Thread.sleep(500);
 
     }
 
-
+    @Test
+    public void cleanUpTest() throws InterruptedException {
+     
+        controllerBean.cleanInvoicesAndOrders();
+        Assert.assertEquals(0L, (long) invoiceManager.getInvoiceTableCount());
+        Assert.assertEquals(0L, (long) orderManager.getOrderTableCount());
+    }
 }

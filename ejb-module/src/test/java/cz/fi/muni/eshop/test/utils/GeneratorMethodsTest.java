@@ -25,6 +25,7 @@ import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.test.TestResources;
 import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
+import javax.ejb.EJB;
 import javax.inject.Inject;
 import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -44,17 +45,17 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class GeneratorMethodsTest {
 
-    @Inject
+    @EJB
     private Controller controllerBean;
     @Inject
     private DataGenerator dataGenerator;
-    @Inject
+    @EJB
     private InvoiceManager invoiceManager;
-    @Inject
+    @EJB
     private CustomerManager customerManager;
-    @Inject
+    @EJB
     private ProductManager productManager;
-    @Inject
+    @EJB
     private OrderManager orderManager;
 
     @Deployment

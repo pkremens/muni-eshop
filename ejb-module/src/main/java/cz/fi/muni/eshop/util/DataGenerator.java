@@ -172,7 +172,7 @@ public class DataGenerator {
     }
 
     public Customer generateRandomCustomer() {
-        String base = getRandomString(8);
+        String base = getRandomString(12);
         int count = 5;
         Customer customer;
         for (int i = 0; i < count; i++) {
@@ -194,7 +194,7 @@ public class DataGenerator {
     }
 
     public Product generateRandomProduct(Long price, Long stored) {
-        String base = getRandomString(8);
+        String base = getRandomString(12);
         int count = 5;
         Product product;
         Category category = generateRandomProductCategory();

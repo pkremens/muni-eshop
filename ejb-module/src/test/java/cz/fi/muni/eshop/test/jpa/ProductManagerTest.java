@@ -114,4 +114,11 @@ public class ProductManagerTest {
         Assert.assertEquals(productManager.getProducts().size(), (long) productManager.getProductTableCount());
         Assert.assertEquals(20L, (long) productManager.getProductTableCount());
     }
+    
+        @Test
+    public void productByNameCountTest() {
+        setUp();
+        Assert.assertEquals(1L,(long) productManager.getProductByNameCount("name"));
+        Assert.assertEquals(0L,(long) productManager.getProductByNameCount("dummy"));
+    }
 }

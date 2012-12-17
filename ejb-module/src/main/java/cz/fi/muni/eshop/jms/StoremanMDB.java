@@ -4,11 +4,7 @@
  */
 package cz.fi.muni.eshop.jms;
 
-import com.sun.tools.corba.se.idl.InvalidArgument;
 import cz.fi.muni.eshop.service.InvoiceManager;
-import cz.fi.muni.eshop.service.ProductManager;
-import cz.fi.muni.eshop.util.ControlMessage;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
@@ -38,13 +34,14 @@ public class StoremanMDB implements MessageListener {
         try {
             if (rcvMessage instanceof MapMessage) {
                 MapMessage msg = (MapMessage) rcvMessage;
-              //  log.info("Received Message");
+                //  log.info("Received Message");
                 StoremanMessage message = StoremanMessage.valueOf(msg.getStringProperty("type"));
                 switch (message) {
                     case CLOSE_ORDER:
-                        log.info(StoremanMessage.CLOSE_ORDER.getMessage());
                         long id = msg.getLongProperty("orderId");
+                        log.warning(StoremanMessage.CLOSE_ORDER.getMessage() + "id: " + id);
                         invoiceManager.closeOrder(id);
+
                         break;
                     default:
                         throw new IllegalArgumentException("Recieved unknown storeman message!");

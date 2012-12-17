@@ -56,11 +56,11 @@ public class GeneratorTest {
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(WebArchive.class, "generator-test.war").addClasses(DummyMDB.class, Controller.class, OrderRoot.class, OrderManager.class, ProductManager.class, DataGenerator.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
+
     @Before
     public void cleanUp() {
-       controllerBean.wipeOutDb();
+        controllerBean.wipeOutDb();
     }
-    
 
     @Test
     @InSequence(1)
@@ -100,18 +100,9 @@ public class GeneratorTest {
         Assert.assertEquals(orderManager.getOrders().size(), 20L);
         for (Order order : orderManager.getOrders()) {
             for (OrderItem orderItem : orderManager.getOrderItemsOfOrderById(order.getId())) {
-                Assert.assertEquals(10L,(long) orderItem.getQuantity());
+                Assert.assertEquals(10L, (long) orderItem.getQuantity());
             }
-            
-        } 
-//        orderManager.clearOrderTable();
-//        long itemCount = 3L;
-//        generator.generateOrders(20L, itemCount, true);
-//        List<OrderItem> orderItems = null;
-//        for (Order order : orderManager.getOrders()) {
-//             Assert.assertTrue("Generator generated invalid orderItems count: " + orderItems.size(), (order.getOrderItems().size() > 0L && order.getOrderItems().size() < itemCount + 1));
-//        }
+
+        }
     }
-    
-    
 }

@@ -107,4 +107,11 @@ public class CustomerManagerTest {
         customer = customerManager.verifyCustomer("xxx@yyyy.zz", "abcd");
         Assert.assertNull(customer);
     }
+    
+    @Test
+    public void customerByEmailCountTest() {
+        setUp();
+        Assert.assertEquals(1L,(long) customerManager.getCustomerByEmailCount("customer@customer.xx"));
+        Assert.assertEquals(0L,(long) customerManager.getCustomerByEmailCount("dummy@customer.xx"));
+    }
 }

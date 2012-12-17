@@ -61,8 +61,18 @@ public class ProductResourceRESTService {
         EntityValidator<Product> validator = new EntityValidator<Product>();
         Set<ConstraintViolation<Product>> violations = validator.validateIgnoreId(product);
         if (violations.isEmpty()) {
-            productManager.addProduct(name, price, product.getCategory(), stored, 0L);
-            builder = Response.ok();
+            Object object = null;
+            try {
+                
+            object = productManager.addProduct(name, price, product.getCategory(), stored, 0L);
+            }
+            catch (Exception ex) {
+                log.warning(ex.getMessage());
+            }
+            if (object != null) {
+            
+                builder = Response.ok();
+            }
         } else {
             Map<String, String> responseObj = new HashMap<String, String>();
             for (ConstraintViolation<Product> constraintViolation : violations) {
@@ -116,9 +126,9 @@ public class ProductResourceRESTService {
     }
 
     @GET
-    @Path("/{name:[A-Za-z0-9]*}")
+    @Path("/name/{byName:[A-Za-z0-9]*}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Product lookupProductByName(@PathParam("name") String name) {
+    public Product lookupProductByName(@PathParam("byName") String name) {
         log.info("lookupProductByName");
         Product product;
         try {
@@ -130,9 +140,9 @@ public class ProductResourceRESTService {
     }
 
     @DELETE
-    // curl -i -X DELETE http://localhost:8080/web/rest/products/proKb8MEioeh
-    @Path("/{name:[A-Za-z0-9]*}")
-    public void deleteProductByName(@PathParam("name") String name) {
+    // curl -i -X DELETE http://localhost:8080/web/rest/products/name/proKb8MEioeh
+    @Path("/name/{byName:[A-Za-z0-9]*}")
+    public void deleteProductByName(@PathParam("byName") String name) {
         log.warning("Delete product here"); // I don't think I want this
     }
 }

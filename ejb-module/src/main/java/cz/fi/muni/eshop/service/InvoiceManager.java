@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -35,14 +36,14 @@ public class InvoiceManager {
     private EntityManager em;
     @Inject
     private Logger log;
-    @Inject
+    @EJB
     private OrderManager orderManager;
     private static final int MSG_COUNT = 5; // TODO what is this for???
     @Resource(mappedName = "java:/ConnectionFactory")
     private ConnectionFactory connectionFactory;
     @Resource(mappedName = "java:/queue/test")
     private Queue queue;
-    @Inject
+    @EJB
     private ProductManager productManager;
 //    @Inject
 //    private SessionContext context;
