@@ -10,7 +10,7 @@
     OF ANY KIND, either express or implied. See the License for the specific 
     language governing permissions and limitations under the License. -->
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="         http://java.sun.com/xml/ns/persistence         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-  <persistence-unit name="primary">
+  <persistence-unit name="primary" transaction-type="jta">
     <!-- If you are running in a production environment, add a managed 
          data source, this example data source is just for development and testing! -->
     <jta-data-source>java:/mydb</jta-data-source>

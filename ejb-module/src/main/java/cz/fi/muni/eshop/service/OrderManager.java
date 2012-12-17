@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -44,12 +45,14 @@ public class OrderManager {
     private EntityManager em;
     @Inject
     private Logger log;
-    @Inject
+    @EJB
     private CustomerManager customerManager;
-    @Inject
+    @EJB
     private ProductManager productManager;
+    @EJB
+    private OrderManager manager;
     private static final int MSG_COUNT = 5; // TODO what is this for???
-    @Resource(mappedName = "java:/ConnectionFactory")
+    @Resource(mappedName = "java:/JmsXA")
     private ConnectionFactory connectionFactory;
     @Resource(mappedName = "java:/queue/test")
     private Queue queue;
@@ -60,10 +63,10 @@ public class OrderManager {
         for (Long productId : productsWithQuantity.keySet()) {
             orderItems.add(new OrderItem(productManager.getProductById(productId), productsWithQuantity.get(productId)));
         }
-        return addOrder(email, orderItems);
+        return manager.addOrder(email, orderItems);
     }
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Order addOrder(String email, List<OrderItem> orderItems) {
         Order order = new Order();
         order.setCreationDate(Calendar.getInstance().getTime());
@@ -79,7 +82,6 @@ public class OrderManager {
         }
         order.setTotalPrice(price);
         em.persist(order);
-        em.flush();
         noticeStoreman(order.getId());
         return order;
     }
