@@ -43,8 +43,7 @@ public class CustomerResourceRESTService {
     private Logger log;
     @EJB
     private CustomerManager customerManager;
-    @Inject
-    private DataGenerator datagenerator;
+
 
     // curl -X POST 'http://localhost:8080/web/rest/customers/create/xasdxxx@asdsadsa.cz?name=asdsa&password=asdsad'
     @POST     // no needs for regex, validator ensures that email has correct format
@@ -77,24 +76,7 @@ public class CustomerResourceRESTService {
         return builder.build();
     }
 
-    @POST
-    // curl -i -X POST http://localhost:8080/web/rest/customers/random/3
-    @Path("/random/{count:[1-9][0-9]*}")
-    public Response createRandomProducts(@PathParam("count") long count) {
-        log.warning("create random customer(s): " + count);
-        Response.ResponseBuilder builder = null;
-        try {
-            for (int i = 0; i < count; i++) {
-                datagenerator.generateRandomCustomer();
-            }
-        } catch (Exception ex) {
-            Map<String, String> responseObj = new HashMap<String, String>();
-            responseObj.put("error", ex.getMessage());
-            builder = Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(responseObj);
-        }
-        builder = Response.ok();
-        return builder.build();
-    }
+
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)

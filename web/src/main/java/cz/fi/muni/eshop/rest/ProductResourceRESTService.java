@@ -40,8 +40,7 @@ public class ProductResourceRESTService {
     private Logger log;
     @EJB
     private ProductManager productManager;
-    @Inject
-    private DataGenerator datagenerator;
+
 
     // BACHA NA UVOZOVKY!!!!
     // curl -X POST 'http://localhost:8080/web/rest/products/create/xasdxxx?price=343&stored=123&type=4'

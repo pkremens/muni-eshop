@@ -5,6 +5,9 @@
 package cz.fi.muni.eshop.rest;
 
 import cz.fi.muni.eshop.util.Controller;
+import cz.fi.muni.eshop.util.DataGenerator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -27,6 +30,8 @@ public class ControllerResourceRESTService {
     private Logger log;
     @EJB
     private Controller controller;
+    @Inject
+    private DataGenerator dataGenerator;
 
     @POST
     // curl -i -X POST http://localhost:8080/web/rest/products/random/3
@@ -72,10 +77,67 @@ public class ControllerResourceRESTService {
     }
 
     @GET
-    public String listAllProducts() {
+    public String printReport() {
         log.info("Printing report");
         StringBuilder sb = new StringBuilder();
-
         return controller.report();
+    }
+
+    @POST
+    // curl -i -X POST http://localhost:8080/web/rest/customers/random/3
+    @Path("/randomCustomers/{count:[1-9][0-9]*}")
+    public Response createRandomCustomers(@PathParam("count") Long count) {
+        log.warning("create random customer(s): " + count);
+        Response.ResponseBuilder builder = null;
+        try {
+            for (int i = 0; i < count; i++) {
+                dataGenerator.generateRandomCustomer();
+            }
+        } catch (Exception ex) {
+            Map<String, String> responseObj = new HashMap<String, String>();
+            responseObj.put("error", ex.getMessage());
+            builder = Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(responseObj);
+        }
+        builder = Response.ok();
+        return builder.build();
+    }
+
+    @POST
+    // curl -i -X POST http://localhost:8080/web/rest/products/random/3
+    @Path("/randomProducts/{count:[1-9][0-9]*}")
+    public Response createRandomProducts(@PathParam("count") Long count) {
+        log.warning("create random product(s): " + count);
+        Response.ResponseBuilder builder = null;
+        try {
+            for (int i = 0; i < count; i++) {
+                dataGenerator.generateRandomProduct();
+            }
+        } catch (Exception ex) {
+            Map<String, String> responseObj = new HashMap<String, String>();
+            responseObj.put("error", ex.getMessage());
+            builder = Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(responseObj);
+        }
+
+        builder = Response.ok();
+        return builder.build();
+    }
+
+    @POST
+    // curl -i -X POST http://localhost:8080/web/rest/products/random/3
+    @Path("/randomOrders/{count:[1-9][0-9]*}")
+    public Response createRandomOrders(@PathParam("count") Long count) {
+        log.warning("create random product(s): " + count);
+        Response.ResponseBuilder builder = null;
+        try {
+            for (int i = 0; i < count; i++) {
+                dataGenerator.generateRandomOrder();
+            }
+        } catch (Exception ex) {
+            Map<String, String> responseObj = new HashMap<String, String>();
+            responseObj.put("error", ex.getMessage());
+            builder = Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(responseObj);
+        }
+        builder = Response.ok();
+        return builder.build();
     }
 }
