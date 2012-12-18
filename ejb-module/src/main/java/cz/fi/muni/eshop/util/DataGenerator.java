@@ -117,6 +117,9 @@ public class DataGenerator {
     public void generateOrders(long quantity, long itemCount,
             boolean randomItems) {
         List<String> emails = customerManager.getCustomerEmails();
+        if (emails.isEmpty()) {
+            throw new NullPointerException("There is no customer registered, cannot generate new Orders. Create some customers first.");
+        }
         OrderItem orderItem;
         String email;
         List<OrderItem> orderItems;

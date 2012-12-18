@@ -3,7 +3,6 @@ package cz.fi.muni.eshop.rest;
 import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.ProductManager;
-import cz.fi.muni.eshop.util.DataGenerator;
 import cz.fi.muni.eshop.util.EntityValidator;
 import java.util.HashMap;
 import java.util.List;
@@ -98,26 +97,6 @@ public class ProductResourceRESTService {
             builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
         }
         log.warning("Added product: " + product.toString());
-        return builder.build();
-    }
-
-    @POST
-    // curl -i -X POST http://localhost:8080/web/rest/products/random/3
-    @Path("/random/{count:[1-9][0-9]*}")
-    public Response createRandomProducts(@PathParam("count") long count) {
-        log.warning("create random product(s): " + count);
-        Response.ResponseBuilder builder = null;
-        try {
-            for (int i = 0; i < count; i++) {
-                datagenerator.generateRandomProduct();
-            }
-        } catch (Exception ex) {
-            Map<String, String> responseObj = new HashMap<String, String>();
-            responseObj.put("error", ex.getMessage());
-            builder = Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(responseObj);
-        }
-
-        builder = Response.ok();
         return builder.build();
     }
 

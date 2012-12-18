@@ -128,6 +128,7 @@ public class ControllerResourceRESTService {
     public Response createRandomOrders(@PathParam("count") Long count) {
         log.warning("create random product(s): " + count);
         Response.ResponseBuilder builder = null;
+        
         try {
             for (int i = 0; i < count; i++) {
                 dataGenerator.generateRandomOrder();
