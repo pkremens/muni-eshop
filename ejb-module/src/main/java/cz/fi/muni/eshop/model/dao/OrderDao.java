@@ -16,27 +16,25 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @XmlRootElement
-class OrderDao {
+public class OrderDao {
 
     private Long id;
-    private CustomerDao customer;
+    private CustomerLiteDao customer;
     private Date creationDate;
     private List<OrderItemDao> orderItems = new ArrayList<OrderItemDao>();
-    private InvoiceDao invoice;
     private Long totalPrice;
 
     public OrderDao() {
     }
 
     public OrderDao(Order order) {
-        this.id = customer.getId();
-        this.customer = new CustomerDao(order.getCustomer());
+        this.id = order.getId();
         this.creationDate = order.getCreationDate();
         for (OrderItem orderItem : order.getOrderItems()) {
             orderItems.add(new OrderItemDao(orderItem));
         }
-        this.invoice = new InvoiceDao(order.getInvoice());
         this.totalPrice = order.getTotalPrice();
+        this.customer = new CustomerLiteDao(order.getCustomer());
     }
 
     public Date getCreationDate() {
@@ -47,11 +45,11 @@ class OrderDao {
         this.creationDate = creationDate;
     }
 
-    public CustomerDao getCustomer() {
+    public CustomerLiteDao getCustomer() {
         return customer;
     }
 
-    public void setCustomer(CustomerDao customer) {
+    public void setCustomer(CustomerLiteDao customer) {
         this.customer = customer;
     }
 
@@ -61,14 +59,6 @@ class OrderDao {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public InvoiceDao getInvoice() {
-        return invoice;
-    }
-
-    public void setInvoice(InvoiceDao invoice) {
-        this.invoice = invoice;
     }
 
     public List<OrderItemDao> getOrderItems() {
@@ -108,9 +98,6 @@ class OrderDao {
         if (this.orderItems != other.orderItems && (this.orderItems == null || !this.orderItems.equals(other.orderItems))) {
             return false;
         }
-        if (this.invoice != other.invoice && (this.invoice == null || !this.invoice.equals(other.invoice))) {
-            return false;
-        }
         if (this.totalPrice != other.totalPrice && (this.totalPrice == null || !this.totalPrice.equals(other.totalPrice))) {
             return false;
         }
@@ -119,20 +106,17 @@ class OrderDao {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 13 * hash + (this.id != null ? this.id.hashCode() : 0);
-        hash = 13 * hash + (this.customer != null ? this.customer.hashCode() : 0);
-        hash = 13 * hash + (this.creationDate != null ? this.creationDate.hashCode() : 0);
-        hash = 13 * hash + (this.orderItems != null ? this.orderItems.hashCode() : 0);
-        hash = 13 * hash + (this.invoice != null ? this.invoice.hashCode() : 0);
-        hash = 13 * hash + (this.totalPrice != null ? this.totalPrice.hashCode() : 0);
+        int hash = 5;
+        hash = 89 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 89 * hash + (this.customer != null ? this.customer.hashCode() : 0);
+        hash = 89 * hash + (this.creationDate != null ? this.creationDate.hashCode() : 0);
+        hash = 89 * hash + (this.orderItems != null ? this.orderItems.hashCode() : 0);
+        hash = 89 * hash + (this.totalPrice != null ? this.totalPrice.hashCode() : 0);
         return hash;
     }
 
     @Override
     public String toString() {
-        return "OrderDao{" + "id=" + id + ", customer=" + customer + ", creationDate=" + creationDate + ", orderItems=" + orderItems + ", invoice=" + invoice + ", totalPrice=" + totalPrice + '}';
+        return "OrderDao{" + "id=" + id + ", customer=" + customer + ", creationDate=" + creationDate + ", orderItems=" + orderItems + ", totalPrice=" + totalPrice + '}';
     }
-    
-    
 }

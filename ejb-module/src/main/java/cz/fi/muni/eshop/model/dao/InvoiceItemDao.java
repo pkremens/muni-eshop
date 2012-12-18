@@ -5,10 +5,6 @@
 package cz.fi.muni.eshop.model.dao;
 
 import cz.fi.muni.eshop.model.InvoiceItem;
-import cz.fi.muni.eshop.model.Product;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -78,10 +74,10 @@ public class InvoiceItemDao {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 17 * hash + (this.id != null ? this.id.hashCode() : 0);
-        hash = 17 * hash + (this.product != null ? this.product.hashCode() : 0);
-        hash = 17 * hash + (this.quantity != null ? this.quantity.hashCode() : 0);
+        int hash = 5;
+        hash = 83 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 83 * hash + (this.product != null ? this.product.hashCode() : 0);
+        hash = 83 * hash + (this.quantity != null ? this.quantity.hashCode() : 0);
         return hash;
     }
 
@@ -89,4 +85,6 @@ public class InvoiceItemDao {
     public String toString() {
         return "InvoiceItemDao{" + "id=" + id + ", product=" + product + ", quantity=" + quantity + '}';
     }
+
+    
 }

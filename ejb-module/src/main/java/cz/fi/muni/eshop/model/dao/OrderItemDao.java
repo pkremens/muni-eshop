@@ -20,7 +20,7 @@ public class OrderItemDao {
 
     public OrderItemDao() {
     }
-    
+
     public OrderItemDao(OrderItem orderItem) {
         this.id = orderItem.getId();
         this.product = new ProductDao(orderItem.getProduct());
@@ -74,10 +74,10 @@ public class OrderItemDao {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 79 * hash + (this.id != null ? this.id.hashCode() : 0);
-        hash = 79 * hash + (this.product != null ? this.product.hashCode() : 0);
-        hash = 79 * hash + (this.quantity != null ? this.quantity.hashCode() : 0);
+        int hash = 3;
+        hash = 19 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 19 * hash + (this.product != null ? this.product.hashCode() : 0);
+        hash = 19 * hash + (this.quantity != null ? this.quantity.hashCode() : 0);
         return hash;
     }
 
@@ -85,4 +85,6 @@ public class OrderItemDao {
     public String toString() {
         return "OrderItemDao{" + "id=" + id + ", product=" + product + ", quantity=" + quantity + '}';
     }
+
+    
 }

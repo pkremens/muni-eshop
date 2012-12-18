@@ -5,10 +5,6 @@
 package cz.fi.muni.eshop.model.dao;
 
 import cz.fi.muni.eshop.model.Customer;
-import cz.fi.muni.eshop.model.Invoice;
-import cz.fi.muni.eshop.model.Order;
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -16,29 +12,21 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @XmlRootElement
-public class CustomerDao {
+public class CustomerLiteDao {
 
     private Long id;
     private String email;
     private String name;
     private String password;
-    private List<OrderDao> orders = new ArrayList<OrderDao>();
-    private List<InvoiceDao> invoices = new ArrayList<InvoiceDao>();
 
-    public CustomerDao() {
+    public CustomerLiteDao() {
     }
 
-    public CustomerDao(Customer customer) {
+    public CustomerLiteDao(Customer customer) {
         this.id = customer.getId();
         this.email = customer.getEmail();
         this.name = customer.getName();
         this.password = customer.getPassword();
-        for (Order order : customer.getOrder()) {
-            orders.add(new OrderDao(order));
-        }
-        for (Invoice invoice : customer.getInvoice()) {
-            invoices.add(new InvoiceDao(invoice));
-        }
     }
 
     public String getEmail() {
@@ -57,28 +45,12 @@ public class CustomerDao {
         this.id = id;
     }
 
-    public List<InvoiceDao> getInvoices() {
-        return invoices;
-    }
-
-    public void setInvoices(List<InvoiceDao> invoices) {
-        this.invoices = invoices;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<OrderDao> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<OrderDao> orders) {
-        this.orders = orders;
     }
 
     public String getPassword() {
@@ -97,7 +69,7 @@ public class CustomerDao {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final CustomerDao other = (CustomerDao) obj;
+        final CustomerLiteDao other = (CustomerLiteDao) obj;
         if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
             return false;
         }
@@ -110,29 +82,23 @@ public class CustomerDao {
         if ((this.password == null) ? (other.password != null) : !this.password.equals(other.password)) {
             return false;
         }
-        if (this.orders != other.orders && (this.orders == null || !this.orders.equals(other.orders))) {
-            return false;
-        }
-        if (this.invoices != other.invoices && (this.invoices == null || !this.invoices.equals(other.invoices))) {
-            return false;
-        }
         return true;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 73 * hash + (this.id != null ? this.id.hashCode() : 0);
-        hash = 73 * hash + (this.email != null ? this.email.hashCode() : 0);
-        hash = 73 * hash + (this.name != null ? this.name.hashCode() : 0);
-        hash = 73 * hash + (this.password != null ? this.password.hashCode() : 0);
-        hash = 73 * hash + (this.orders != null ? this.orders.hashCode() : 0);
-        hash = 73 * hash + (this.invoices != null ? this.invoices.hashCode() : 0);
+        int hash = 3;
+        hash = 97 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 97 * hash + (this.email != null ? this.email.hashCode() : 0);
+        hash = 97 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 97 * hash + (this.password != null ? this.password.hashCode() : 0);
         return hash;
     }
 
     @Override
     public String toString() {
-        return "CustomerDao{" + "id=" + id + ", email=" + email + ", name=" + name + ", password=" + password + ", orders=" + orders + ", invoices=" + invoices + '}';
+        return "CustomerLiteDao{" + "id=" + id + ", email=" + email + ", name=" + name + ", password=" + password + '}';
     }
+
+   
 }

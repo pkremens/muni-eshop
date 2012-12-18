@@ -4,21 +4,11 @@
  */
 package cz.fi.muni.eshop.model.dao;
 
-import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.InvoiceItem;
-import cz.fi.muni.eshop.model.Order;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -26,10 +16,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @XmlRootElement
-class InvoiceDao {
+public class InvoiceDao {
 
     private Long id;
-    private CustomerDao customer;
+    private CustomerLiteDao customer;
     private Date creationDate;
     private List<InvoiceItemDao> invoiceItems = new ArrayList<InvoiceItemDao>();
     private OrderDao order;
@@ -39,7 +29,7 @@ class InvoiceDao {
 
     public InvoiceDao(Invoice invoice) {
         this.id = invoice.getId();
-        this.customer = new CustomerDao(invoice.getCustomer());
+        this.customer = new CustomerLiteDao(invoice.getCustomer());
         this.creationDate = invoice.getCreationDate();
         for (InvoiceItem invoiceItem : invoice.getInvoiceItems()) {
             invoiceItems.add(new InvoiceItemDao(invoiceItem));
@@ -55,11 +45,11 @@ class InvoiceDao {
         this.creationDate = creationDate;
     }
 
-    public CustomerDao getCustomer() {
+    public CustomerLiteDao getCustomer() {
         return customer;
     }
 
-    public void setCustomer(CustomerDao customer) {
+    public void setCustomer(CustomerLiteDao customer) {
         this.customer = customer;
     }
 
@@ -116,12 +106,12 @@ class InvoiceDao {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 31 * hash + (this.id != null ? this.id.hashCode() : 0);
-        hash = 31 * hash + (this.customer != null ? this.customer.hashCode() : 0);
-        hash = 31 * hash + (this.creationDate != null ? this.creationDate.hashCode() : 0);
-        hash = 31 * hash + (this.invoiceItems != null ? this.invoiceItems.hashCode() : 0);
-        hash = 31 * hash + (this.order != null ? this.order.hashCode() : 0);
+        int hash = 5;
+        hash = 83 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 83 * hash + (this.customer != null ? this.customer.hashCode() : 0);
+        hash = 83 * hash + (this.creationDate != null ? this.creationDate.hashCode() : 0);
+        hash = 83 * hash + (this.invoiceItems != null ? this.invoiceItems.hashCode() : 0);
+        hash = 83 * hash + (this.order != null ? this.order.hashCode() : 0);
         return hash;
     }
 
@@ -129,4 +119,6 @@ class InvoiceDao {
     public String toString() {
         return "InvoiceDao{" + "id=" + id + ", customer=" + customer + ", creationDate=" + creationDate + ", invoiceItems=" + invoiceItems + ", order=" + order + '}';
     }
+
+    
 }

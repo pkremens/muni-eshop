@@ -34,6 +34,14 @@ public class ProductDao {
         this.stored = product.getStored();
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     public Long getId() {
         return id;
     }
@@ -58,22 +66,6 @@ public class ProductDao {
         this.price = price;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Long getStored() {
-        return stored;
-    }
-
-    public void setStored(Long stored) {
-        this.stored = stored;
-    }
-
     public Long getReserved() {
         return reserved;
     }
@@ -82,16 +74,12 @@ public class ProductDao {
         this.reserved = reserved;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 13 * hash + (this.id != null ? this.id.hashCode() : 0);
-        hash = 13 * hash + (this.name != null ? this.name.hashCode() : 0);
-        hash = 13 * hash + (this.price != null ? this.price.hashCode() : 0);
-        hash = 13 * hash + (this.category != null ? this.category.hashCode() : 0);
-        hash = 13 * hash + (this.stored != null ? this.stored.hashCode() : 0);
-        hash = 13 * hash + (this.reserved != null ? this.reserved.hashCode() : 0);
-        return hash;
+    public Long getStored() {
+        return stored;
+    }
+
+    public void setStored(Long stored) {
+        this.stored = stored;
     }
 
     @Override
@@ -125,7 +113,19 @@ public class ProductDao {
     }
 
     @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 71 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 71 * hash + (this.price != null ? this.price.hashCode() : 0);
+        hash = 71 * hash + (this.category != null ? this.category.hashCode() : 0);
+        hash = 71 * hash + (this.stored != null ? this.stored.hashCode() : 0);
+        hash = 71 * hash + (this.reserved != null ? this.reserved.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
     public String toString() {
         return "ProductDao{" + "id=" + id + ", name=" + name + ", price=" + price + ", category=" + category + ", stored=" + stored + ", reserved=" + reserved + '}';
     }
-}    
+}

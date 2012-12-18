@@ -5,6 +5,7 @@
 package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.Customer;
+import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.Order;
 import java.util.List;
 import java.util.logging.Logger;
@@ -163,5 +164,18 @@ public class CustomerManager {
         Customer customer = getCustomerByEmail(email);
         Hibernate.initialize(customer.getOrder());
         return customer.getOrder();
+    }
+
+    public Customer getWholeCustomerById(long id) {
+        Customer customer = getCustomerById(id);
+        Hibernate.initialize(customer.getOrder());
+        for (Order order : customer.getOrder()) {
+            Hibernate.initialize(order.getOrderItems());
+        }
+        Hibernate.initialize(customer.getInvoice());
+        for (Invoice invoice : customer.getInvoice()) {
+            Hibernate.initialize(invoice.getInvoiceItems());
+        }
+        return customer;
     }
 }
