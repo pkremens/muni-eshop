@@ -23,7 +23,6 @@ public class Invoice extends OrderRoot implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "invoice_fk")
     private List<InvoiceItem> invoiceLines;
-    
     @OneToOne
     @JoinColumn(nullable = false)
     private Order order;
@@ -75,6 +74,4 @@ public class Invoice extends OrderRoot implements Serializable {
     public String toString() {
         return super.toString() + " Invoice{" + "invoiceLines=" + invoiceLines + ", order=" + order + '}';
     }
-
-    
 }

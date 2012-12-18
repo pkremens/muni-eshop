@@ -4,10 +4,9 @@
  */
 package cz.fi.muni.eshop.util;
 
-import java.io.Serializable;
-
 import cz.fi.muni.eshop.controller.BasketBean;
 import cz.fi.muni.eshop.model.Customer;
+import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,12 +20,12 @@ import javax.inject.Named;
 public class Identity implements Serializable {
 
     private Customer customer = null;
-    
     @Inject
     private BasketBean basket;
 
     /**
      * Do not allow to log in if already logged
+     *
      * @param customer
      */
     public void logIn(Customer customer) {
@@ -35,8 +34,9 @@ public class Identity implements Serializable {
             basket.initNewBasket();
         }
     }
+
     public Customer getCustomer() {
-    	return customer;
+        return customer;
     }
 
     public void logOut() {
@@ -47,8 +47,8 @@ public class Identity implements Serializable {
     public boolean isLoggedIn() {
         return (customer == null ? false : true);
     }
-    
+
     public String getEmail() {
-    	return customer.getEmail();
+        return customer.getEmail();
     }
 }

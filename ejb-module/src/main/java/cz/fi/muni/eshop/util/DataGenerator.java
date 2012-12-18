@@ -18,12 +18,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
-// import java.util.Random;
 import javax.inject.Inject;
-import javax.jms.ConnectionFactory;
-import javax.jms.Queue;
 
 /**
  *
@@ -86,19 +82,19 @@ public class DataGenerator {
     public void generateOrders(Long quantity, Long itemsPerOrder) {
         generateOrders(quantity, itemsPerOrder, false);
     }
-    
-    
+
     public void generateRandomOrder() {
-    	long productsCount = productManager.getProductTableCount(); 
-    	if (productsCount < 20) {
-    		generateRandomOrder(productsCount);
-    	} else {
-    		generateRandomOrder(20L);
-    	}
-    	
+        long productsCount = productManager.getProductTableCount();
+        if (productsCount < 20) {
+            generateRandomOrder(productsCount);
+        } else {
+            generateRandomOrder(20L);
+        }
+
     }
+
     public void generateRandomOrder(Long itemCount) {
-    	generateOrders(1L, itemCount, true);
+        generateOrders(1L, itemCount, true);
     }
 
     /**
@@ -118,10 +114,10 @@ public class DataGenerator {
      */
     public void generateOrders(long quantity, long itemCount,
             boolean randomItems) {
-    	
+
         List<String> emails = customerManager.getCustomerEmails();
-        
-        
+
+
         OrderItem orderItem;
         String email;
         List<OrderItem> orderItems;

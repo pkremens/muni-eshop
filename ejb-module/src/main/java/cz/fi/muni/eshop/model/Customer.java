@@ -6,7 +6,6 @@ package cz.fi.muni.eshop.model;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,14 +17,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-
 @Entity
 public class Customer implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(unique=true)
+    @Column(unique = true)
     @Size(min = 1, max = 25, message = "May not be null")
     @Pattern(regexp = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", message = "not a valid email address")
     private String email;
@@ -35,11 +33,9 @@ public class Customer implements Serializable {
     @Size(min = 1, message = "May not be null")
     @NotNull
     private String password;
-    
-    @OneToMany(mappedBy = "customer", orphanRemoval=true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Order> order;
-    
-    @OneToMany(mappedBy = "customer", orphanRemoval=true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Invoice> invoice;
 
     public Customer() {

@@ -4,11 +4,9 @@
  */
 package cz.fi.muni.eshop.service;
 
-import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
-import cz.fi.muni.eshop.model.Product;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -120,8 +118,8 @@ public class OrderManager {
         criteria.select(order).where(cb.equal(order.get("id"), id));
         return em.createQuery(criteria).getSingleResult();
     }
-    
-      public List<Order> getOrders() {
+
+    public List<Order> getOrders() {
         log.info("Get all orders");
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Order> criteria = cb.createQuery(Order.class);

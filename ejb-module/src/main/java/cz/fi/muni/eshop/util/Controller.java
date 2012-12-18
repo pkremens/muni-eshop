@@ -9,7 +9,6 @@ import cz.fi.muni.eshop.service.InvoiceManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
 import java.util.logging.Logger;
-
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;

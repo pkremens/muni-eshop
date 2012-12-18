@@ -21,13 +21,10 @@ import javax.validation.constraints.NotNull;
 public class InvoiceItem implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    
     @ManyToOne
     private Product product;
-    
     @NotNull
     @Min(1)
     private Long quantity;
@@ -98,6 +95,4 @@ public class InvoiceItem implements Serializable {
     public String toString() {
         return "InvoiceItem{" + "id=" + id + ", product=" + product + ", quantity=" + quantity + '}';
     }
-    
-    
 }

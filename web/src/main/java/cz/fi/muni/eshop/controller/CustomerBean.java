@@ -4,142 +4,139 @@
  */
 package cz.fi.muni.eshop.controller;
 
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
-
-import javax.enterprise.inject.Model;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.validation.ConstraintViolation;
-
 import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
 import cz.fi.muni.eshop.util.EntityValidator;
 import cz.fi.muni.eshop.util.Identity;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
+import javax.enterprise.inject.Model;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
 
 /**
- * 
+ *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Model
 public class CustomerBean {
-	private String email;
-	private String name;
-	private String password;
-	@Inject
-	private Identity identity;
 
-	@Inject
-	private Controller controller;
-	@Inject
-	private CustomerManager customerManager;
-	@Inject
-	private FacesContext facesContext;
+    private String email;
+    private String name;
+    private String password;
+    @Inject
+    private Identity identity;
+    @EJB
+    private Controller controller;
+    @EJB
+    private CustomerManager customerManager;
+    @Inject
+    private FacesContext facesContext;
+    private List<Customer> customers;
+    @Inject
+    private Logger log;
+    @Inject
+    private DataGenerator dataGenerator;
+    @Inject
+    private EntityValidator<Customer> validator;
 
-	private List<Customer> customers;
-	@Inject
-	private Logger log;
-	@Inject
-	private DataGenerator dataGenerator;
+    public List<Customer> getCustomers() {
+        return customerManager.getCustomers();
+    }
 
-	@Inject
-	private EntityValidator<Customer> validator;
+    private void clearBean() {
+        email = "";
+        name = "";
+        password = "";
+    }
 
-	public List<Customer> getCustomers() {
-		return customerManager.getCustomers();
-	}
+    public void addCustomer() {
+        if (validate()) {
+            customerManager.addCustomer(email, name, password);
+            clearBean();
+        }
+    }
 
-	private void clearBean() {
-		email = "";
-		name = "";
-		password = "";
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void addCustomer() {
-		if (validate()) {
-			customerManager.addCustomer(email, name, password);
-			clearBean();
-		}
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void clearCustomers() {
+        log.warning("Clearing customers data with all orders and invoices");
+        addMessage("Clearing customers data with all orders and invoices");
+        customerManager.clearCustomersTable();
+        identity.logOut();
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    private void addMessage(String summary) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,
+                summary, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 
-	public void clearCustomers() {
-		log.warning("Clearing customers data with all orders and invoices");
-		addMessage("Clearing customers data with all orders and invoices");
-		customerManager.clearCustomersTable();
-                identity.logOut();
-	}
+    public void deleteCustomer(String email) {
+        customerManager.deleteCustomer(email);
+        if (identity.getEmail().equals(email)) {
+            identity.logOut();
+        }
+    }
 
-	private void addMessage(String summary) {
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,
-				summary, null);
-		FacesContext.getCurrentInstance().addMessage(null, message);
-	}
+    public void generateRandomCustomer() {
+        log.info("generating random customer");
+        dataGenerator.generateRandomCustomer();
+    }
 
-	public void deleteCustomer(String email) {
-		customerManager.deleteCustomer(email);
-                if (identity.getEmail().equals(email)) {
-                    identity.logOut();
-                }
-	}
+    public void register() {
+        if (validate()) {
+            identity.logIn(customerManager.addCustomer(email, name, password));
+            clearBean();
+        }
+    }
 
-	public void generateRandomCustomer() {
-		log.info("generating random customer");
-		dataGenerator.generateRandomCustomer();
-	}
+    // DO NOT USE required="true" property in input text widgets, unable to
+    // generate random then without filling the form
+    // just front end validation
+    private boolean validate() {
+        Set<ConstraintViolation<Customer>> violations = validator.validate(new Customer(email, name, password));
+        if (violations.isEmpty()) {
+            return true;
+        } else {
+            for (ConstraintViolation<Customer> constraintViolation : violations) {
+                addMessage(constraintViolation.getPropertyPath() + " "
+                        + constraintViolation.getMessageTemplate());
+            }
+        }
+        return false;
 
-	public void register() {
-		if (validate()) {
-			identity.logIn(customerManager.addCustomer(email, name, password));
-			clearBean();
-		}
-	}
+    }
 
-	// DO NOT USE required="true" property in input text widgets, unable to
-	// generate random then without filling the form
-	// just front end validation
-	private boolean validate() {
-		Set<ConstraintViolation<Customer>> violations = validator
-				.validate(new Customer(email, name, password));
-		if (violations.isEmpty()) {
-			return true;
-		} else {
-			for (ConstraintViolation<Customer> constraintViolation : violations) {
-				addMessage(constraintViolation.getPropertyPath() + " "
-						+ constraintViolation.getMessageTemplate());
-			}
-		}
-		return false;
-
-	}
-	public Long customersCount() {
-		return customerManager.getCustomerTableCount();
-	}
+    public Long customersCount() {
+        return customerManager.getCustomerTableCount();
+    }
 }

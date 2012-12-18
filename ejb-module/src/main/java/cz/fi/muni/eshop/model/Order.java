@@ -21,9 +21,10 @@ public class Order extends OrderRoot implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
     @JoinColumn(name = "order_fk")
     private List<OrderItem> orderItems;
-    @OneToOne(orphanRemoval = true) 
+    @OneToOne(orphanRemoval = true)
     private Invoice invoice;
     private Long totalPrice;
+
     public Order() {
     }
 
@@ -50,8 +51,6 @@ public class Order extends OrderRoot implements Serializable {
     public void setTotalPrice(Long totalPrice) {
         this.totalPrice = totalPrice;
     }
-    
-    
 
     @Override
     public boolean equals(Object obj) {

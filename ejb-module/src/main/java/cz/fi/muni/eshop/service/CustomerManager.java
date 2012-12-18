@@ -6,10 +6,8 @@ package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.model.Order;
-
 import java.util.List;
 import java.util.logging.Logger;
-import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;

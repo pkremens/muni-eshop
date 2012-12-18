@@ -67,12 +67,12 @@ public class LongRunSingleGenerateTest {
     @Test
     public void testMultiOrderCloseAutoRefill() throws InterruptedException {
         dataGenerator.generateCustomers(100L);
-        dataGenerator.generateProducts(200L, 200L, 1000L, true);
+        dataGenerator.generateProducts(1000L, 200L, 1000L, true);
         dataGenerator.generateOrders(500L, 5L, true);
         Thread.sleep(1000);
-        Assert.assertEquals(500L, (long) invoiceManager.getInvoiceTableCount());
+        Assert.assertEquals(500, (long) invoiceManager.getInvoiceTableCount());
         Assert.assertEquals(500, (long) orderManager.getOrderTableCount());
-        Assert.assertEquals(200, (long) productManager.getProductTableCount());
+        Assert.assertEquals(500, (long) productManager.getProductTableCount());
         Assert.assertEquals(100, (long) customerManager.getCustomerTableCount());
 
     }

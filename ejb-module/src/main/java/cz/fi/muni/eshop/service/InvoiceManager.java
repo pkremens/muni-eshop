@@ -48,7 +48,7 @@ public class InvoiceManager {
 //    @Inject
 //    private SessionContext context;
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW) 
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Invoice closeOrder(Long orderId) {
         log.warning("Closing order id: " + orderId);
         Invoice invoice = new Invoice();

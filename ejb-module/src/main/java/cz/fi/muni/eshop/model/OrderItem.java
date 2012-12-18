@@ -17,12 +17,10 @@ import javax.validation.constraints.NotNull;
 public class OrderItem implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    @ManyToOne 
+    @ManyToOne
     private Product product;
-    
     @NotNull
     @Min(1)
     private Long quantity;
@@ -93,6 +91,4 @@ public class OrderItem implements Serializable {
     public String toString() {
         return "OrderItem{" + "id=" + id + ", product=" + product + ", quantity=" + quantity + '}';
     }
-    
-    
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
@@ -38,7 +39,7 @@ public class ProductResourceRESTService {
     // The Location header of the response contains the URI of the resource representing the newly created task.
     @Inject
     private Logger log;
-    @Inject
+    @EJB
     private ProductManager productManager;
     @Inject
     private DataGenerator datagenerator;
@@ -63,14 +64,13 @@ public class ProductResourceRESTService {
         if (violations.isEmpty()) {
             Object object = null;
             try {
-                
-            object = productManager.addProduct(name, price, product.getCategory(), stored, 0L);
-            }
-            catch (Exception ex) {
+
+                object = productManager.addProduct(name, price, product.getCategory(), stored, 0L);
+            } catch (Exception ex) {
                 log.warning(ex.getMessage());
             }
             if (object != null) {
-            
+
                 builder = Response.ok();
             }
         } else {
