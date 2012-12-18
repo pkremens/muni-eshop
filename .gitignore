@@ -17,4 +17,4 @@ ejb-module/.classpath
 ejb-module/.project
 web/.classpath
 web/.project
-
+web/nb-configuration.xml

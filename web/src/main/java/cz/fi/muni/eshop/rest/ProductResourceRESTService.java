@@ -1,9 +1,11 @@
 package cz.fi.muni.eshop.rest;
 
+import cz.fi.muni.eshop.jms.dao.ProductDao;
 import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.util.EntityValidator;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +14,6 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.NoResultException;
 import javax.validation.ConstraintViolation;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -21,7 +22,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -40,6 +40,32 @@ public class ProductResourceRESTService {
     @EJB
     private ProductManager productManager;
 
+    @GET
+    @Produces(MediaType.APPLICATION_XML)
+    public List<ProductDao> listAllProducts() {
+        log.info("FindAllProducts");
+        List<ProductDao> products = new ArrayList<ProductDao>();
+        for (Product product : productManager.getProducts()) {
+            products.add(new ProductDao(product));
+        }
+        return products;
+    }
+
+    @GET
+    @Path("/{id:[0-9][0-9]*}")
+    @Produces(MediaType.APPLICATION_XML)
+    public ProductDao lookupProductById(@PathParam("id") long id) {
+        log.info("lookupProductById");
+        return new ProductDao(productManager.getProductById(id));
+    }
+
+    @GET
+    @Path("/name/{byName:[A-Za-z0-9]*}")
+    @Produces(MediaType.APPLICATION_XML)
+    public ProductDao lookupProductByName(@PathParam("byName") String name) {
+        log.info("lookupProductByName");
+        return new ProductDao(productManager.getProductByName(name));
+    }
 
     // BACHA NA UVOZOVKY!!!!
     // curl -X POST 'http://localhost:8080/web/rest/products/create/xasdxxx?price=343&stored=123&type=4'
@@ -99,46 +125,4 @@ public class ProductResourceRESTService {
         log.warning("Added product: " + product.toString());
         return builder.build();
     }
-
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public List<Product> listAllProducts() {
-        log.info("FindAllProducts");
-        return productManager.getProducts();
-    }
-
-    @GET
-    @Path("/{id:[0-9][0-9]*}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public Product lookupProductById(@PathParam("id") long id) {
-        log.info("lookupProductById");
-        Product product;
-        try {
-            product = productManager.getProductById(id);
-        } catch (NoResultException nre) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
-        }
-        return product;
-    }
-
-    @GET
-    @Path("/name/{byName:[A-Za-z0-9]*}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public Product lookupProductByName(@PathParam("byName") String name) {
-        log.info("lookupProductByName");
-        Product product;
-        try {
-            product = productManager.getProductByName(name);
-        } catch (NoResultException nre) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
-        }
-        return product;
-    }
-
-//    @DELETE
-//    // curl -i -X DELETE http://localhost:8080/web/rest/products/name/proKb8MEioeh
-//    @Path("/name/{byName:[A-Za-z0-9]*}")
-//    public void deleteProductByName(@PathParam("byName") String name) {
-//        log.warning("Delete product here"); // I don't think I want this!
-//    }
 }
