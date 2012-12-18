@@ -114,14 +114,11 @@ public class DataGenerator {
      */
     public void generateOrders(long quantity, long itemCount,
             boolean randomItems) {
-
         List<String> emails = customerManager.getCustomerEmails();
-
-
         OrderItem orderItem;
         String email;
         List<OrderItem> orderItems;
-        List<Long> uniqueProductIds;
+        Set<Long> uniqueProductIds;
         long itemsPerOrder;
         for (int i = 0; i < quantity; i++) {
             if (randomItems) {
@@ -132,9 +129,9 @@ public class DataGenerator {
             uniqueProductIds = randomUniqueProductIds(itemsPerOrder);
             orderItems = new ArrayList<OrderItem>();
             email = emails.get((int) (Math.random() * emails.size()));
-            for (int j = 0; j < itemsPerOrder; j++) {
+            for (Long productId : uniqueProductIds) {
                 orderItem = new OrderItem(
-                        productManager.getProductById(uniqueProductIds.get(j)),
+                        productManager.getProductById(productId),
                         (generateLongOneToN(20L))); // don't want zeros!
                 orderItems.add(orderItem);
             }
@@ -143,13 +140,13 @@ public class DataGenerator {
     }
 
     /**
-     * Generate random List of unique products to warrant that we will not try
-     * to put two same products as separate order items into same order.
+     * Generate random set of unique products to warrant that we will not try
+     * to put same products as different order items into same order.
      *
      * @param itemsPerOrder how many products we want
      * @return List of unique products
      */
-    private List<Long> randomUniqueProductIds(Long itemsPerOrder) {
+    private Set<Long> randomUniqueProductIds(Long itemsPerOrder) {
         Set<Long> uniqueProductIds = new HashSet<Long>(); // to secure uniqueness
         if (itemsPerOrder > productManager.getProductTableCount()) {
             throw new IllegalArgumentException("Cannot generate order with more Order Items than products on store");
@@ -159,7 +156,7 @@ public class DataGenerator {
         while (uniqueProductIds.size() < itemsPerOrder) {
             uniqueProductIds.add(productIds.remove(randomGenerator.nextInt(productIds.size())));
         }
-        return new ArrayList<Long>(uniqueProductIds);
+        return uniqueProductIds;
     }
 
     public void generateOrder(String customersEmail, List<OrderItem> orderItems) {

@@ -72,7 +72,7 @@ public class LongRunSingleGenerateTest {
         Thread.sleep(1000);
         Assert.assertEquals(500, (long) invoiceManager.getInvoiceTableCount());
         Assert.assertEquals(500, (long) orderManager.getOrderTableCount());
-        Assert.assertEquals(500, (long) productManager.getProductTableCount());
+        Assert.assertEquals(1000, (long) productManager.getProductTableCount());
         Assert.assertEquals(100, (long) customerManager.getCustomerTableCount());
 
     }
