@@ -38,7 +38,11 @@
                     </f:facet>
                     <h:outputText value="#{_order.totalPrice}" />
                 </p:column>
-                <p:column>XXX</p:column>
+                <p:column>                    <f:facet name="header">
+                        <h:outputText value="Close" />
+                    </f:facet>
+                    <p:commandButton update="@this" action="#{invoiceBean.invoiceOrder(_order.id)}" />
+                </p:column>
             </p:dataTable>
             TODO button na manualni invoice, disabled if invoice not null or sth
         </h:form>

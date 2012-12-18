@@ -19,6 +19,10 @@ public class InvoiceBean {
     public List<Invoice> getInvoices() {
         return invoiceManager.getInvoices();
     }
+    
+    public void invoiceOrder(Long id) {
+        invoiceManager.closeOrder(id);
+    }
 
     public void clearInvoices() {
         invoiceManager.clearInvoiceTable();
