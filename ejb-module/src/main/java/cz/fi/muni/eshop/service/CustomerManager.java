@@ -178,4 +178,17 @@ public class CustomerManager {
         }
         return customer;
     }
+
+    public Customer getWholeCustomerByEmail(String email) {
+        Customer customer = getCustomerByEmail(email);
+        Hibernate.initialize(customer.getOrder());
+        for (Order order : customer.getOrder()) {
+            Hibernate.initialize(order.getOrderItems());
+        }
+        Hibernate.initialize(customer.getInvoice());
+        for (Invoice invoice : customer.getInvoice()) {
+            Hibernate.initialize(invoice.getInvoiceItems());
+        }
+        return customer;
+    }
 }

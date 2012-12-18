@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
@@ -36,6 +37,7 @@ public class LoginBean {
         if (validate()) {
             Customer customer = customerManager.verifyCustomer(email, password);
             if (customer == null) {
+                addMessage("No customer with given email and password");
                 clearBean();
 
             } else {
@@ -62,8 +64,13 @@ public class LoginBean {
     private boolean validate() {
         Set<ConstraintViolation<Customer>> violations = validator.validate(new Customer(email, "dummy", password));
         if (violations.isEmpty()) {
+            log.info("valid");
             return true;
         } else {
+            log.info("invalid");
+            for (ConstraintViolation<Customer> constraintViolation : violations) {
+                addMessage(constraintViolation.getMessageTemplate());
+            }
             return false;
         }
     }
@@ -82,5 +89,11 @@ public class LoginBean {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    private void addMessage(String summary) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,
+                summary, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 }

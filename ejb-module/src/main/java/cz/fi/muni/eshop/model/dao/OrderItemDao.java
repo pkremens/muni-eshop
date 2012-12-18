@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
-@XmlRootElement
+@XmlRootElement(name="order-item")
 public class OrderItemDao {
 
     private Long id;

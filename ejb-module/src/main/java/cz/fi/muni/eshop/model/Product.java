@@ -24,8 +24,8 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Size(min = 1, max = 25, message = "May not be null")
-    @Pattern(regexp = "[A-Za-z0-9]*", message = "Must contain only letters and numbers")
+    @Size(min = 1, max = 25, message = "Name may not be null")
+    @Pattern(regexp = "[A-Za-z0-9]*", message = "Name must contain only letters and numbers")
     @Column(unique = true)
     private String name;
     @NotNull

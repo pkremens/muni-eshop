@@ -1,127 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	template="/WEB-INF/templates/default.xhtml">
-	<ui:define name="content">
-		<h:form id="loginRelated">
-			<p:dataTable value="#{productBean.products}" var="_product"
-				style="width: 80%" paginator="true" rows="10"
-				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15">
-				<f:facet name="header">  
-            Products 
-        </f:facet>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Id" />
-					</f:facet>
-					<h:outputText value="#{_product.id}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Name" />
-					</f:facet>
-					<h:outputText value="#{_product.productName}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Price" />
-					</f:facet>
-					<h:outputText value="#{_product.price}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="On store" />
-					</f:facet>
-					<h:outputText value="#{_product.stored}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Reserved" />
-					</f:facet>
-					<h:outputText value="#{_product.reserved}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Category" />
-					</f:facet>
-					<h:outputText value="#{_product.category}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Rest url" />
-					</f:facet>
-					<a href="#{request.contextPath}/rest/products/#{_product.id}">/rest/products/#{_product.id}</a>
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Action" />
-					</f:facet>
-					<p:commandButton value="Remove"
-						action="#{productBean.deleteProduct(_product.productName)}"
-						update="@form" />
-				</p:column>
-				<p:column id="basketcol" rendered="#{identity.loggedIn}">
-					<f:facet name="header">
-						<h:outputText value="Basket Action" />
-					</f:facet>
-					<p:commandButton value="Add" disabled="#{basketBean.isInBasket(_product.id)}" action="#{basketBean.addToBasket(_product)}"  update="@form @this basketcol :loginRelated" />
-					</p:column>
-			</p:dataTable>
-		</h:form>
-		<br />
-		<h:form id="clearForm">
-			<p:commandButton value="Clear all products" update=":loginRelated"
-				id="clear" actionListener="#{productBean.clearProducts()}"
-				styleClass="ui-priority-primary" />
-			<br />
-			<br />
-		</h:form>
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+        <h:form id="addForm">
+            <p:growl id="messages" />
+            <p:panelGrid id="addProduct" columns="2">
+                <f:facet name="header">
+                    Add Product
+                </f:facet>
 
-		<h:form id="addForm">
-			<p:growl id="messages" />
-			<p:panelGrid id="addProduct" columns="2">
-				<f:facet name="header">
-        Add Product
-    </f:facet>
+                <h:outputLabel value="Name: " for="name" />
+                <p:inputText id="name" value="#{productBean.name}" />
 
-				<h:outputLabel value="Name: " for="name" />
-				<p:inputText id="name" value="#{productBean.name}" />
+                <h:outputLabel value="Price: " for="price" />
+                <p:inputText id="price" value="#{productBean.price}" />
 
-				<h:outputLabel value="Price: " for="price" />
-				<p:inputText id="price" value="#{productBean.price}" />
+                <h:outputLabel value="Stored: " for="stored" />
+                <p:inputText id="stored" value="#{productBean.stored}" />
 
-				<h:outputLabel value="Stored: " for="stored" />
-				<p:inputText id="stored" value="#{productBean.stored}" />
+                <h:outputLabel value="Reserved: " for="reserved" />
+                <p:inputText id="reserved" value="#{productBean.reserved}" />
 
-				<h:outputLabel value="Reserved: " for="reserved" />
-				<p:inputText id="reserved" value="#{productBean.reserved}" />
+                <h:outputLabel value="Category: " for="category" />
+                <p:selectOneMenu id="category" value="#{productBean.category}">
+                    <f:selectItem itemLabel="Type1" itemValue="TYPE1" />
+                    <f:selectItem itemLabel="Type2" itemValue="TYPE2" />
+                    <f:selectItem itemLabel="Type3" itemValue="TYPE3" />
+                    <f:selectItem itemLabel="Type4" itemValue="TYPE4" />
+                    <f:selectItem itemLabel="Type5" itemValue="TYPE5" />
+                    <f:selectItem itemLabel="Type6" itemValue="TYPE6" />
+                    <f:selectItem itemLabel="Type7" itemValue="TYPE7" />
+                </p:selectOneMenu>
+                <f:facet name="footer">
+                    <p:commandButton value="Add" update=":loginRelated, addForm"
+                                     actionListener="#{productBean.addProduct()}"
+                                     styleClass="ui-priority-primary" />
+                    <p:commandButton value="Random" update=":loginRelated"
+                                     actionListener="#{productBean.generateRandomCustomer()}"
+                                     styleClass="ui-priority-primary" />
+                </f:facet>
+            </p:panelGrid>
+        </h:form>
+        <br />
+        <h:form id="loginRelated">
+            <p:dataTable value="#{productBean.products}" var="_product"
+                         style="width: 80%" paginator="true" rows="10"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+                <f:facet name="header">  
+                    Products 
+                </f:facet>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id" />
+                    </f:facet>
+                    <h:outputText value="#{_product.id}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Name" />
+                    </f:facet>
+                    <h:outputText value="#{_product.productName}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Price" />
+                    </f:facet>
+                    <h:outputText value="#{_product.price}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="On store" />
+                    </f:facet>
+                    <h:outputText value="#{_product.stored}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Reserved" />
+                    </f:facet>
+                    <h:outputText value="#{_product.reserved}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Category" />
+                    </f:facet>
+                    <h:outputText value="#{_product.category}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Rest url" />
+                    </f:facet>
+                    <a href="#{request.contextPath}/rest/products/#{_product.id}">/rest/products/#{_product.id}</a>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Action" />
+                    </f:facet>
+                    <p:commandButton value="Remove"
+                                     action="#{productBean.deleteProduct(_product.productName)}"
+                                     update="@form" />
+                </p:column>
+                <p:column id="basketcol" rendered="#{identity.loggedIn}">
+                    <f:facet name="header">
+                        <h:outputText value="Basket Action" />
+                    </f:facet>
+                    <p:commandButton value="Add" disabled="#{basketBean.isInBasket(_product.id)}" action="#{basketBean.addToBasket(_product)}"  update="@form @this basketcol :loginRelated" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <br />
+        <h:form id="clearForm">
+            <p:commandButton value="Clear all products" update=":loginRelated"
+                             id="clear" actionListener="#{productBean.clearProducts()}"
+                             styleClass="ui-priority-primary" />
+            <br />
+            <br />
+        </h:form>
 
-				<h:outputLabel value="Category: " for="category" />
-				<p:selectOneMenu id="category" value="#{productBean.category}">
-					<f:selectItem itemLabel="Type1" itemValue="TYPE1" />
-					<f:selectItem itemLabel="Type2" itemValue="TYPE2" />
-					<f:selectItem itemLabel="Type3" itemValue="TYPE3" />
-					<f:selectItem itemLabel="Type4" itemValue="TYPE4" />
-					<f:selectItem itemLabel="Type5" itemValue="TYPE5" />
-					<f:selectItem itemLabel="Type6" itemValue="TYPE6" />
-					<f:selectItem itemLabel="Type7" itemValue="TYPE7" />
-				</p:selectOneMenu>
-				<f:facet name="footer">
-					<p:commandButton value="Add" update=":loginRelated, addForm"
-						actionListener="#{productBean.addProduct()}"
-						styleClass="ui-priority-primary" />
-					<p:commandButton value="Random" update=":loginRelated"
-						actionListener="#{productBean.generateRandomCustomer()}"
-						styleClass="ui-priority-primary" />
-				</f:facet>
-			</p:panelGrid>
-		</h:form>
-		<br />
-            REST URL for all customers<a
-			href="#{request.contextPath}/rest/products">/rest/customers</a>
-	</ui:define>
+
+        <br />
+        REST URL for all customers<a
+            href="#{request.contextPath}/rest/products">/rest/customers</a>
+    </ui:define>
 </ui:composition>

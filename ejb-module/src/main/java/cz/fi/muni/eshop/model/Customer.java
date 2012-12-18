@@ -24,13 +24,13 @@ public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(unique = true)
-    @Size(min = 1, max = 25, message = "May not be null")
-    @Pattern(regexp = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", message = "not a valid email address")
+    @Size(min = 1, max = 25, message = "Email may not be null")
+    @Pattern(regexp = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", message = "Not a valid email address")
     private String email;
-    @Size(min = 1, max = 25, message = "May not be null")
-    @Pattern(regexp = "[A-Za-z0-9]*", message = "Must contain only letters and numbers")
+    @Size(min = 1, max = 25, message = "Name may not be null")
+    @Pattern(regexp = "[A-Za-z0-9]*", message = "Name must contain only letters and numbers")
     private String name;
-    @Size(min = 1, message = "May not be null")
+    @Size(min = 1, message = "Password may not be null")
     @NotNull
     private String password;
     @OneToMany(mappedBy = "customer", orphanRemoval = true, cascade = CascadeType.ALL)

@@ -128,12 +128,10 @@ public class CustomerBean {
             return true;
         } else {
             for (ConstraintViolation<Customer> constraintViolation : violations) {
-                addMessage(constraintViolation.getPropertyPath() + " "
-                        + constraintViolation.getMessageTemplate());
+                addMessage(constraintViolation.getMessageTemplate());
             }
         }
         return false;
-
     }
 
     public Long customersCount() {

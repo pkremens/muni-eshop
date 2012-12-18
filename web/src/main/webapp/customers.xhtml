@@ -1,99 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	template="/WEB-INF/templates/default.xhtml">
-	<ui:define name="content">
-		<h:form id="customers">
-			<p:dataTable var="_customer" value="#{customerBean.customers}"
-				style="width: 70%" paginator="true" rows="10"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15">
-				<f:facet name="header">  
-            Customers  
-        </f:facet>
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+        <h:form id="addForm">
+            <p:growl id="messages" />
+            <p:panelGrid id="addCustomer" columns="2">
+                <f:facet name="header">  
+                    Add Customer
+                </f:facet>
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Email" />
-					</f:facet>
-					<h:outputText value="#{_customer.email}" />
-				</p:column>
+                <h:outputLabel value="Email: " for="email" />
+                <p:inputText id="email" value="#{customerBean.email}" />
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Name" />
-					</f:facet>
-					<h:outputText value="#{_customer.name}" />
-				</p:column>
+                <h:outputLabel value="Name: " for="name" />
+                <p:inputText id="name" value="#{customerBean.name}" />
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Password" />
-					</f:facet>
-					<h:outputText value="#{_customer.password}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Rest url" />
-					</f:facet>
-					<a href="#{request.contextPath}/rest/customers/#{_customer.id}">/rest/customers/#{_customer.id}</a>
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Action" />
-					</f:facet>
-					<p:commandButton value="Remove"
-						action="#{customerBean.deleteCustomer(_customer.email)}"
-						update="@form" />
-				</p:column>
-			</p:dataTable>
-		</h:form>
-		<br />
-		<h:form id="clearForm">
-			<p:commandButton value="Clear all customers" update=":customers"
-				id="crear" actionListener="#{customerBean.clearCustomers()}"
-				styleClass="ui-priority-primary" />
-			<br />
-			<br />
-		</h:form>
-		<h:form id="addForm">
-			<p:growl id="messages" />
-			<p:panelGrid id="addCustomer" columns="2">
-				<f:facet name="header">  
-   				     Add Customer
-  	    		</f:facet>
+                <h:outputLabel value="Password: " for="password" />
+                <p:password id="password" value="#{customerBean.password}" />
 
-				<h:outputLabel value="Email: " for="email" />
-				<p:inputText id="email" value="#{customerBean.email}" />
+                <f:facet name="footer">
+                    <p:commandButton value="Add" update=":customers, @form, :loginInfo"
+                                     actionListener="#{customerBean.addCustomer()}"
+                                     styleClass="ui-priority-primary" />
+                    <p:commandButton value="Add and Login"
+                                     update=":customers, @form, :loginInfo, :navigationMenu"
+                                     actionListener="#{customerBean.register()}"
+                                     styleClass="ui-priority-primary" />
+                    <p:commandButton value="Random" update=":customers"
+                                     actionListener="#{customerBean.generateRandomCustomer()}"
+                                     styleClass="ui-priority-primary" />
 
-				<h:outputLabel value="Name: " for="name" />
-				<p:inputText id="name" value="#{customerBean.name}" />
+                </f:facet>
+            </p:panelGrid>
+        </h:form><br />
+        <h:form id="customers">
+            <p:dataTable var="_customer" value="#{customerBean.customers}"
+                         style="width: 70%" paginator="true" rows="10"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+                <f:facet name="header">  
+                    Customers  
+                </f:facet>
 
-				<h:outputLabel value="Password: " for="password" />
-				<p:password id="password" value="#{customerBean.password}" />
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Email" />
+                    </f:facet>
+                    <h:outputText value="#{_customer.email}" />
+                </p:column>
 
-				<f:facet name="footer">
-					<p:commandButton value="Add" update=":customers, @form, :loginInfo"
-						actionListener="#{customerBean.addCustomer()}"
-						styleClass="ui-priority-primary" />
-					<p:commandButton value="Add and Login"
-						update=":customers, @form, :loginInfo, :navigationMenu"
-						actionListener="#{customerBean.register()}"
-						styleClass="ui-priority-primary" />
-					<p:commandButton value="Random" update=":customers"
-						actionListener="#{customerBean.generateRandomCustomer()}"
-						styleClass="ui-priority-primary" />
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Name" />
+                    </f:facet>
+                    <h:outputText value="#{_customer.name}" />
+                </p:column>
 
-				</f:facet>
-			</p:panelGrid>
-		</h:form>
-		<br />
-            REST URL for all customers<a
-			href="#{request.contextPath}/rest/customers">/rest/customers</a>
-		<h:form id="loginRelated" />
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Password" />
+                    </f:facet>
+                    <h:outputText value="#{_customer.password}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Rest url" />
+                    </f:facet>
+                    <a href="#{request.contextPath}/rest/customers/#{_customer.id}">/rest/customers/#{_customer.id}</a>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Action" />
+                    </f:facet>
+                    <p:commandButton value="Remove"
+                                     action="#{customerBean.deleteCustomer(_customer.email)}"
+                                     update="@form" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <br />
+        <h:form id="clearForm">
+            <p:commandButton value="Clear all customers" update=":customers"
+                             id="crear" actionListener="#{customerBean.clearCustomers()}"
+                             styleClass="ui-priority-primary" />
+            <br />
+            <br />
+        </h:form>
 
-	</ui:define>
+        <br />
+        REST URL for all customers<a
+            href="#{request.contextPath}/rest/customers">/rest/customers</a>
+        <h:form id="loginRelated" />
+
+    </ui:define>
 </ui:composition>

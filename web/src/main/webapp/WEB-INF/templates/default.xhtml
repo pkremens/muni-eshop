@@ -26,7 +26,7 @@
 	<h:form id="loginInfo">
 		<h5 align="right">
 			<h:form id="loginForm" rendered="#{not identity.loggedIn}">
-                                // todo login fail message
+                                <p:growl id="messages" />
 				<h:outputLabel for="email" value="Email: " />
 				<p:inputText id="email" value="#{loginBean.email}" label="Firstname" />
 

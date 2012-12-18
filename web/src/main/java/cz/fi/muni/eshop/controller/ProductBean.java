@@ -89,15 +89,14 @@ public class ProductBean {
             return true;
         } else {
             for (ConstraintViolation<Product> constraintViolation : violations) {
-                addMessage(constraintViolation.getPropertyPath() + " "
-                        + constraintViolation.getMessageTemplate());
+                addMessage(constraintViolation.getMessageTemplate());
             }
         }
         return false;
     }
 
     private void addMessage(String summary) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,
                 summary, null);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }

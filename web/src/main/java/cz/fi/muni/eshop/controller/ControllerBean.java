@@ -44,4 +44,6 @@ public class ControllerBean {
     public String storemanString() {
         return String.valueOf(controller.isStoreman());
     }
+    
+    
 }
