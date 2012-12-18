@@ -65,8 +65,7 @@ public class Controller {
     }
 
     public void cleanInvoicesAndOrders() {
-        invoiceManager.clearInvoiceTable();
-        orderManager.clearOrderTable();
+        orderManager.clearOrderTable(invoiceManager.clearInvoiceTable());
     }
 
     /**

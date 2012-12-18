@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -162,5 +163,11 @@ public class OrderManager {
         Order order = getOrderById(orderId);
         Hibernate.initialize(order.getOrderItems());
         return order.getOrderItems();
+    }
+
+    public void clearOrderTable(Set<Long> orderIds) {
+        for (Long orderId :orderIds) {
+            em.remove(em.find(Order.class, orderId));
+        }
     }
 }

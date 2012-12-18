@@ -10,7 +10,9 @@ import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -24,6 +26,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
+import javax.persistence.metamodel.SingularAttribute;
 
 /**
  *
@@ -93,14 +98,16 @@ public class InvoiceManager {
         criteria.select(invoice);
         return em.createQuery(criteria).getResultList();
     }
-
-    public void clearInvoiceTable() {
-      //  Set<long>
+    
+        public Set<Long> clearInvoiceTable() {
+        Set<Long> invoiceIds = new HashSet<Long>();
         log.info("Get invoices table");
         for (Invoice invoice : getInvoices()) {
+            invoiceIds.add(invoice.getOrder().getId());
             invoice.getOrder().setInvoice(null);
             em.remove(invoice);
         }
+        return invoiceIds;
     }
 
     public Long getInvoiceTableCount() {
