@@ -1,53 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	template="/WEB-INF/templates/default.xhtml">
-	<ui:define name="content">
-		<h:form id="orders">
-			<p:dataTable var="_order" value="#{orderBean.orders}"
-				style="width: 70%" paginator="true" rows="10"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15">
-				<f:facet name="header">  
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+        <h:form id="orders">
+            <p:dataTable var="_order" value="#{orderBean.orders}"
+                         style="width: 70%" paginator="true" rows="10"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+                <f:facet name="header">  
                     Orders
                 </f:facet>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Id" />
-					</f:facet>
-					<h:outputText value="#{_order.id}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Creation date" />
-					</f:facet>
-					<h:outputText value="#{_order.creationDate}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Customer" />
-					</f:facet>
-					<h:outputText value="#{_order.customer.email}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Price" />
-					</f:facet>
-					<h:outputText value="#{_order.totalPrice}" />
-				</p:column>
-			</p:dataTable>
-		</h:form>
-		<br />
-		<p:commandButton value="Generate Random" update=":orders"
-			actionListener="#{orderBean.generateRanomOrder()}"
-			styleClass="ui-priority-primary" />
-		<p:commandButton value="Clear orders" update=":orders"
-			actionListener="#{orderBean.clearOrders()}"
-			styleClass="ui-priority-primary" />
-		<h:form id="loginRelated" />
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id" />
+                    </f:facet>
+                    <h:outputText value="#{_order.id}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Creation date" />
+                    </f:facet>
+                    <h:outputText value="#{_order.creationDate}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Customer" />
+                    </f:facet>
+                    <h:outputText value="#{_order.customer.email}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Price" />
+                    </f:facet>
+                    <h:outputText value="#{_order.totalPrice}" />
+                </p:column>
+                <p:column>XXX</p:column>
+            </p:dataTable>
+            TODO button na manualni invoice, disabled if invoice not null or sth
+        </h:form>
+        <br />
+        <p:commandButton value="Generate Random" update=":orders"
+                         actionListener="#{orderBean.generateRanomOrder()}"
+                         styleClass="ui-priority-primary" />
+        <p:commandButton value="Clear orders" update=":orders"
+                         actionListener="#{orderBean.clearOrders()}"
+                         styleClass="ui-priority-primary" />
+        <h:form id="loginRelated" />
 
-	</ui:define>
+    </ui:define>
 </ui:composition>

@@ -44,33 +44,52 @@ public class ProductResourceRESTService {
     @Inject
     private DataGenerator datagenerator;
 
+    // BACHA NA UVOZOVKY!!!!
+    // curl -X POST 'http://localhost:8080/web/rest/products/xasdxxx?price=343&stored=123&type=4'
     @POST
     @Path("/{name:[A-Za-z0-9]*}")
     public Response createProduct(@PathParam("name") String name,
             @QueryParam("price") @DefaultValue("1") Long price,
-            @QueryParam("category") @DefaultValue("type1") String category,
+            @QueryParam("type") @DefaultValue("1") Integer type,
             @QueryParam("stored") @DefaultValue("100") Long stored) {
         Response.ResponseBuilder builder = null;
+        Category category;
+        switch (type) {
+            case 1:
+                category = Category.TYPE1;
+                break;
+            case 2:
+                category = Category.TYPE2;
+                break;
+            case 3:
+                category = Category.TYPE3;
+                break;
+            case 4:
+                category = Category.TYPE4;
+                break;
+            case 5:
+                category = Category.TYPE5;
+                break;
+            case 6:
+                category = Category.TYPE6;
+                break;
+            case 7:
+                category = Category.TYPE7;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid type entered, could be number from 1-7");
 
-
-
-        // todo resolve TYPE
-
-
-
-        Product product = new Product(name, price, Category.TYPE1, stored, 0L);
+        }
+        Product product = new Product(name, price, category, stored, 0L);
         EntityValidator<Product> validator = new EntityValidator<Product>();
         Set<ConstraintViolation<Product>> violations = validator.validateIgnoreId(product);
         if (violations.isEmpty()) {
-            Object object = null;
             try {
-
-                object = productManager.addProduct(name, price, product.getCategory(), stored, 0L);
+                product = productManager.addProduct(name, price, product.getCategory(), stored, 0L);
             } catch (Exception ex) {
                 log.warning(ex.getMessage());
             }
-            if (object != null) {
-
+            if (product != null) {
                 builder = Response.ok();
             }
         } else {
@@ -80,6 +99,7 @@ public class ProductResourceRESTService {
             }
             builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
         }
+        log.warning("Added product: " + product.toString());
         return builder.build();
     }
 
@@ -88,7 +108,6 @@ public class ProductResourceRESTService {
     @Path("/random/{count:[1-9][0-9]*}")
     public Response createRandomProducts(@PathParam("count") long count) {
         log.warning("create random product(s): " + count);
-
         Response.ResponseBuilder builder = null;
         try {
             for (int i = 0; i < count; i++) {
@@ -139,10 +158,10 @@ public class ProductResourceRESTService {
         return product;
     }
 
-    @DELETE
-    // curl -i -X DELETE http://localhost:8080/web/rest/products/name/proKb8MEioeh
-    @Path("/name/{byName:[A-Za-z0-9]*}")
-    public void deleteProductByName(@PathParam("byName") String name) {
-        log.warning("Delete product here"); // I don't think I want this
-    }
+//    @DELETE
+//    // curl -i -X DELETE http://localhost:8080/web/rest/products/name/proKb8MEioeh
+//    @Path("/name/{byName:[A-Za-z0-9]*}")
+//    public void deleteProductByName(@PathParam("byName") String name) {
+//        log.warning("Delete product here"); // I don't think I want this!
+//    }
 }
