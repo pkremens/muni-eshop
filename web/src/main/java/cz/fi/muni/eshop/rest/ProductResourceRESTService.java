@@ -1,6 +1,6 @@
 package cz.fi.muni.eshop.rest;
 
-import cz.fi.muni.eshop.jms.dao.ProductDao;
+import cz.fi.muni.eshop.model.dao.ProductDao;
 import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.ProductManager;

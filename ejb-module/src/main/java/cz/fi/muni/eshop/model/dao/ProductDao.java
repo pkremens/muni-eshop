@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.fi.muni.eshop.jms.dao;
+package cz.fi.muni.eshop.model.dao;
 
 import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.model.enums.Category;
