@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
@@ -32,12 +33,13 @@ public class DataGenerator {
             + "abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     @Inject
     private Logger log;
-    @Inject
+    @EJB
     private CustomerManager customerManager;
-    @Inject
+    @EJB
     private ProductManager productManager;
-    @Inject
+    @EJB
     private OrderManager orderManager;
+    
 
     // private Random random = new Random();
     public void generateCustomers(Long quantity) {

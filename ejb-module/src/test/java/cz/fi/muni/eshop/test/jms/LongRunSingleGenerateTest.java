@@ -42,7 +42,7 @@ import org.junit.runner.RunWith;
 public class LongRunSingleGenerateTest {
 
     @EJB
-    private Controller controllerBean;
+    private Controller controller;
     @Inject
     private DataGenerator dataGenerator;
     @EJB
@@ -56,12 +56,13 @@ public class LongRunSingleGenerateTest {
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(Controller.class, InvoiceManager.class, StoremanMDB.class, StoremanMessage.class, OrderRoot.class, OrderManager.class, DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+        return ShrinkWrap.create(WebArchive.class, "longrun-test.war").addClasses(Controller.class, InvoiceManager.class, StoremanMDB.class, StoremanMessage.class, OrderRoot.class, OrderManager.class, DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     @Before
     public void storemanCloseOrderTest() {
-        controllerBean.wipeOutDb();
+        controller.wipeOutDb();
+        controller.setAutoClean(true);
     }
 
     @Test
@@ -70,10 +71,10 @@ public class LongRunSingleGenerateTest {
         dataGenerator.generateProducts(1000L, 200L, 1000L, true);
         dataGenerator.generateOrders(500L, 5L, true);
         Thread.sleep(1000);
-        Assert.assertEquals(500, (long) invoiceManager.getInvoiceTableCount());
         Assert.assertEquals(500, (long) orderManager.getOrderTableCount());
         Assert.assertEquals(1000, (long) productManager.getProductTableCount());
         Assert.assertEquals(100, (long) customerManager.getCustomerTableCount());
+        Assert.assertNotSame(500, (long) invoiceManager.getInvoiceTableCount());
 
     }
 }

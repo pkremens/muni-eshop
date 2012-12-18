@@ -107,14 +107,25 @@ public class Controller {
     public boolean isAutoClean() {
         return automatiCleanUp;
     }
-    
+
+    public void setAutoClean(boolean autoClean) {
+        automatiCleanUp = autoClean;
+        log.warning("Automatic cleanUp was switched to: "
+                + ((automatiCleanUp) ? "on" : "off"));
+    }
+
     public boolean switchStoreman() {
         storeman = !storeman;
         log.warning("Storeman service was switched to: " + ((storeman) ? "on" : "off"));
         return storeman;
     }
-    
+
     public boolean isStoreman() {
         return storeman;
+    }
+
+    public void setStoreman(boolean working) {
+        storeman = working;
+        log.warning("Storeman service was switched to: " + ((storeman) ? "on" : "off"));
     }
 }
