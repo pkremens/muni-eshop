@@ -61,8 +61,7 @@ public class LongRunSingleGenerateTest {
 
     @Before
     public void storemanCloseOrderTest() {
-        //controller.wipeOutDb();
-        controller.setAutoClean(true);
+        controller.wipeOutDb();
     }
 
     @Test
