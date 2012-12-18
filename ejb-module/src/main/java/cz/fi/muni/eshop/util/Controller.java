@@ -128,4 +128,8 @@ public class Controller {
         storeman = working;
         log.warning("Storeman service was switched to: " + ((storeman) ? "on" : "off"));
     }
+    
+    public String report() {
+        return "autoCleanUp=" + ((automatiCleanUp) ? "on" : "off") + " , storeman="+ ((storeman) ? "on" : "off");
+    }
 }
