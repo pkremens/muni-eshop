@@ -14,7 +14,6 @@ public class ControllerBean {
     private Controller controller;
     @Inject
     private Logger log;
-    private boolean autoClean;
     @Inject
     private Identity identity;
 
@@ -27,9 +26,6 @@ public class ControllerBean {
         identity.logOut();
     }
 
-    public boolean isAutoCleanUp() {
-        return controller.isAutoClean();
-    }
 
     public void switchCleanUp() {
         log.warning("switching clean up");
@@ -38,5 +34,14 @@ public class ControllerBean {
 
     public String autoCleanUpString() {
         return String.valueOf(controller.isAutoClean());
+    }
+
+     public void switchStoreman() {
+        log.warning("switching storeman");
+        controller.switchStoreman();
+    }
+
+    public String storemanString() {
+        return String.valueOf(controller.isStoreman());
     }
 }

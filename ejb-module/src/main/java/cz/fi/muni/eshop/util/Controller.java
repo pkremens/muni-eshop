@@ -14,6 +14,7 @@ import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 /**
@@ -25,6 +26,7 @@ import javax.inject.Inject;
 public class Controller {
 
     private boolean automatiCleanUp = false;
+    private boolean storeman = true;
     @EJB
     private ProductManager productManager;
     @EJB
@@ -104,5 +106,15 @@ public class Controller {
 
     public boolean isAutoClean() {
         return automatiCleanUp;
+    }
+    
+    public boolean switchStoreman() {
+        storeman = !storeman;
+        log.warning("Storeman service was switched to: " + ((storeman) ? "on" : "off"));
+        return storeman;
+    }
+    
+    public boolean isStoreman() {
+        return storeman;
     }
 }

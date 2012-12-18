@@ -7,6 +7,7 @@ package cz.fi.muni.eshop.service;
 import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
+import cz.fi.muni.eshop.util.Controller;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -39,6 +40,8 @@ import org.hibernate.Hibernate;
 public class OrderManager {
     // order.setCreationDate(Calendar.getInstance().getTime());
 
+    @EJB
+    private Controller controller;
     @Inject
     private EntityManager em;
     @Inject
@@ -80,7 +83,9 @@ public class OrderManager {
         }
         order.setTotalPrice(price);
         em.persist(order);
-        noticeStoreman(order.getId());
+        if (controller.isStoreman()) {
+            noticeStoreman(order.getId());
+        }
         return order;
     }
 
