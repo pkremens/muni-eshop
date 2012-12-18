@@ -15,7 +15,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.validation.ConstraintViolation;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -45,9 +44,9 @@ public class ProductResourceRESTService {
     private DataGenerator datagenerator;
 
     // BACHA NA UVOZOVKY!!!!
-    // curl -X POST 'http://localhost:8080/web/rest/products/xasdxxx?price=343&stored=123&type=4'
+    // curl -X POST 'http://localhost:8080/web/rest/products/create/xasdxxx?price=343&stored=123&type=4'
     @POST
-    @Path("/{name:[A-Za-z0-9]*}")
+    @Path("/create/{name:[A-Za-z0-9]*}")
     public Response createProduct(@PathParam("name") String name,
             @QueryParam("price") @DefaultValue("1") Long price,
             @QueryParam("type") @DefaultValue("1") Integer type,
