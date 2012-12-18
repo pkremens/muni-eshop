@@ -39,7 +39,7 @@ import org.junit.runner.RunWith;
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @RunWith(Arquillian.class)
-public class LongRunSingleGenerateTest {
+public class SingleGenerateAutocleanTest {
 
     @EJB
     private Controller controller;
@@ -61,7 +61,7 @@ public class LongRunSingleGenerateTest {
 
     @Before
     public void storemanCloseOrderTest() {
-        //controller.wipeOutDb();
+        controller.wipeOutDb();
         controller.setAutoClean(true);
     }
 
@@ -69,10 +69,10 @@ public class LongRunSingleGenerateTest {
     public void testMultiOrderCloseAutoRefill() throws InterruptedException {
         dataGenerator.generateCustomers(100L);
         dataGenerator.generateProducts(1000L, 200L, 1000L, true);
-        dataGenerator.generateOrders(500L, 5L, true);
+        dataGenerator.generateOrders(100L, 5L, true);
         Thread.sleep(1000);
-        Assert.assertEquals(500, (long) orderManager.getOrderTableCount());
-        Assert.assertEquals(500, (long) invoiceManager.getInvoiceTableCount());
+        Assert.assertNotSame(100, (long) orderManager.getOrderTableCount());
+        Assert.assertNotSame(100, (long) invoiceManager.getInvoiceTableCount());
 
     }
 }

@@ -95,6 +95,7 @@ public class InvoiceManager {
     }
 
     public void clearInvoiceTable() {
+      //  Set<long>
         log.info("Get invoices table");
         for (Invoice invoice : getInvoices()) {
             invoice.getOrder().setInvoice(null);
