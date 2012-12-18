@@ -27,8 +27,7 @@ public class LoginBean {
     private CustomerManager customerManager;
     @Inject
     private EntityValidator<Customer> validator;
-    @Inject
-    private FacesContext facesContext;
+
 
     // do some data validation before accessing back end
     public void logIn() {

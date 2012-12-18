@@ -30,7 +30,7 @@
                                      update=":customers, @form, :loginInfo, :navigationMenu"
                                      actionListener="#{customerBean.register()}"
                                      styleClass="ui-priority-primary" />
-                    <p:commandButton value="Random" update=":customers"
+                    <p:commandButton value="Random" update=":customers @this"
                                      actionListener="#{customerBean.generateRandomCustomer()}"
                                      styleClass="ui-priority-primary" />
 
@@ -84,7 +84,7 @@
         </h:form>
         <br />
         <h:form id="clearForm">
-            <p:commandButton value="Clear all customers" update=":customers"
+            <p:commandButton value="Clear all customers" update=":customers @this"
                              id="crear" actionListener="#{customerBean.clearCustomers()}"
                              styleClass="ui-priority-primary" />
             <br />

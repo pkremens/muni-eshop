@@ -39,7 +39,7 @@
                     <p:commandButton value="Add" update=":loginRelated, addForm"
                                      actionListener="#{productBean.addProduct()}"
                                      styleClass="ui-priority-primary" />
-                    <p:commandButton value="Random" update=":loginRelated"
+                    <p:commandButton value="Random" update=":loginRelated @this"
                                      actionListener="#{productBean.generateRandomCustomer()}"
                                      styleClass="ui-priority-primary" />
                 </f:facet>
@@ -114,7 +114,7 @@
         </h:form>
         <br />
         <h:form id="clearForm">
-            <p:commandButton value="Clear all products" update=":loginRelated"
+            <p:commandButton value="Clear all products" update=":loginRelated @this"
                              id="clear" actionListener="#{productBean.clearProducts()}"
                              styleClass="ui-priority-primary" />
             <br />

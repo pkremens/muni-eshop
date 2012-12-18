@@ -33,8 +33,6 @@ public class ProductBean {
     private Long stored;
     private Long reserved;
     @Inject
-    private FacesContext facesContext;
-    @Inject
     private Logger log;
     @EJB
     private ProductManager productManager;

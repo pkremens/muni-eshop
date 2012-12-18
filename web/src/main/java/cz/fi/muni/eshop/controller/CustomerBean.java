@@ -36,8 +36,6 @@ public class CustomerBean {
     private Controller controller;
     @EJB
     private CustomerManager customerManager;
-    @Inject
-    private FacesContext facesContext;
     private List<Customer> customers;
     @Inject
     private Logger log;

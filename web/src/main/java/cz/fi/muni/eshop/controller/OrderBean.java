@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 @Model
@@ -25,6 +27,7 @@ public class OrderBean {
     private DataGenerator dataGenerator;
     @Inject
     private Logger log;
+
 
     public List<Order> getCustomerOrders() {
         return customerManager.getCustomerOrders(identity.getEmail());
@@ -71,7 +74,18 @@ public class OrderBean {
     }
 
     public void generateRanomOrder() {
-        dataGenerator.generateRandomOrder();
+        try {
+            dataGenerator.generateRandomOrder();
+        } catch (NullPointerException npe) {
+            log.warning(npe.getMessage());
+            addMessage(npe.getMessage());
+        }
+    }
+
+    private void addMessage(String summary) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,
+                summary, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void clearOrders() {

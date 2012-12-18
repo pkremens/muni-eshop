@@ -28,11 +28,11 @@
 			<h:form id="loginForm" rendered="#{not identity.loggedIn}">
                                 <p:growl id="messages" />
 				<h:outputLabel for="email" value="Email: " />
-				<p:inputText id="email" value="#{loginBean.email}" label="Firstname" />
+				<p:inputText id="email" value="#{loginBean.email}" label="Firstname" />&#160;&#160;
 
 				<h:outputLabel for="password" value="Password: " />
 				<p:password id="password" value="#{loginBean.password}"
-					label="password" />
+					label="password" />&#160;&#160;
 
 
 				<p:commandButton value="Log in" disabled="#{identity.loggedIn}"

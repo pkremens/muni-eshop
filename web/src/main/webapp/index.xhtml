@@ -11,7 +11,7 @@
                 <p:panelGrid columns="2" cellpadding="10">
                     <h:outputText value="Manually clean database" />
                     <p:commandButton value="clean"
-                                     action="#{controllerBean.wipeOutDb()}" />
+                                     action="#{controllerBean.wipeOutDb()}" update="@this" />
                     <h:outputText value="Automatic db cleanup" />
                     <p:commandButton value="#{controllerBean.autoCleanUpString()}"
                                      action="#{controllerBean.switchCleanUp()}" update="@this" />

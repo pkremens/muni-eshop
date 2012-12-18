@@ -6,6 +6,11 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/default.xhtml">
     <ui:define name="content">
+        <h:form>
+            <p:growl id="messages" />
+            <p:commandButton value="Generate Random" update=":orders @form"
+                             actionListener="#{orderBean.generateRanomOrder()}"
+                             styleClass="ui-priority-primary" /></h:form><br />
         <h:form id="orders">
             <p:dataTable var="_order" value="#{orderBean.orders}"
                          style="width: 70%" paginator="true" rows="10"
@@ -46,14 +51,12 @@
             </p:dataTable>
             TODO button na manualni invoice, disabled if invoice not null or sth
         </h:form>
-        <br />
-        <p:commandButton value="Generate Random" update=":orders"
-                         actionListener="#{orderBean.generateRanomOrder()}"
-                         styleClass="ui-priority-primary" />
-        <p:commandButton value="Clear orders" update=":orders"
-                         actionListener="#{orderBean.clearOrders()}"
-                         styleClass="ui-priority-primary" />
+        <br />        
+        <h:form>
+            <p:commandButton value="Clear orders" update=":orders @this"
+                             actionListener="#{orderBean.clearOrders()}"
+                             styleClass="ui-priority-primary" />
+        </h:form>
         <h:form id="loginRelated" />
-
     </ui:define>
 </ui:composition>
