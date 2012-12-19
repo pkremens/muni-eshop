@@ -90,6 +90,29 @@ public class InvoiceManager {
         invoice.setCreationDate(Calendar.getInstance().getTime());
         invoice.setOrder(order);
         em.persist(invoice);
+        orderManager.updateOrdersInvoice(order.getId(), invoice.getId());
+        return invoice;
+    }
+        // used by jms
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public Invoice manualCloseOrder(Long orderId) {
+        log.warning("Closing order manually id: " + orderId);
+        Order order = orderManager.getOrderById(orderId);
+        if (order.getInvoice() != null) {
+            return null; // already closed
+        }
+        Invoice invoice = new Invoice();
+        List<InvoiceItem> invoiceItems = new ArrayList<InvoiceItem>();
+        for (OrderItem orderItem : order.getOrderItems()) {
+            productManager.invoiceProduct(orderItem.getProduct().getId(), orderItem.getQuantity());
+            invoiceItems.add(new InvoiceItem(orderItem.getProduct(), orderItem.getQuantity()));
+        }
+        invoice.setInvoiceItems(invoiceItems);
+        invoice.setCustomer(order.getCustomer());
+        invoice.setCreationDate(Calendar.getInstance().getTime());
+        invoice.setOrder(order);
+        em.persist(invoice);
+        orderManager.updateOrdersInvoice(order.getId(), invoice.getId());
         return invoice;
     }
 

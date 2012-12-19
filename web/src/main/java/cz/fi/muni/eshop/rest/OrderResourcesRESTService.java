@@ -4,7 +4,7 @@
  */
 package cz.fi.muni.eshop.rest;
 
-import cz.fi.muni.eshop.model.dao.InvoiceDao;
+import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.dao.OrderDao;
 import cz.fi.muni.eshop.service.OrderManager;
 import java.util.ArrayList;
@@ -35,11 +35,10 @@ public class OrderResourcesRESTService {
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public List<OrderDao> listAllOrders() {
-        log.info("Find all orderss");
+        log.info("Find all orders");
         List<OrderDao> orders = new ArrayList<OrderDao>();
-        List<Long> ids = orderManager.getOrderIds();
-        for (Long id : ids) {
-            // orders.add(new OrderDao(orderManager.get
+        for (Order order : orderManager.getWholeOrders()) {
+            orders.add(new OrderDao(order));
         }
         return orders;
     }
@@ -49,7 +48,6 @@ public class OrderResourcesRESTService {
     @Produces(MediaType.APPLICATION_XML)
     public OrderDao lookupOrderById(@PathParam("id") long id) {
         log.info("Get order by id: " + id);
-        //return new orderDao(OrderManager.getWholeOrderById(id));
-        return null;
+        return new OrderDao(orderManager.getWholeOrderById(id));
     }
 }

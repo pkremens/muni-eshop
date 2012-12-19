@@ -3,7 +3,9 @@ package cz.fi.muni.eshop.controller;
 import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
 import cz.fi.muni.eshop.service.CustomerManager;
+import cz.fi.muni.eshop.service.InvoiceManager;
 import cz.fi.muni.eshop.service.OrderManager;
+import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
 import cz.fi.muni.eshop.util.Identity;
 import java.util.List;
@@ -25,6 +27,8 @@ public class OrderBean {
     private OrderManager orderManager;
     @Inject
     private DataGenerator dataGenerator;
+    @EJB
+    private Controller controller;
     @Inject
     private Logger log;
 
@@ -83,6 +87,10 @@ public class OrderBean {
             addMessage(iae.getMessage());
         }
     }
+    
+    public boolean isOrderClosed(Long orderId) {
+        return orderManager.isOrderClosed(orderId);
+    }
 
     private void addMessage(String summary) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,
@@ -91,6 +99,6 @@ public class OrderBean {
     }
 
     public void clearOrders() {
-        orderManager.clearOrderTable();
+        controller.cleanInvoicesAndOrders();
     }
 }

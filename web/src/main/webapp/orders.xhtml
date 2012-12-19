@@ -6,7 +6,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/default.xhtml">
     <ui:define name="content">
-        <h:form>
+        <h:form id="generateForm">
             <p:growl id="messages" />
             <p:commandButton value="Generate Random" update=":orders @form"
                              actionListener="#{orderBean.generateRanomOrder()}"
@@ -43,10 +43,17 @@
                     </f:facet>
                     <h:outputText value="#{_order.totalPrice}" />
                 </p:column>
-                <p:column>                    <f:facet name="header">
+                <p:column>  
+                    <f:facet name="header">
                         <h:outputText value="Close" />
                     </f:facet>
-                    <p:commandButton update="@this" action="#{invoiceBean.invoiceOrder(_order.id)}" />
+                    <p:commandButton update="@this :generateForm" disabled="#{orderBean.isOrderClosed(_order.id)}" value="Close order" action="#{invoiceBean.manualCloseOrder(_order.id)}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Rest url" />
+                    </f:facet>
+                    <a href="#{request.contextPath}/rest/orders/#{_order.id}">/rest/orders/#{_order.id}</a>
                 </p:column>
             </p:dataTable>
             TODO button na manualni invoice, disabled if invoice not null or sth
@@ -58,5 +65,8 @@
                              styleClass="ui-priority-primary" />
         </h:form>
         <h:form id="loginRelated" />
+        <br />
+        REST URL for all invoices<a
+            href="#{request.contextPath}/rest/orders">/rest/orders</a>
     </ui:define>
 </ui:composition>

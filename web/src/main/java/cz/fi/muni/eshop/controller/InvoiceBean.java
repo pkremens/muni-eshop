@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 @Model
@@ -19,9 +21,17 @@ public class InvoiceBean {
     public List<Invoice> getInvoices() {
         return invoiceManager.getInvoices();
     }
-    
-    public void invoiceOrder(Long id) {
-        invoiceManager.closeOrder(id);
+
+    public void manualCloseOrder(Long orderId) {
+        if (invoiceManager.manualCloseOrder(orderId) == null) {
+            addMessage("This order is already closed.");
+        }
+    }
+
+    private void addMessage(String summary) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,
+                summary, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void clearInvoices() {
