@@ -69,7 +69,7 @@ public class CleaningTest {
         dataGenerator.generateCustomers(1L);
         dataGenerator.generateProducts(10L, 200L, 1000L);
         dataGenerator.generateOrders(5L, 4L, false);
-        Thread.sleep(500);
+        Thread.sleep(1000); // don't lower or: JBAS014559: Invocation cannot proceed as component is shutting down
 
     }
 
