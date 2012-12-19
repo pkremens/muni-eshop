@@ -7,6 +7,7 @@ package cz.fi.muni.eshop.controller;
 import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.ProductManager;
+import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
 import cz.fi.muni.eshop.util.EntityValidator;
 import java.util.List;
@@ -34,6 +35,8 @@ public class ProductBean {
     private Long reserved;
     @Inject
     private Logger log;
+    @EJB
+    private Controller controller;
     @EJB
     private ProductManager productManager;
     @Inject
@@ -73,10 +76,12 @@ public class ProductBean {
     }
 
     public void deleteProduct(String name) {
+        controller.cleanInvoicesAndOrders();
         productManager.deleteProduct(name);
     }
 
     public void clearProducts() {
+        controller.cleanInvoicesAndOrders();
         productManager.clearProductsTable();
     }
 

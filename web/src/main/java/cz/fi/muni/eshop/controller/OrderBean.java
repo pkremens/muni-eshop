@@ -28,7 +28,6 @@ public class OrderBean {
     @Inject
     private Logger log;
 
-
     public List<Order> getCustomerOrders() {
         return customerManager.getCustomerOrders(identity.getEmail());
     }
@@ -79,6 +78,9 @@ public class OrderBean {
         } catch (NullPointerException npe) {
             log.warning(npe.getMessage());
             addMessage(npe.getMessage());
+        } catch (IllegalArgumentException iae) {
+            log.warning(iae.getMessage());
+            addMessage(iae.getMessage());
         }
     }
 

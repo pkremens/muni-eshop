@@ -72,24 +72,11 @@ public class Controller {
     /**
      * To completely remove all data from db
      */
-    public boolean wipeOutDb() {
+    public void wipeOutDb() {
         log.warning("Deleteng all entries from db");
         customerManager.clearCustomersTable();
         productManager.clearProductsTable();
-        boolean empty = true;
-        if (orderManager.getOrderTableCount() > 0) {
-            empty = false;
-        }
-        if (productManager.getProductTableCount() > 0) {
-            empty = false;
-        }
-        if (customerManager.getCustomerTableCount() > 0) {
-            empty = false;
-        }
-        if (invoiceManager.getInvoiceTableCount() > 0) {
-            empty = false;
-        }
-        return empty;
+       
     }
 
     /**

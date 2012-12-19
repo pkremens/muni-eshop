@@ -19,11 +19,8 @@ public class ControllerBean {
 
     public void wipeOutDb() {
         log.warning("Deleting all enties from db");
-
-        if (!controller.wipeOutDb()) {
-            System.out.println("print some message!");
-        }
         identity.logOut();
+        controller.wipeOutDb();
     }
 
 
