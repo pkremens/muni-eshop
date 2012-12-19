@@ -55,6 +55,16 @@ public class ControllerResourceRESTService {
         return builder.build();
     }
 
+    @POST
+    @Path("/jmsstoreman/{bool:[01]}")
+    public Response setJmsStoremanService(@PathParam("bool") Long bool) {
+        Response.ResponseBuilder builder = null;
+        log.warning("Setting jms storeman service to: " + ((bool == 1) ? "on" : "off"));
+        controller.setJmsStoreman((bool == 1) ? true : false);
+        builder = Response.ok();
+        return builder.build();
+    }
+
     /**
      * Service for cleaning DB
      *
@@ -128,7 +138,7 @@ public class ControllerResourceRESTService {
     public Response createRandomOrders(@PathParam("count") Long count) {
         log.warning("create random product(s): " + count);
         Response.ResponseBuilder builder = null;
-        
+
         try {
             for (int i = 0; i < count; i++) {
                 dataGenerator.generateRandomOrder();

@@ -53,6 +53,7 @@ public class InvoiceManager {
 //    @Inject
 //    private SessionContext context;
 
+    // used by jms
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Invoice closeOrder(Long orderId) {
         log.warning("Closing order id: " + orderId);
@@ -69,6 +70,24 @@ public class InvoiceManager {
         invoice.setOrder(order);
         em.persist(invoice);
         orderManager.updateOrdersInvoice(order.getId(), invoice.getId());
+        return invoice;
+    }
+
+    // used directly
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public Invoice closeOrderDirectly(Order order) {
+        log.warning("Closing order directly: " + order.getId());
+        Invoice invoice = new Invoice();
+        List<InvoiceItem> invoiceItems = new ArrayList<InvoiceItem>();
+        for (OrderItem orderItem : order.getOrderItems()) {
+            productManager.invoiceProduct(orderItem.getProduct().getId(), orderItem.getQuantity());
+            invoiceItems.add(new InvoiceItem(orderItem.getProduct(), orderItem.getQuantity()));
+        }
+        invoice.setInvoiceItems(invoiceItems);
+        invoice.setCustomer(order.getCustomer());
+        invoice.setCreationDate(Calendar.getInstance().getTime());
+        invoice.setOrder(order);
+        em.persist(invoice);
         return invoice;
     }
 
@@ -98,8 +117,8 @@ public class InvoiceManager {
         criteria.select(invoice);
         return em.createQuery(criteria).getResultList();
     }
-    
-        public Set<Long> clearInvoiceTable() {
+
+    public Set<Long> clearInvoiceTable() {
         Set<Long> invoiceIds = new HashSet<Long>();
         log.info("Get invoices table");
         for (Invoice invoice : getInvoices()) {

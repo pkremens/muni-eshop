@@ -45,5 +45,14 @@ public class ControllerBean {
         return String.valueOf(controller.isStoreman());
     }
     
+     public void switchJmsStoreman() {
+        log.warning("switching JMS storeman");
+        controller.switchJmsStoreman();
+    }
+
+    public String jmsStoremanString() {
+        return String.valueOf(controller.isJmsStoreman());
+    }
+    
     
 }

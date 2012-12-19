@@ -18,6 +18,9 @@
                     <h:outputText value="Storeman service" />
                     <p:commandButton value="#{controllerBean.storemanString()}"
                                      action="#{controllerBean.switchStoreman()}" update="@this" />
+                    <h:outputText value="JMS Storeman service" />
+                    <p:commandButton value="#{controllerBean.jmsStoremanString()}"
+                                     action="#{controllerBean.switchJmsStoreman()}" update="@this" />
                 </p:panelGrid>
             </p:tab>
             <p:tab title="Customer generation configuration" id="Godfather2">

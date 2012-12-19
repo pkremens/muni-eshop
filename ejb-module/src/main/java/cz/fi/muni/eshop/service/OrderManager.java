@@ -48,12 +48,14 @@ public class OrderManager {
     @Inject
     private Logger log;
     @EJB
+    private InvoiceManager invoiceManager;
+    @EJB
     private CustomerManager customerManager;
     @EJB
     private ProductManager productManager;
     @EJB
     private OrderManager manager;
-    private static final int MSG_COUNT = 5; // TODO what is this for???
+    private static final int MSG_COUNT = 5;
     @Resource(mappedName = "java:/JmsXA")
     private ConnectionFactory connectionFactory;
     @Resource(mappedName = "java:/queue/test")
@@ -85,7 +87,12 @@ public class OrderManager {
         order.setTotalPrice(price);
         em.persist(order);
         if (controller.isStoreman()) {
-            noticeStoreman(order.getId());
+            if (controller.isJmsStoreman()) {
+                noticeStoreman(order.getId());
+            } else {
+                log.warning("Directly (no JMS) closing order id: " + order.getId());
+                invoiceManager.closeOrderDirectly(order);
+            }
         }
         return order;
     }
@@ -166,7 +173,7 @@ public class OrderManager {
     }
 
     public void clearOrderTable(Set<Long> orderIds) {
-        for (Long orderId :orderIds) {
+        for (Long orderId : orderIds) {
             em.remove(em.find(Order.class, orderId));
         }
     }

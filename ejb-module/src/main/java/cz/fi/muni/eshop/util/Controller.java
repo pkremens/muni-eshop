@@ -27,6 +27,7 @@ public class Controller {
 
     private boolean automatiCleanUp = false;
     private boolean storeman = true;
+    private boolean jmsStoreman = true;
     @EJB
     private ProductManager productManager;
     @EJB
@@ -127,8 +128,23 @@ public class Controller {
         storeman = working;
         log.warning("Storeman service was switched to: " + ((storeman) ? "on" : "off"));
     }
-    
+
+    public boolean switchJmsStoreman() {
+        jmsStoreman = !jmsStoreman;
+        log.warning("JMS storeman service was switched to: " + ((jmsStoreman) ? "on" : "off"));
+        return jmsStoreman;
+    }
+
+    public boolean isJmsStoreman() {
+        return jmsStoreman;
+    }
+
+    public void setJmsStoreman(boolean working) {
+        jmsStoreman = working;
+        log.warning("JMS storeman service was switched to: " + ((jmsStoreman) ? "on" : "off"));
+    }
+
     public String report() {
-        return "autoCleanUp=" + ((automatiCleanUp) ? "on" : "off") + " , storeman="+ ((storeman) ? "on" : "off");
+        return "autoCleanUp=" + ((automatiCleanUp) ? "on" : "off") + " , storeman=" + ((storeman) ? "on" : "off") + " , JMS storeman=" + ((jmsStoreman) ? "on" : "off");
     }
 }
