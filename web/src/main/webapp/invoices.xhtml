@@ -50,6 +50,12 @@
                     </f:facet>
                     <h:outputText value="#{_invoice.order.totalPrice}" />
                 </p:column>
+                                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Rest url" />
+                    </f:facet>
+                    <a href="#{request.contextPath}/rest/invoices/#{_invoice.id}">/rest/invoices/#{_invoice.id}</a>
+                </p:column>
             </p:dataTable>
         </h:form>
         <br />
@@ -58,6 +64,8 @@
 			styleClass="ui-priority-primary" />
 		
         <h:form id="loginRelated" />
-
+<br />
+        REST URL for all invoices<a
+            href="#{request.contextPath}/rest/invoices">/rest/invoices</a>
     </ui:define>
 </ui:composition>

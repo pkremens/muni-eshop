@@ -7,6 +7,7 @@ package cz.fi.muni.eshop.service;
 import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
+import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.util.Controller;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,6 +32,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
+import javax.persistence.metamodel.SingularAttribute;
 import org.hibernate.Hibernate;
 
 /**
@@ -170,6 +174,18 @@ public class OrderManager {
         Order order = getOrderById(orderId);
         Hibernate.initialize(order.getOrderItems());
         return order.getOrderItems();
+    }
+
+    public List<Long> getOrderIds() {
+        log.info("Get all orders Ids");
+        Metamodel mm = em.getMetamodel();
+        EntityType<Order> mproduct = mm.entity(Order.class);
+        SingularAttribute<Order, Long> id = mproduct.getDeclaredSingularAttribute("id", Long.class);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
+        Root<Order> order = criteria.from(Order.class);
+        criteria.select(order.get(id));
+        return em.createQuery(criteria).getResultList();
     }
 
     public void clearOrderTable(Set<Long> orderIds) {

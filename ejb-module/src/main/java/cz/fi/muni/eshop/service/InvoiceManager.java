@@ -4,6 +4,7 @@
  */
 package cz.fi.muni.eshop.service;
 
+import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.InvoiceItem;
 import cz.fi.muni.eshop.model.Order;
@@ -29,6 +30,7 @@ import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
+import org.hibernate.Hibernate;
 
 /**
  *
@@ -136,5 +138,22 @@ public class InvoiceManager {
         Root<Invoice> invoice = criteria.from(Invoice.class);
         criteria.select(cb.count(invoice));
         return em.createQuery(criteria).getSingleResult().longValue();
+    }
+
+    // can not use Ids as they are in root table: IllegalArgumentException: SingularAttribute  named id and of type java.lang.Long is not present
+    public List<Invoice> getWholeInvoices() {
+        List<Invoice> invoices = getInvoices();
+        for (Invoice invoice : invoices) {
+            Hibernate.initialize(invoice.getInvoiceItems());
+            Hibernate.initialize(invoice.getOrder().getOrderItems());
+        }
+        return invoices;
+    }
+
+    public Invoice getWholeInvoiceById(Long id) {
+        Invoice invoice = getInvoiceById(id);
+        Hibernate.initialize(invoice.getInvoiceItems());
+        Hibernate.initialize(invoice.getOrder().getOrderItems());
+        return invoice;
     }
 }

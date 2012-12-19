@@ -44,7 +44,7 @@ public class CustomerResourceRESTService {
     // curl -X POST 'http://localhost:8080/web/rest/customers/create/xasdxxx@asdsadsa.cz?name=asdsa&password=asdsad'
     @POST     // no needs for regex, validator ensures that email has correct format
     @Path("/create/{email:.*}")
-    public Response createProduct(@PathParam("email") String email,
+    public Response createCustomer(@PathParam("email") String email,
             @QueryParam("name") String name,
             @QueryParam("password") String password) {
         Response.ResponseBuilder builder = null;
@@ -68,13 +68,13 @@ public class CustomerResourceRESTService {
             }
             builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
         }
-        log.warning("Added product: " + customer.toString());
+        log.warning("Added customert: " + customer.toString());
         return builder.build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public List<CustomerLiteDao> listAllProducts() {
+    public List<CustomerLiteDao> listAllCustomers() {
         log.info("Find all customers");
         List<CustomerLiteDao> customers = new ArrayList<CustomerLiteDao>();
         for (Customer customer : customerManager.getCustomers()) {
@@ -95,7 +95,7 @@ public class CustomerResourceRESTService {
     @GET // curl 'http://localhost:8080/web/rest/customers/2'
     @Path("/name/{byEmail}")
     @Produces(MediaType.APPLICATION_XML)
-    public CustomerDao lookupProductByEmail(@PathParam("byEmail") String email) {
+    public CustomerDao lookupCustomerByEmail(@PathParam("byEmail") String email) {
         log.info("Get customer by email: " + email);
         return new CustomerDao(customerManager.getCustomerByEmail(email));
     }
