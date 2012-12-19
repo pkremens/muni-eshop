@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cz.fi.muni.eshop.test.jms;
 
 import cz.fi.muni.eshop.jms.StoremanMDB;
@@ -26,30 +25,28 @@ import javax.ejb.EJB;
 import javax.inject.Inject;
 import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
-public class DirectCloseAutoWipeOutTest {
-@EJB
+@RunWith(Arquillian.class)
+public class DirectCloseTest {
+
+    @EJB
     private Controller controller;
     @Inject
     private DataGenerator dataGenerator;
     @EJB
-    private InvoiceManager invoiceManager;
-    @EJB
     private OrderManager orderManager;
-    @EJB
-    private CustomerManager customerManager;
-    @EJB
-    private ProductManager productManager;
 
     @Deployment
     public static Archive<?> createTestArchive() {
@@ -59,18 +56,27 @@ public class DirectCloseAutoWipeOutTest {
     @Before
     public void storemanCloseOrderTest() {
         controller.wipeOutDb();
-        controller.setAutoClean(true);
         controller.setJmsStoreman(false);
         controller.setStoreman(true);
     }
 
     @Test
-    public void testMultiOrderCloseAutoRefill() throws InterruptedException {
-        dataGenerator.generateCustomers(100L);
-        dataGenerator.generateProducts(1000L, 200L, 1000L, true);
-        dataGenerator.generateOrders(100L, 5L, true);
+    public void manualCloseTest() throws InterruptedException {
+        controller.setAutoClean(false);
+        dataGenerator.generateCustomers(10L);
+        dataGenerator.generateProducts(20L, 200L, 1000L, true);
+        dataGenerator.generateOrders(10L, 5L, true);
         Thread.sleep(1000);
-        Assert.assertNotSame(100, (long) orderManager.getOrderTableCount());
+        Assert.assertEquals(10, (long) orderManager.getOrderTableCount());
+    }
 
+    @Test
+    public void manualCloseAutoWipeTest() throws InterruptedException {
+        controller.setAutoClean(true);
+        dataGenerator.generateCustomers(10L);
+        dataGenerator.generateProducts(20L, 200L, 1000L, true);
+        dataGenerator.generateOrders(10L, 5L, true);
+        Thread.sleep(1000);
+        Assert.assertEquals(10, (long) orderManager.getOrderTableCount());
     }
 }

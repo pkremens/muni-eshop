@@ -52,10 +52,10 @@ public class ProductManager {
         return product;
     }
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void orderProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
-        log.info("Old on store: " + product.addStored(id));
+        log.info(product.toString() + " on store: " + product.addStored(id));
         if (product.getStored() < product.addReserved(quantity)) {
             product.addStored(1000L);
         }
@@ -74,6 +74,7 @@ public class ProductManager {
         product.setStored(product.getStored() - quantity);
         product.setReserved(product.getReserved() - quantity);
         em.merge(product);
+        log.warning("product: " + product + " was invoiced");
     }
 
     public Product getProductById(Long id) {
