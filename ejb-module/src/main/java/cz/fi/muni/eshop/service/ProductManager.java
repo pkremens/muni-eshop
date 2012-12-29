@@ -7,6 +7,7 @@ package cz.fi.muni.eshop.service;
 import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.model.enums.Category;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -52,7 +53,7 @@ public class ProductManager {
         return product;
     }
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void orderProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
         log.info(product.toString() + " on store: " + product.addStored(id));
@@ -63,7 +64,7 @@ public class ProductManager {
         em.merge(product);
     }
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void invoiceProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
         log.warning("Invoice product: " + product + " quantity: " + quantity);
@@ -143,12 +144,19 @@ public class ProductManager {
             em.remove(product);
         }
     }
+    
+    
+    public Product getRandomProduct() {
+        List<Product> products = getProducts();
+        Random random = new Random();
+        return products.get(random.nextInt(products.size()));
+    }
 
     public void deleteProduct(String name) {
         Product product = getProductByName(name);
         em.remove(product);
     }
-
+    
     public Long getProductByNameCount(String name) {
         log.info("Get product: " + name + " count in table");
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -156,5 +164,13 @@ public class ProductManager {
         Root<Product> product = criteria.from(Product.class);
         criteria.select(cb.count(product)).where(cb.equal(product.get("name"), name));
         return em.createQuery(criteria).getSingleResult().longValue();
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void unreserveProducts() {
+        for (Product product : getProducts()) {
+            product.setReserved(0L);
+            em.merge(product);
+        }
     }
 }

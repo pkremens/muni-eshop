@@ -4,7 +4,6 @@
  */
 package cz.fi.muni.eshop.service;
 
-import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.InvoiceItem;
 import cz.fi.muni.eshop.model.Order;
@@ -27,9 +26,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
-import javax.persistence.metamodel.SingularAttribute;
 import org.hibernate.Hibernate;
 
 /**
@@ -76,7 +72,7 @@ public class InvoiceManager {
     }
 
     // used directly
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED) // PAVEL
     public Invoice closeOrderDirectly(Order order) {
         log.warning("Closing order directly: " + order.getId());
         Invoice invoice = new Invoice();
@@ -94,7 +90,7 @@ public class InvoiceManager {
         return invoice;
     }
         // used by jms
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW) // jeste zkusit
     public Invoice manualCloseOrder(Long orderId) {
         log.warning("Closing order manually id: " + orderId);
         Order order = orderManager.getOrderById(orderId);

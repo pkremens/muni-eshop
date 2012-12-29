@@ -8,6 +8,7 @@ import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.Order;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -157,7 +158,16 @@ public class CustomerManager {
     public void deleteCustomer(String email) {
         Customer customer = getCustomerByEmail(email);
         em.remove(customer);
+    }
 
+    public Customer getRandomCustomer() {
+        List<Customer> customers = getCustomers();
+        if (customers.isEmpty()) {
+            return null;
+        } else {
+            Random random = new Random();
+            return customers.get(random.nextInt(customers.size()));
+        }
     }
 
     public List<Order> getCustomerOrders(String email) {

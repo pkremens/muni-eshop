@@ -62,17 +62,49 @@ public class SingleGenerateAutocleanTest {
     @Before
     public void storemanCloseOrderTest() {
         controller.wipeOutDb();
-        controller.setAutoClean(true);
+        controller.setStoreman(true);
     }
 
     @Test
-    public void testMultiOrderCloseAutoRefill() throws InterruptedException {
-        dataGenerator.generateCustomers(100L);
-        dataGenerator.generateProducts(1000L, 200L, 1000L, true);
-        dataGenerator.generateOrders(100L, 5L, true);
+    public void noJmsNoClean() throws InterruptedException {
+        controller.setAutoClean(false);
+        controller.setJmsStoreman(false);
+        dataGenerator.generateCustomers(10L);
+        dataGenerator.generateProducts(20L, 200L, 1000L, true);
+        dataGenerator.generateOrders(10L, 5L, true);
         Thread.sleep(1000);
-        Assert.assertNotSame(100, (long) orderManager.getOrderTableCount());
-        Assert.assertNotSame(100, (long) invoiceManager.getInvoiceTableCount());
+        Assert.assertEquals(10, (long) orderManager.getOrderTableCount());
+    }
 
+    @Test
+    public void jmsNoCLean() throws InterruptedException {
+        controller.setAutoClean(false);
+        controller.setJmsStoreman(true);
+        dataGenerator.generateCustomers(10L);
+        dataGenerator.generateProducts(20L, 200L, 1000L, true);
+        dataGenerator.generateOrders(10L, 5L, true);
+        Thread.sleep(1000);
+        Assert.assertEquals(10, (long) orderManager.getOrderTableCount());
+    }
+
+    @Test
+    public void noJmsClean() throws InterruptedException {
+        controller.setAutoClean(true);
+        controller.setJmsStoreman(false);
+        dataGenerator.generateCustomers(10L);
+        dataGenerator.generateProducts(20L, 200L, 1000L, true);
+        dataGenerator.generateOrders(10L, 5L, true);
+        Thread.sleep(1000);
+        Assert.assertEquals(10, (long) orderManager.getOrderTableCount());
+    }
+        @Test
+    public void jsmClean() throws InterruptedException {
+        controller.setAutoClean(true);
+        controller.setJmsStoreman(true);
+        dataGenerator.generateCustomers(10L);
+        dataGenerator.generateProducts(20L, 200L, 1000L, true);
+        dataGenerator.generateOrders(10L, 5L, true);
+        Thread.sleep(1000);
+        Assert.assertEquals(10, (long) orderManager.getOrderTableCount());
     }
 }

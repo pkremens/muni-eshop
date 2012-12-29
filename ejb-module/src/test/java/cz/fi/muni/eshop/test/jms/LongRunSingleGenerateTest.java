@@ -31,6 +31,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -65,6 +66,7 @@ public class LongRunSingleGenerateTest {
     }
 
     @Test
+    @Ignore("OK")
     public void testMultiOrderCloseAutoRefill() throws InterruptedException {
         dataGenerator.generateCustomers(100L);
         dataGenerator.generateProducts(1000L, 200L, 1000L, true);

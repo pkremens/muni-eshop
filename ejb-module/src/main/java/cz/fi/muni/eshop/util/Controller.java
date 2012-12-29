@@ -67,6 +67,7 @@ public class Controller {
 
     public void cleanInvoicesAndOrders() {
         orderManager.clearOrderTable(invoiceManager.clearInvoiceTable());
+       // productManager.unreserveProducts();
     }
 
     /**
