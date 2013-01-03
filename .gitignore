@@ -1,5 +1,4 @@
 ejb-module/target
-dummy-test-module/target
 application/target
 web/target
 target
@@ -10,9 +9,6 @@ target
 #jbds file
 .project
 application/.project
-dummy-test-module/.classpath
-dummy-test-module/.project
-dummy-test-module/.settings/
 ejb-module/.classpath
 ejb-module/.project
 web/.classpath

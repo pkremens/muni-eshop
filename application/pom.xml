@@ -37,11 +37,6 @@
          <artifactId>ejb-module</artifactId>
          <type>ejb</type>
       </dependency>
-      <dependency>
-         <groupId>${project.groupId}</groupId>
-         <artifactId>dummy-test-module</artifactId>
-         <type>ejb</type>
-      </dependency>
    </dependencies>
 
    <build>

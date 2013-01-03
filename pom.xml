@@ -22,7 +22,6 @@
 		<module>ejb-module</module>
 		<module>web</module>
 		<module>application</module>
-		<module>dummy-test-module</module>
 	</modules>
 
 	<properties>
@@ -48,13 +47,6 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>ejb-module</artifactId>
-				<version>${project.version}</version>
-				<type>ejb</type>
-			</dependency>
-
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>dummy-test-module</artifactId>
 				<version>${project.version}</version>
 				<type>ejb</type>
 			</dependency>
