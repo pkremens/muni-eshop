@@ -35,11 +35,7 @@ public class ProductManager {
     private EntityManager em;
     @Inject
     private Logger log;
-    private static final int MSG_COUNT = 5; // TODO what is this for???
-    @Resource(mappedName = "java:/ConnectionFactory")
-    private ConnectionFactory connectionFactory;
-    @Resource(mappedName = "java:/queue/test")
-    private Queue queue;
+
 
     public Product addProduct(String name, Long price, Category category,
             Long stored, Long reserved) {
