@@ -5,7 +5,6 @@
 package cz.fi.muni.eshop.util;
 
 import cz.fi.muni.eshop.model.Customer;
-import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
 import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.model.enums.Category;
@@ -17,10 +16,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 
 /**
  *
@@ -31,15 +28,12 @@ public class DataGenerator {
 
     private static final String charset = "0123456789"
             + "abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    @Inject
-    private Logger log;
     @EJB
     private CustomerManager customerManager;
     @EJB
     private ProductManager productManager;
     @EJB
     private OrderManager orderManager;
-    
 
     // private Random random = new Random();
     public void generateCustomers(Long quantity) {
@@ -145,8 +139,8 @@ public class DataGenerator {
     }
 
     /**
-     * Generate random set of unique products to warrant that we will not try
-     * to put same products as different order items into same order.
+     * Generate random set of unique products to warrant that we will not try to
+     * put same products as different order items into same order.
      *
      * @param itemsPerOrder how many products we want
      * @return List of unique products
@@ -165,7 +159,7 @@ public class DataGenerator {
     }
 
     public void generateOrder(String customersEmail, List<OrderItem> orderItems) {
-        Order order = orderManager.addOrder(customersEmail, orderItems);
+        orderManager.addOrder(customersEmail, orderItems);
     }
 
     public Customer generateRandomCustomer() {
@@ -203,7 +197,7 @@ public class DataGenerator {
                 // ignore, we hit created customer, try again
             }
         }
-        throw new IllegalStateException("Unable to generate customer with unique name!");
+        throw new IllegalStateException("Unable to product with unique name!");
     }
 
     private Category generateRandomProductCategory() {
@@ -240,7 +234,7 @@ public class DataGenerator {
 
     private static String getRandomString(int length) {
         Random rand = new Random(System.currentTimeMillis());
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i <= length; i++) {
             int pos = rand.nextInt(charset.length());
             sb.append(charset.charAt(pos));

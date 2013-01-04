@@ -18,7 +18,6 @@ import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.InvoiceManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
-import cz.fi.muni.eshop.test.DummyMDB;
 import cz.fi.muni.eshop.test.TestResources;
 import cz.fi.muni.eshop.util.Controller;
 
@@ -35,6 +34,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -67,8 +67,10 @@ public class StoremanMultiOrderTest {
         return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(Controller.class, InvoiceManager.class, StoremanMDB.class, StoremanMessage.class, OrderRoot.class, OrderManager.class, DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
+
     @Before
     public void storemanCloseOrderTest() {
+        controllerBean.setAutoClean(false);
         controllerBean.wipeOutDb();
     }
 
@@ -76,18 +78,18 @@ public class StoremanMultiOrderTest {
     public void testMultiOrderCloseNoAutoRefill() throws InterruptedException {
         dataGenerator.generateCustomers(5L);
         dataGenerator.generateProducts(5L, 200L, 1000L);
-        dataGenerator.generateOrders(5L, 5L);
-        Thread.sleep(1000);
-        Assert.assertEquals(5L, (long) invoiceManager.getInvoiceTableCount());
+        dataGenerator.generateOrders(2L, 5L);
+        Thread.sleep(500);
+        Assert.assertEquals(2L, (long) invoiceManager.getInvoiceTableCount());
     }
 
     @Test
     public void testMultiOrderCloseAutoRefill() throws InterruptedException {
         dataGenerator.generateCustomers(20L);
-        dataGenerator.generateProducts(5L, 200L, 10L, true);
-        dataGenerator.generateOrders(20L, 5L);
-        Thread.sleep(1000);
-        Assert.assertEquals(20L, (long) invoiceManager.getInvoiceTableCount());
+        dataGenerator.generateProducts(5L, 200L, 2L, true);
+        dataGenerator.generateOrders(5L, 2L);
+        Thread.sleep(500);
+        Assert.assertEquals(5L, (long) invoiceManager.getInvoiceTableCount());
     }
 
     @Test
@@ -99,12 +101,7 @@ public class StoremanMultiOrderTest {
         OrderItem orderItem = new OrderItem(productManager.getProductByName(productManager.getProductNames().get(0)), 5L);
         orderItems.add(orderItem);
         dataGenerator.generateOrder(emails.get(0), orderItems);
-        Thread.sleep(1000);
+        Thread.sleep(500);
         Assert.assertEquals(1L, (long) invoiceManager.getInvoiceTableCount());
     }
-    // create mor orders see if store man works, 
-//    @Test
-//    public void testOrderOrphanRemoveInvoice() {
-//        // delete all orders, see that no invoice left
-//    }
 }

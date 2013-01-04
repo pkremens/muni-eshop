@@ -80,19 +80,6 @@ public class ProductManagerTest {
     }
 
     @Test
-    public void invoiceProductFalseTest() {
-
-        boolean caught = false;
-        try {
-            product = productManager.addProduct("name", 44L, Category.TYPE1, 3L, 23L);
-            productManager.invoiceProduct(product.getId(), product.getStored() + 1);
-        } catch (Exception npe) { // unable to catch just NPE
-            caught = true;
-        }
-        Assert.assertTrue(caught);
-    }
-
-    @Test
     public void invoiceProductTrueTest() {
         product = productManager.addProduct("Test", 2L, Category.TYPE1, 20L, 20L);
         productManager.invoiceProduct(product.getId(), 20L);

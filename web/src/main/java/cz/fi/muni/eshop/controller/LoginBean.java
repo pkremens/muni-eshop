@@ -28,10 +28,9 @@ public class LoginBean {
     @Inject
     private EntityValidator<Customer> validator;
 
-
     // do some data validation before accessing back end
     public void logIn() {
-        log.warning("trying to log in: " + "email=" + email + " password="
+        log.info("trying to log in: " + "email=" + email + " password="
                 + password);
         if (validate()) {
             Customer customer = customerManager.verifyCustomer(email, password);
@@ -63,7 +62,7 @@ public class LoginBean {
     private boolean validate() {
         Set<ConstraintViolation<Customer>> violations = validator.validate(new Customer(email, "dummy", password));
         if (violations.isEmpty()) {
-            log.info("valid");
+            log.fine("valid");
             return true;
         } else {
             log.info("invalid");

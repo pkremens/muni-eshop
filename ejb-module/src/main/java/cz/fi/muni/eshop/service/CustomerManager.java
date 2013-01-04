@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.Customer;
@@ -35,19 +31,31 @@ public class CustomerManager {
     @Inject
     private Logger log;
 
+    /**
+     * Add new customer to DB
+     * @param email 
+     * @param name
+     * @param password
+     * @return instance of new created customer
+     */
     public Customer addCustomer(String email, String name, String password) {
         if (getCustomerByEmailCount(email) == 1) {
             log.warning("Customer with email=" + email + " is already registered");
             return null;
         }
         Customer customer = new Customer(email, name, password);
-        log.info("Adding customer: " + customer);
+        log.fine("Adding customer: " + customer);
         em.persist(customer);
         return customer;
     }
 
+    /**
+     * Update customers name
+     * @param email
+     * @param name 
+     */
     public void updateCustomerName(String email, String name) {
-        log.info("Updating customer: email=" + email + " name=" + name);
+        log.finer("Updating customer: email=" + email + " name=" + name);
         Customer customer = getCustomerByEmail(email);
         customer.setName(name);
         em.merge(customer);
@@ -59,7 +67,7 @@ public class CustomerManager {
      * @return customer instance if email and password matches, else null
      */
     public Customer verifyCustomer(String email, String password) {
-        log.info("Verify customer: email=" + email + " password=" + password);
+        log.fine("Verify customer: email=" + email + " password=" + password);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Customer> criteria = cb.createQuery(Customer.class);
         Root<Customer> customer = criteria.from(Customer.class);
@@ -72,23 +80,29 @@ public class CustomerManager {
         try {
             cust = em.createQuery(criteria).getSingleResult();
         } catch (NoResultException nre) {
-            log.info("Unable to verify customer: email=" + email + " password="
+            log.fine("Unable to verify customer: email=" + email + " password="
                     + password);
         }
         return cust;
     }
 
+    /**
+     * Return customer with given id
+     * @param id
+     * @return customer with given id
+     */
     public Customer getCustomerById(Long id) {
-        log.info("Find customer by id: " + id); // tady by prece stacilo em.find												// ... pak to musim vsude												// predelat..
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Customer> criteria = cb.createQuery(Customer.class);
-        Root<Customer> customer = criteria.from(Customer.class);
-        criteria.select(customer).where(cb.equal(customer.get("id"), id));
-        return em.createQuery(criteria).getSingleResult();
+        log.fine("Find customer by id: " + id); 
+        return em.find(Customer.class, id);
     }
 
+    /**
+     * Find customer by email
+     * @param email
+     * @return customer with given email
+     */
     public Customer getCustomerByEmail(String email) {
-        log.info("Get customer by email: " + email);
+        log.fine("Get customer by email: " + email);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Customer> criteria = cb.createQuery(Customer.class);
         Root<Customer> customer = criteria.from(Customer.class);
@@ -96,8 +110,12 @@ public class CustomerManager {
         return em.createQuery(criteria).getSingleResult();
     }
 
+    /**
+     * Get all customers
+     * @return all customers in DB
+     */
     public List<Customer> getCustomers() {
-        log.info("Get all customers");
+        log.fine("Get all customers");
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Customer> criteria = cb.createQuery(Customer.class);
         Root<Customer> customer = criteria.from(Customer.class);
@@ -105,8 +123,12 @@ public class CustomerManager {
         return em.createQuery(criteria).getResultList();
     }
 
+    /**
+     * Return id's of all customers
+     * @return list of customers id's
+     */
     public List<Long> getCustomerIds() {
-        log.info("Get all customer Ids");
+        log.fine("Get all customer Ids");
         Metamodel mm = em.getMetamodel();
         EntityType<Customer> mcustomer = mm.entity(Customer.class);
         SingularAttribute<Customer, Long> id = mcustomer.getDeclaredSingularAttribute("id", Long.class);
@@ -117,8 +139,12 @@ public class CustomerManager {
         return em.createQuery(criteria).getResultList();
     }
 
+    /**
+     * Get all emails
+     * @return list of all emails
+     */
     public List<String> getCustomerEmails() {
-        log.info("Get all emails");
+        log.fine("Get all emails");
         Metamodel mm = em.getMetamodel();
         EntityType<Customer> mcustomer = mm.entity(Customer.class);
         SingularAttribute<Customer, String> email = mcustomer.getDeclaredSingularAttribute("email", String.class);
@@ -129,8 +155,12 @@ public class CustomerManager {
         return em.createQuery(criteria).getResultList();
     }
 
+    /**
+     * Get count of customers in DB
+     * @return count of customers in DB
+     */
     public Long getCustomerTableCount() {
-        log.info("Get customers table status");
+        log.fine("Get customers table status");
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
         Root<Customer> customer = criteria.from(Customer.class);
@@ -139,8 +169,13 @@ public class CustomerManager {
         return em.createQuery(criteria).getSingleResult().longValue();
     }
 
+    /**
+     * Get number of customers with given email
+     * @param email
+     * @return number of customers with given email
+     */
     public Long getCustomerByEmailCount(String email) {
-        log.info("Get customer: " + email + " count in table");
+        log.fine("Get customer: " + email + " count in table");
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
         Root<Customer> customer = criteria.from(Customer.class);
@@ -148,18 +183,29 @@ public class CustomerManager {
         return em.createQuery(criteria).getSingleResult().longValue();
     }
 
+    /**
+     * Clear customers table
+     */
     public void clearCustomersTable() {
-        log.info("Clear customers ");
+        log.fine("Clear customers ");
         for (Customer customer : getCustomers()) {
             em.remove(customer);
         }
     }
 
+    /**
+     * Delete customer
+     * @param email of customer to be deleted
+     */
     public void deleteCustomer(String email) {
         Customer customer = getCustomerByEmail(email);
         em.remove(customer);
     }
 
+    /**
+     * Get random customer
+     * @return random instance of customer from DB
+     */
     public Customer getRandomCustomer() {
         List<Customer> customers = getCustomers();
         if (customers.isEmpty()) {

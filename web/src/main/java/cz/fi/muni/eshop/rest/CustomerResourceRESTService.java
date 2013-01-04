@@ -68,7 +68,7 @@ public class CustomerResourceRESTService {
             }
             builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
         }
-        log.warning("Added customert: " + customer.toString());
+        log.info("Added customert: " + customer.toString());
         return builder.build();
     }
 

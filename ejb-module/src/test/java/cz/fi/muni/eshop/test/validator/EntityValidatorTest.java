@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import junit.framework.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -22,12 +21,6 @@ import org.junit.Test;
  */
 public class EntityValidatorTest {
 
-    
-    @Ignore
-    @Test
-    public void ignoreMe() {
-        
-    }
     private static EntityValidator validator;
 
     @Test

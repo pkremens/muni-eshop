@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.Invoice;
@@ -41,20 +37,23 @@ public class InvoiceManager {
     private Logger log;
     @EJB
     private OrderManager orderManager;
-    private static final int MSG_COUNT = 5; // TODO what is this for???
+    private static final int MSG_COUNT = 5;
     @Resource(mappedName = "java:/ConnectionFactory")
     private ConnectionFactory connectionFactory;
     @Resource(mappedName = "java:/queue/test")
     private Queue queue;
     @EJB
     private ProductManager productManager;
-//    @Inject
-//    private SessionContext context;
 
-    // used by jms
+    /**
+     * Close order, this method is used by StoremanMDB
+     *
+     * @param orderId order to be closed
+     * @return invoice of closed order
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Invoice closeOrder(Long orderId) {
-        log.warning("Closing order id: " + orderId);
+        log.info("Closing order id: " + orderId);
         Invoice invoice = new Invoice();
         Order order = orderManager.getOrderById(orderId);
         List<InvoiceItem> invoiceItems = new ArrayList<InvoiceItem>();
@@ -71,10 +70,15 @@ public class InvoiceManager {
         return invoice;
     }
 
-    // used directly
+    /**
+     * Close order directly without JSM
+     *
+     * @param order
+     * @return order to be closed
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRED) // PAVEL
     public Invoice closeOrderDirectly(Order order) {
-        log.warning("Closing order directly: " + order.getId());
+        log.fine("Closing order directly: " + order.getId());
         Invoice invoice = new Invoice();
         List<InvoiceItem> invoiceItems = new ArrayList<InvoiceItem>();
         for (OrderItem orderItem : order.getOrderItems()) {
@@ -89,10 +93,16 @@ public class InvoiceManager {
         orderManager.updateOrdersInvoice(order.getId(), invoice.getId());
         return invoice;
     }
-        // used by jms
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW) // jeste zkusit
+
+    /**
+     * Close order, used by JSF
+     *
+     * @param orderId id of order which should be closed
+     * @return invoice of closed order
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Invoice manualCloseOrder(Long orderId) {
-        log.warning("Closing order manually id: " + orderId);
+        log.fine("Closing order manually id: " + orderId);
         Order order = orderManager.getOrderById(orderId);
         if (order.getInvoice() != null) {
             return null; // already closed
@@ -113,16 +123,12 @@ public class InvoiceManager {
     }
 
     public Invoice getInvoiceById(Long id) {
-        log.info("Find invoice by id: " + id);
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Invoice> criteria = cb.createQuery(Invoice.class);
-        Root<Invoice> invoice = criteria.from(Invoice.class);
-        criteria.select(invoice).where(cb.equal(invoice.get("id"), id));
-        return em.createQuery(criteria).getSingleResult();
+        log.fine("Find invoice by id: " + id);
+        return em.find(Invoice.class, id);
     }
 
     public Invoice getInvoiceByName(String name) {
-        log.info("Get invoice by name: " + name);
+        log.fine("Get invoice by name: " + name);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Invoice> criteria = cb.createQuery(Invoice.class);
         Root<Invoice> invoice = criteria.from(Invoice.class);
@@ -131,7 +137,7 @@ public class InvoiceManager {
     }
 
     public List<Invoice> getInvoices() {
-        log.info("Get all invoices");
+        log.fine("Get all invoices");
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Invoice> criteria = cb.createQuery(Invoice.class);
         Root<Invoice> invoice = criteria.from(Invoice.class);
@@ -141,7 +147,7 @@ public class InvoiceManager {
 
     public Set<Long> clearInvoiceTable() {
         Set<Long> invoiceIds = new HashSet<Long>();
-        log.info("Get invoices table");
+        log.fine("Get invoices table");
         for (Invoice invoice : getInvoices()) {
             invoiceIds.add(invoice.getOrder().getId());
             invoice.getOrder().setInvoice(null);
@@ -151,7 +157,7 @@ public class InvoiceManager {
     }
 
     public Long getInvoiceTableCount() {
-        log.info("Get invoices table status");
+        log.fine("Get invoices table status");
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
         Root<Invoice> invoice = criteria.from(Invoice.class);
@@ -160,6 +166,11 @@ public class InvoiceManager {
     }
 
     // can not use Ids as they are in root table: IllegalArgumentException: SingularAttribute  named id and of type java.lang.Long is not present
+    /**
+     * Use to get all invoices with lazily loaded invoice items
+     *
+     * @return all invoices
+     */
     public List<Invoice> getWholeInvoices() {
         List<Invoice> invoices = getInvoices();
         for (Invoice invoice : invoices) {
@@ -169,6 +180,11 @@ public class InvoiceManager {
         return invoices;
     }
 
+    /**
+     * Get invoice with lazily loaded items
+     * @param id of invoice to be fetched
+     * @return invoice
+     */
     public Invoice getWholeInvoiceById(Long id) {
         Invoice invoice = getInvoiceById(id);
         Hibernate.initialize(invoice.getInvoiceItems());

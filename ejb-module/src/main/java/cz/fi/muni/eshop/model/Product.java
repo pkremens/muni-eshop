@@ -35,10 +35,10 @@ public class Product implements Serializable {
     @Enumerated(EnumType.STRING)
     private Category category;
     @NotNull
-    @Min(0)
+    //@Min(0)
     private Long stored;
     @NotNull
-    @Min(0)
+    //@Min(0)
     private Long reserved = 0L;
 
     public Product() {

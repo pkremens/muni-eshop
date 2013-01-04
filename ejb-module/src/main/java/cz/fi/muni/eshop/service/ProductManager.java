@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.Product;
@@ -9,13 +5,10 @@ import cz.fi.muni.eshop.model.enums.Category;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
-import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import javax.jms.ConnectionFactory;
-import javax.jms.Queue;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -36,7 +29,15 @@ public class ProductManager {
     @Inject
     private Logger log;
 
-
+    /**
+     * Create new product
+     * @param name 
+     * @param price 
+     * @param category
+     * @param stored
+     * @param reserved
+     * @return instance of newly created product
+     */
     public Product addProduct(String name, Long price, Category category,
             Long stored, Long reserved) {
         if (getProductByNameCount(name) == 1) {
@@ -44,47 +45,50 @@ public class ProductManager {
             return null;
         }
         Product product = new Product(name, price, category, stored, reserved);
-        log.info("Adding product: " + product);
+        log.fine("Adding product: " + product);
         em.persist(product);
         return product;
     }
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    /**
+     * Make this product part of some order = decrease stored, increase reserved
+     * @param id
+     * @param quantity which will be moved from stored to reserved
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void orderProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
-        log.info(product.toString() + " on store: " + product.addStored(id));
+        log.fine(product.toString() + " on store: " + product.addStored(id));
         if (product.getStored() < product.addReserved(quantity)) {
             product.addStored(1000L);
         }
-        log.warning("Ordering: " + quantity.toString() + ", product: " + product.toString());
         em.merge(product);
-    }
-
+        }
+    
+    /**
+     * Make this product part of some invoice = decrease reserved
+     * @param id 
+     * @param quantity to be decreased from reserved
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void invoiceProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
-        log.warning("Invoice product: " + product + " quantity: " + quantity);
-        if (quantity > product.getReserved()) {
-            throw new IllegalArgumentException(
-                    "Can not invoice non-reserve products, we are somewhere loosing data! product=" + product.toString() + " quantity=" + quantity);
-        }
+//        if (quantity > product.getReserved()) {
+//            throw new IllegalArgumentException(
+//                    "Can not invoice non-reserve products, we are somewhere loosing data! product=" + product.toString() + " quantity=" + quantity);
+//        }
         product.setStored(product.getStored() - quantity);
         product.setReserved(product.getReserved() - quantity);
         em.merge(product);
-        log.warning("product: " + product + " was invoiced");
     }
 
     public Product getProductById(Long id) {
-        log.info("Find product by id: " + id);
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
-        Root<Product> product = criteria.from(Product.class);
-        criteria.select(product).where(cb.equal(product.get("id"), id));
-        return em.createQuery(criteria).getSingleResult();
+        log.fine("Find product by id: " + id);
+        return em.find(Product.class, id);
     }
 
     public Product getProductByName(String name) {
-        log.info("Get product by name: " + name);
+        log.fine("Get product by name: " + name);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
         Root<Product> product = criteria.from(Product.class);
@@ -93,7 +97,7 @@ public class ProductManager {
     }
 
     public List<Product> getProducts() {
-        log.info("Get all products");
+        log.fine("Get all products");
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
         Root<Product> product = criteria.from(Product.class);
@@ -102,7 +106,7 @@ public class ProductManager {
     }
 
     public List<Long> getProductIds() {
-        log.info("Get all products Ids");
+        log.fine("Get all products Ids");
         Metamodel mm = em.getMetamodel();
         EntityType<Product> mproduct = mm.entity(Product.class);
         SingularAttribute<Product, Long> id = mproduct.getDeclaredSingularAttribute("id", Long.class);
@@ -114,7 +118,7 @@ public class ProductManager {
     }
 
     public List<String> getProductNames() {
-        log.info("Get all product names");
+        log.fine("Get all product names");
         Metamodel mm = em.getMetamodel();
         EntityType<Product> mproduct = mm.entity(Product.class);
         SingularAttribute<Product, String> name = mproduct.getDeclaredSingularAttribute("name", String.class);
@@ -126,7 +130,7 @@ public class ProductManager {
     }
 
     public Long getProductTableCount() {
-        log.info("Get product table status");
+        log.fine("Get product table status");
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
         Root<Product> product = criteria.from(Product.class);
@@ -135,7 +139,7 @@ public class ProductManager {
     }
 
     public void clearProductsTable() {
-        log.info("Clear products table");
+        log.fine("Clear products table");
         for (Product product : getProducts()) {
             em.remove(product);
         }
@@ -153,8 +157,13 @@ public class ProductManager {
         em.remove(product);
     }
     
+    /**
+     * Get number of products with given name
+     * @param name
+     * @return 
+     */
     public Long getProductByNameCount(String name) {
-        log.info("Get product: " + name + " count in table");
+        log.fine("Get product: " + name + " count in table");
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
         Root<Product> product = criteria.from(Product.class);
@@ -162,6 +171,9 @@ public class ProductManager {
         return em.createQuery(criteria).getSingleResult().longValue();
     }
     
+    /**
+     * Set reserved=0 for all products in DB
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void unreserveProducts() {
         for (Product product : getProducts()) {

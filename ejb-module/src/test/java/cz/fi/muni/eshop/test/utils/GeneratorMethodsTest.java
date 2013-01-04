@@ -73,14 +73,13 @@ public class GeneratorMethodsTest {
     public void generatorMethodsProductsTest() throws InterruptedException {
         dataGenerator.generateCustomers(1L);
         dataGenerator.generateProducts(5L, 200L, 10L, true);
-        dataGenerator.generateOrders(100L, 5L, true);
+        dataGenerator.generateOrders(10L, 5L, true);
         Thread.sleep(1000);
-        Assert.assertEquals(100L, (long) invoiceManager.getInvoiceTableCount());
+        Assert.assertEquals(10L, (long) invoiceManager.getInvoiceTableCount());
     }
 
     @Test
-    @Ignore
-    public void generateRandomCustomerTest() {
+   public void generateRandomCustomerTest() {
         for (int i = 0; i < 10; i++) {
             dataGenerator.generateRandomCustomer();
         }
@@ -88,7 +87,6 @@ public class GeneratorMethodsTest {
     }
 
     @Test
-    @Ignore
     public void generateRanomProductTest() {
         for (int i = 0; i < 10; i++) {
             dataGenerator.generateRandomProduct();
@@ -96,18 +94,4 @@ public class GeneratorMethodsTest {
         Assert.assertEquals(10L, (long) productManager.getProductTableCount());
     }
 
-    @Test
-    @Ignore
-    public void testMultiOrderCloseNoAutoRefill() throws InterruptedException {
-        dataGenerator.generateCustomers(1L);
-        dataGenerator.generateProducts(1L, 1L, 0L);
-        dataGenerator.generateOrders(1L, 1L);
-        Thread.sleep(500); // Must give time to Hornet
-        Assert.assertEquals(1L, (long) invoiceManager.getInvoiceTableCount());
-        System.out.println("test");
-        invoiceManager.clearInvoiceTable();
-        Assert.assertEquals(0L, (long) invoiceManager.getInvoiceTableCount());
-        orderManager.clearOrderTable();
-        Assert.assertEquals(0L, (long) orderManager.getOrderTableCount());
-    }
 }

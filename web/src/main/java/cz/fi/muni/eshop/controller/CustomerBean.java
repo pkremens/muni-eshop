@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.eshop.controller;
 
 import cz.fi.muni.eshop.model.Customer;
@@ -86,7 +82,7 @@ public class CustomerBean {
     }
 
     public void clearCustomers() {
-        log.warning("Clearing customers data with all orders and invoices");
+        log.info("Clearing customers data with all orders and invoices");
         addMessage("Clearing customers data with all orders and invoices");
         customerManager.clearCustomersTable();
         identity.logOut();

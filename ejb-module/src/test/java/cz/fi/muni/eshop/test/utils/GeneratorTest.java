@@ -92,18 +92,4 @@ public class GeneratorTest {
             Assert.assertTrue("Generator generated invalid price: " + product.getStored(), (product.getStored() > 0L && product.getStored() < stored + 1));
         }
     }
-
-    @Test
-    @InSequence(2)
-    @Ignore("TODO failing because of lazy initialization")
-    public void ordersGenerationTest() { // TODO failing because of lazy initialization
-        generator.generateOrders(20L, 10L);
-        Assert.assertEquals(orderManager.getOrders().size(), 20L);
-        for (Order order : orderManager.getOrders()) {
-            for (OrderItem orderItem : orderManager.getOrderItemsOfOrderById(order.getId())) {
-                Assert.assertEquals(10L, (long) orderItem.getQuantity());
-            }
-
-        }
-    }
 }

@@ -58,7 +58,7 @@ public class BasketBean implements Serializable {
     }
 
     public void addToBasket(Product product, Long quantity) {
-        log.warning("adding to basket: " + product.toString());
+        log.info("adding to basket: " + product.toString());
         if (basket.containsKey(product)) {
             productQuantityIncrement(product, quantity);
         } else {
@@ -127,8 +127,6 @@ public class BasketBean implements Serializable {
     }
 
     public boolean isInBasket(Long id) {
-        log.warning("Is in basket? id=" + id + " result=" + ids.contains(id));
-        log.warning(ids.toString());
         return ids.contains(id);
     }
 }

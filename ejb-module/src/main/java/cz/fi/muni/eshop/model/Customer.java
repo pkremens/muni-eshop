@@ -28,7 +28,7 @@ public class Customer implements Serializable {
     @Pattern(regexp = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", message = "Not a valid email address")
     private String email;
     @Size(min = 1, max = 25, message = "Name may not be null")
-    @Pattern(regexp = "[A-Za-z0-9]*", message = "Name must contain only letters and numbers")
+    @Pattern(regexp = "[A-Za-z0-9 ]*", message = "Name must contain only letters, numbers and spaces")
     private String name;
     @Size(min = 1, message = "Password may not be null")
     @NotNull

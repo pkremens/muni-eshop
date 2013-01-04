@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.eshop.controller;
 
 import cz.fi.muni.eshop.model.Product;
@@ -105,7 +101,7 @@ public class ProductBean {
     }
 
     public void generateRandomCustomer() {
-        log.info("generating random product");
+        log.finer("generating random product");
         dataGenerator.generateRandomProduct();
     }
 

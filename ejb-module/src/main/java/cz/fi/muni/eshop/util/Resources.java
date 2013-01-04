@@ -1,11 +1,8 @@
 package cz.fi.muni.eshop.util;
 
 import java.util.logging.Logger;
-import javax.annotation.Resource;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
-import javax.jms.ConnectionFactory;
-import javax.jms.Queue;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 

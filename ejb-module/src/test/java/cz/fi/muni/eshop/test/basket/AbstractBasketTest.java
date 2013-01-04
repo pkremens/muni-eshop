@@ -37,12 +37,7 @@ public abstract class AbstractBasketTest {
         product = new Product("first", 78L, Category.TYPE3);
         product.setId(1L);
         basket.addToBasket(product);
-        for (Product productX : basket.getAllProductsInBasket()) {
-            System.out.println(productX);
-        }
-
         Assert.assertFalse(basket.isEmpty());
-
         basket.clearBasket();
         Assert.assertEquals((Long) 0L, basket.getTotalPrice());
         Assert.assertTrue(basket.isEmpty());

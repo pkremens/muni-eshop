@@ -122,7 +122,7 @@ public class ProductResourceRESTService {
             }
             builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
         }
-        log.warning("Added product: " + product.toString());
+        log.info("Added product: " + product.toString());
         return builder.build();
     }
 }

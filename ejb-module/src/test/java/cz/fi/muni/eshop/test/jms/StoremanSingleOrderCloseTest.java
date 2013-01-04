@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.inject.Inject;
+import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
@@ -82,6 +83,7 @@ public class StoremanSingleOrderCloseTest {
         Order order = orderManager.addOrder("xxxxx@yyyyy.zz", orderItems);
         log.warning(order.toString());
         Thread.sleep(500);
+        Assert.assertEquals(1L,(long) invoiceManager.getInvoiceTableCount());
     }
 
     @Test
@@ -97,6 +99,7 @@ public class StoremanSingleOrderCloseTest {
         Order order = orderManager.addOrderWithMap("xxxxx@yyyyy.zz", profilesWithQuantity);
         log.warning(order.toString());
         Thread.sleep(500);
+        Assert.assertEquals(1L,(long) invoiceManager.getInvoiceTableCount());
     }
 
     @Test
@@ -110,5 +113,6 @@ public class StoremanSingleOrderCloseTest {
         Order order = orderManager.addOrder("xxxxx@yyyyy.zz", orderItems);
         log.warning(order.toString());
         Thread.sleep(500); // check storeman
+        Assert.assertEquals(1L,(long) invoiceManager.getInvoiceTableCount());
     }
 }

@@ -14,7 +14,6 @@ import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 /**
@@ -42,8 +41,8 @@ public class Controller {
     private DataGenerator dataGenerator;
 
     @PostConstruct
-    public void showYourselve() {
-        log.warning("ControllerBean initialized");
+    public void init() {
+        log.info("ControllerBean initialized");
     }
 
     public void generateData() {
@@ -58,23 +57,22 @@ public class Controller {
     @Schedule(minute = "*", hour = "*")
     public void controlData() {
         if (automatiCleanUp) {
-            log.warning("Cleaning invoices, count=" + invoiceManager.getInvoiceTableCount().toString());
+            log.info("Cleaning invoices, count=" + invoiceManager.getInvoiceTableCount().toString());
             cleanInvoicesAndOrders();
         } else {
-            log.warning("Auto cleanup is turned off, invoices=" + invoiceManager.getInvoiceTableCount().toString());
+            log.fine("Auto cleanup is turned off, invoices=" + invoiceManager.getInvoiceTableCount().toString());
         }
     }
 
     public void cleanInvoicesAndOrders() {
         orderManager.clearOrderTable(invoiceManager.clearInvoiceTable());
-       // productManager.unreserveProducts();
     }
 
     /**
-     * To completely remove all data from db
+     * To completely remove all data from DB
      */
     public void wipeOutDb() {
-        log.warning("Deleteng all entries from db");
+        log.info("Deleteng all entries from db");
         customerManager.clearCustomersTable();
         productManager.clearProductsTable();
        
@@ -87,7 +85,7 @@ public class Controller {
      */
     public boolean switchAutoClean() {
         automatiCleanUp = !automatiCleanUp;
-        log.warning("Automatic cleanUp was switched to: "
+        log.info("Automatic cleanUp was switched to: "
                 + ((automatiCleanUp) ? "on" : "off"));
         return automatiCleanUp;
     }
@@ -98,13 +96,17 @@ public class Controller {
 
     public void setAutoClean(boolean autoClean) {
         automatiCleanUp = autoClean;
-        log.warning("Automatic cleanUp was switched to: "
+        log.info("Automatic cleanUp was switched to: "
                 + ((automatiCleanUp) ? "on" : "off"));
     }
 
+    /**
+     * Switch whether storeman should be used
+     * @return 
+     */
     public boolean switchStoreman() {
         storeman = !storeman;
-        log.warning("Storeman service was switched to: " + ((storeman) ? "on" : "off"));
+        log.info("Storeman service was switched to: " + ((storeman) ? "on" : "off"));
         return storeman;
     }
 
@@ -114,12 +116,16 @@ public class Controller {
 
     public void setStoreman(boolean working) {
         storeman = working;
-        log.warning("Storeman service was switched to: " + ((storeman) ? "on" : "off"));
+        log.info("Storeman service was switched to: " + ((storeman) ? "on" : "off"));
     }
-
+    
+    /**
+     * Switch between JMS storeman and direct storeman
+     * @return 
+     */
     public boolean switchJmsStoreman() {
         jmsStoreman = !jmsStoreman;
-        log.warning("JMS storeman service was switched to: " + ((jmsStoreman) ? "on" : "off"));
+        log.info("JMS storeman service was switched to: " + ((jmsStoreman) ? "on" : "off"));
         return jmsStoreman;
     }
 
@@ -129,9 +135,13 @@ public class Controller {
 
     public void setJmsStoreman(boolean working) {
         jmsStoreman = working;
-        log.warning("JMS storeman service was switched to: " + ((jmsStoreman) ? "on" : "off"));
+        log.info("JMS storeman service was switched to: " + ((jmsStoreman) ? "on" : "off"));
     }
-
+    
+    /**
+     * Return string with current configuration
+     * @return 
+     */
     public String report() {
         return "autoCleanUp=" + ((automatiCleanUp) ? "on" : "off") + " , storeman=" + ((storeman) ? "on" : "off") + " , JMS storeman=" + ((jmsStoreman) ? "on" : "off");
     }

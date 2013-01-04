@@ -66,7 +66,7 @@ public class SingleGenerateAutocleanTest {
     }
 
     @Test
-    public void noJmsNoClean() throws InterruptedException {
+    public void directClose() throws InterruptedException {
         controller.setAutoClean(false);
         controller.setJmsStoreman(false);
         dataGenerator.generateCustomers(10L);
@@ -77,29 +77,8 @@ public class SingleGenerateAutocleanTest {
     }
 
     @Test
-    public void jmsNoCLean() throws InterruptedException {
+    public void jmsClose() throws InterruptedException {
         controller.setAutoClean(false);
-        controller.setJmsStoreman(true);
-        dataGenerator.generateCustomers(10L);
-        dataGenerator.generateProducts(20L, 200L, 1000L, true);
-        dataGenerator.generateOrders(10L, 5L, true);
-        Thread.sleep(1000);
-        Assert.assertEquals(10, (long) orderManager.getOrderTableCount());
-    }
-
-    @Test
-    public void noJmsClean() throws InterruptedException {
-        controller.setAutoClean(true);
-        controller.setJmsStoreman(false);
-        dataGenerator.generateCustomers(10L);
-        dataGenerator.generateProducts(20L, 200L, 1000L, true);
-        dataGenerator.generateOrders(10L, 5L, true);
-        Thread.sleep(1000);
-        Assert.assertEquals(10, (long) orderManager.getOrderTableCount());
-    }
-        @Test
-    public void jsmClean() throws InterruptedException {
-        controller.setAutoClean(true);
         controller.setJmsStoreman(true);
         dataGenerator.generateCustomers(10L);
         dataGenerator.generateProducts(20L, 200L, 1000L, true);

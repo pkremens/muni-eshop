@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.Invoice;
@@ -39,7 +35,6 @@ import org.hibernate.Hibernate;
  */
 @Stateless
 public class OrderManager {
-    // order.setCreationDate(Calendar.getInstance().getTime());
 
     @EJB
     private Controller controller;
@@ -61,6 +56,12 @@ public class OrderManager {
     @Resource(mappedName = "java:/queue/test")
     private Queue queue;
 
+    /**
+     * Create new order with email and Map - product_id:count
+     * @param email of customer making the order
+     * @param productsWithQuantity Map of - product_id:count
+     * @return newly created order
+     */
     public Order addOrderWithMap(String email,
             Map<Long, Long> productsWithQuantity) {
         List<OrderItem> orderItems = new ArrayList<OrderItem>();
@@ -69,7 +70,13 @@ public class OrderManager {
         }
         return manager.addOrder(email, orderItems);
     }
-
+    
+    /**
+     * Create new order with email and List of order items
+     * @param email of customer making the order
+     * @param orderItems List of order items
+     * @return newly created order
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Order addOrder(String email, List<OrderItem> orderItems) {
         Order order = new Order();
@@ -86,17 +93,22 @@ public class OrderManager {
         }
         order.setTotalPrice(price);
         em.persist(order);
+        log.info("Making order with id: " + order.getId());
         if (controller.isStoreman()) {
             if (controller.isJmsStoreman()) {
                 noticeStoreman(order.getId());
             } else {
-                log.warning("Directly (no JMS) closing order id: " + order.getId());
+                log.fine("Directly (no JMS) closing order id: " + order.getId());
                 invoiceManager.closeOrderDirectly(order);
             }
         }
         return order;
     }
-
+    
+    /**
+     * Use this method to send message with order id to JMS queue
+     * @param orderId id of order to be closed
+     */
     private void noticeStoreman(Long orderId) {
         Connection connection = null;
         try {
@@ -107,7 +119,7 @@ public class OrderManager {
             connection.start();
             MapMessage message = session.createMapMessage();
             message.setStringProperty("type", "CLOSE_ORDER");
-            log.warning("Notifing storeman, sending order Id: " + orderId);
+            log.info("Notifing storeman, sending order Id: " + orderId);
             message.setLongProperty("orderId", orderId);
             messageProducer.send(message);
         } catch (JMSException e) {
@@ -129,16 +141,12 @@ public class OrderManager {
     }
 
     public Order getOrderById(Long id) {
-        log.info("Get order by id: " + id);
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Order> criteria = cb.createQuery(Order.class);
-        Root<Order> order = criteria.from(Order.class);
-        criteria.select(order).where(cb.equal(order.get("id"), id));
-        return em.createQuery(criteria).getSingleResult();
+        log.fine("Get order by id: " + id);
+        return em.find(Order.class, id);
     }
 
     public List<Order> getOrders() {
-        log.info("Get all orders");
+        log.fine("Get all orders");
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Order> criteria = cb.createQuery(Order.class);
         Root<Order> order = criteria.from(Order.class);
@@ -147,7 +155,7 @@ public class OrderManager {
     }
 
     public void updateOrdersInvoice(Long orderId, Long invoiceId) {
-        log.info("Updating order: " + orderId + " with invoice: " + invoiceId);
+        log.fine("Updating order: " + orderId + " with invoice: " + invoiceId);
         Order order = em.find(Order.class, orderId);
         Invoice invoice = em.find(Invoice.class, invoiceId);
         order.setInvoice(invoice);
@@ -155,7 +163,7 @@ public class OrderManager {
     }
 
     public Long getOrderTableCount() {
-        log.info("Get orders table status");
+        log.fine("Get orders table status");
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
         Root<Order> order = criteria.from(Order.class);
@@ -164,7 +172,7 @@ public class OrderManager {
     }
 
     public void clearOrderTable() {
-        log.info("Clear orders ");
+        log.fine("Clear orders ");
         for (Order order : getOrders()) {
             order.setCustomer(null);
             em.remove(order);
@@ -182,7 +190,11 @@ public class OrderManager {
             em.remove(em.find(Order.class, orderId));
         }
     }
-
+    
+    /**
+     * Get all orders with lazily loaded order items
+     * @return list of orders
+     */
     public List<Order> getWholeOrders() {
         List<Order> orders = getOrders();
         for (Order order : orders) {
@@ -190,7 +202,12 @@ public class OrderManager {
         }
         return orders;
     }
-
+    
+    /**
+     * Get order with lazily loaded order items
+     * @param id of order to be found
+     * @return order with given id
+     */
     public Order getWholeOrderById(Long id) {
         Order order = getOrderById(id);
         Hibernate.initialize(order.getOrderItems());

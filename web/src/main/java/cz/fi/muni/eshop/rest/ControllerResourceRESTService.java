@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.eshop.rest;
 
 import cz.fi.muni.eshop.util.Controller;
@@ -38,7 +34,7 @@ public class ControllerResourceRESTService {
     @Path("/storeman/{bool:[01]}")
     public Response setStoremanService(@PathParam("bool") Long bool) {
         Response.ResponseBuilder builder = null;
-        log.warning("Setting storeman service to: " + ((bool == 1) ? "on" : "off"));
+        log.info("Setting storeman service to: " + ((bool == 1) ? "on" : "off"));
         controller.setStoreman((bool == 1) ? true : false);
         builder = Response.ok();
         return builder.build();
@@ -49,7 +45,7 @@ public class ControllerResourceRESTService {
     @Path("/autoclean/{bool:[01]}")
     public Response setAutocleanService(@PathParam("bool") Long bool) {
         Response.ResponseBuilder builder = null;
-        log.warning("Setting autoclean service to: " + ((bool == 1) ? "on" : "off"));
+        log.info("Setting autoclean service to: " + ((bool == 1) ? "on" : "off"));
         controller.setAutoClean((bool == 1) ? true : false);
         builder = Response.ok();
         return builder.build();
@@ -59,7 +55,7 @@ public class ControllerResourceRESTService {
     @Path("/jmsstoreman/{bool:[01]}")
     public Response setJmsStoremanService(@PathParam("bool") Long bool) {
         Response.ResponseBuilder builder = null;
-        log.warning("Setting jms storeman service to: " + ((bool == 1) ? "on" : "off"));
+        log.info("Setting jms storeman service to: " + ((bool == 1) ? "on" : "off"));
         controller.setJmsStoreman((bool == 1) ? true : false);
         builder = Response.ok();
         return builder.build();
@@ -76,7 +72,7 @@ public class ControllerResourceRESTService {
     @Path("/wipeout/{bool:[01]}")
     public Response wipeOutDB(@PathParam("bool") Long bool) {
         Response.ResponseBuilder builder = null;
-        log.warning("Wiping out DB: " + ((bool == 1) ? "all tables" : "just Orders and Invoices"));
+        log.info("Wiping out DB: " + ((bool == 1) ? "all tables" : "just Orders and Invoices"));
         if (bool == 0) {
             controller.cleanInvoicesAndOrders();
         } else {
@@ -97,7 +93,7 @@ public class ControllerResourceRESTService {
     // curl -i -X POST http://localhost:8080/web/rest/customers/random/3
     @Path("/randomCustomers/{count:[1-9][0-9]*}")
     public Response createRandomCustomers(@PathParam("count") Long count) {
-        log.warning("create random customer(s): " + count);
+        log.info("create random customer(s): " + count);
         Response.ResponseBuilder builder = null;
         try {
             for (int i = 0; i < count; i++) {
@@ -116,7 +112,7 @@ public class ControllerResourceRESTService {
     // curl -i -X POST http://localhost:8080/web/rest/products/random/3
     @Path("/randomProducts/{count:[1-9][0-9]*}")
     public Response createRandomProducts(@PathParam("count") Long count) {
-        log.warning("create random product(s): " + count);
+        log.info("create random product(s): " + count);
         Response.ResponseBuilder builder = null;
         try {
             for (int i = 0; i < count; i++) {
@@ -136,7 +132,7 @@ public class ControllerResourceRESTService {
     // curl -i -X POST http://localhost:8080/web/rest/products/random/3
     @Path("/randomOrders/{count:[1-9][0-9]*}")
     public Response createRandomOrders(@PathParam("count") Long count) {
-        log.warning("create random product(s): " + count);
+        log.info("create random product(s): " + count);
         Response.ResponseBuilder builder = null;
 
         try {

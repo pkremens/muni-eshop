@@ -7,6 +7,7 @@ package cz.fi.muni.eshop.jms;
 import cz.fi.muni.eshop.service.InvoiceManager;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
+import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;
 import javax.jms.JMSException;
@@ -26,7 +27,7 @@ public class StoremanMDB implements MessageListener {
 
     @Inject
     private Logger log;
-    @Inject
+    @EJB
     private InvoiceManager invoiceManager;
 
     @Override
@@ -40,12 +41,11 @@ public class StoremanMDB implements MessageListener {
                     case CLOSE_ORDER:
                         long id = msg.getLongProperty("orderId");
                         invoiceManager.closeOrder(id);
-                        log.warning("Order closed id: " + id);
+                        log.info("Order closed id: " + id);
                         break;
                     default:
                         throw new IllegalArgumentException("Recieved unknown storeman message!");
                 }
-                log.info(message.toString());
             } else {
                 log.warning("Message of wrong type: "
                         + rcvMessage.getClass().getName());

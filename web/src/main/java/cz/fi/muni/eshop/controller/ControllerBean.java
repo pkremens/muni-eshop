@@ -18,14 +18,14 @@ public class ControllerBean {
     private Identity identity;
 
     public void wipeOutDb() {
-        log.warning("Deleting all enties from db");
+        log.info("Deleting all enties from db");
         identity.logOut();
         controller.wipeOutDb();
     }
 
 
     public void switchCleanUp() {
-        log.warning("switching clean up");
+        log.info("switching clean up");
         controller.switchAutoClean();
     }
 
@@ -34,7 +34,7 @@ public class ControllerBean {
     }
 
      public void switchStoreman() {
-        log.warning("switching storeman");
+        log.info("switching storeman");
         controller.switchStoreman();
     }
 
@@ -43,7 +43,7 @@ public class ControllerBean {
     }
     
      public void switchJmsStoreman() {
-        log.warning("switching JMS storeman");
+        log.info("switching JMS storeman");
         controller.switchJmsStoreman();
     }
 

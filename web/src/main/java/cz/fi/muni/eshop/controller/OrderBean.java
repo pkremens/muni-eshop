@@ -3,7 +3,6 @@ package cz.fi.muni.eshop.controller;
 import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
 import cz.fi.muni.eshop.service.CustomerManager;
-import cz.fi.muni.eshop.service.InvoiceManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
@@ -87,7 +86,7 @@ public class OrderBean {
             addMessage(iae.getMessage());
         }
     }
-    
+
     public boolean isOrderClosed(Long orderId) {
         return orderManager.isOrderClosed(orderId);
     }
