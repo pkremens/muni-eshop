@@ -50,8 +50,6 @@ public class StoremanMultiOrderTest {
     @Inject
     private ProductManager productManager;
     @Inject
-    private Product product;
-    @Inject
     private DataGenerator dataGenerator;
     @Inject
     private Controller controllerBean;
@@ -59,14 +57,12 @@ public class StoremanMultiOrderTest {
     private InvoiceManager invoiceManager;
     @Inject
     private CustomerManager customerManager;
-    @Inject
-    private OrderManager orderManager;
+
 
     @Deployment
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(Controller.class, InvoiceManager.class, StoremanMDB.class, StoremanMessage.class, OrderRoot.class, OrderManager.class, DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
-
 
     @Before
     public void storemanCloseOrderTest() {

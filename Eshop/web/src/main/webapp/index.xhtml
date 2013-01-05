@@ -1,53 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/templates/default.xhtml">
-    <ui:define name="content">
-        <p:accordionPanel multiple="true">
-            <p:tab title="Global configuration" id="global">
-                <p:panelGrid columns="2" cellpadding="10">
-                    <h:outputText value="Manually clean database" />
-                    <p:commandButton value="clean"
-                                     action="#{controllerBean.wipeOutDb()}" update="@this" />
-                    <h:outputText value="Automatic db cleanup" />
-                    <p:commandButton value="#{controllerBean.autoCleanUpString()}"
-                                     action="#{controllerBean.switchCleanUp()}" update="@this" />
-                    <h:outputText value="Storeman service" />
-                    <p:commandButton value="#{controllerBean.storemanString()}"
-                                     action="#{controllerBean.switchStoreman()}" update="@this" />
-                    <h:outputText value="JMS Storeman service" />
-                    <p:commandButton value="#{controllerBean.jmsStoremanString()}"
-                                     action="#{controllerBean.switchJmsStoreman()}" update="@this" />
-                </p:panelGrid>
-            </p:tab>
-            <p:tab title="Customer generation configuration" id="customers">
-                <h:outputText id="customerCount"
-                              value="Customer table count: #{customerBean.customersCount()}" />
-                <br />generate random customer
-                <br />generate n random customer
-                <br />clear customers db
-            </p:tab>
-            <p:tab title="Product generation configuration" id="products">
-                <h:outputText id="productsCount"
-                              value="Product table count: #{customerBean.customersCount()}" />
-                <br />generate random product
-                <br />generate n random products
-                <br />allow to set some parameters for random creation
-                <br />clear customers db
-            </p:tab>
-            <p:tab title="Order generation configuration" id="orders">
-                <h:outputText id="ordersCount"
-                              value="Order table count: #{customerBean.customersCount()}" />
-                <br />generate random order
-                <br />generate n random orders
-                <br />allow to set some parameters for random creation
-                <br />clear order db
-                <br />create orders in new thread
-            </p:tab>
-        </p:accordionPanel>
-        <h:form id="loginRelated" />
-    </ui:define>
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<p:accordionPanel multiple="true" id="mainPanel">
+			<p:tab title="Global configuration" id="global">
+				<p:panelGrid columns="2" cellpadding="10" id="clearGrid">
+					<f:facet name="header">  
+                    Clear table
+                </f:facet>
+					<h:outputText value="Customer table count: " />
+					<h:outputText value="#{customerBean.customersCount()}" />
+					
+					<h:outputText value="Product table count: " />
+					<h:outputText value="#{productBean.productCout()}" />
+					
+					<h:outputText value="Order table count: " />
+					<h:outputText value="#{orderBean.ordersCout()}" />
+					
+					<h:outputText value="Invoice table count: " />
+					<h:outputText value="#{invoiceBean.invoicesCount()}" />
+					<f:facet name="footer">
+					
+					<p:commandButton value="Wipe out database"
+						action="#{controllerBean.wipeOutDb()}" update="@this :mainPanel:clearGrid" />&#160;
+					
+					<p:commandButton value="Clean Orders"
+						action="#{controllerBean.clearOrdersAndInvoices()}" update="@this :mainPanel:clearGrid" />
+						</f:facet>
+
+				</p:panelGrid>
+				<br />
+				<p:panelGrid columns="2">
+					<f:facet name="header">
+					Services
+				</f:facet>
+					<h:outputText value="Automatic cleanup service" />
+					<p:commandButton value="#{controllerBean.autoCleanUpString()}"
+						action="#{controllerBean.switchCleanUp()}" update="@this" />
+					<h:outputText value="Storeman service" />
+					<p:commandButton value="#{controllerBean.storemanString()}"
+						action="#{controllerBean.switchStoreman()}" update="@this" />
+					<h:outputText value="JMS Storeman service" />
+					<p:commandButton value="#{controllerBean.jmsStoremanString()}"
+						action="#{controllerBean.switchJmsStoreman()}" update="@this" />
+
+
+
+				</p:panelGrid>
+
+			</p:tab>
+			<p:tab title="Customer generation configuration" id="customers">
+				<h:form>
+					<p:panelGrid columns="2">
+						<f:facet name="header">
+					Generate customers
+				</f:facet>
+						<h:outputLabel value="Number of customers" />
+						<p:inputText value="#{controllerBean.customersToGenerate}" />
+
+						<f:facet name="footer">
+							<p:commandButton value="Generate"
+								action="#{controllerBean.generateCustomers()}"
+								update="@form :mainPanel:clearGrid" />
+
+
+						</f:facet>
+					</p:panelGrid>
+				</h:form>
+				<br />
+				<p:commandButton value="Clear customers"
+					action="#{customerBean.clearCustomers()}" update="@this" />
+
+
+			</p:tab>
+			<p:tab title="Product generation configuration" id="products">
+				<h:form>
+					<p:panelGrid columns="2">
+						<f:facet name="header">
+					Generate products
+				</f:facet>
+						<h:outputLabel value="Number of products" />
+						<p:inputText value="#{controllerBean.productsToGenerate}" />
+
+						<f:facet name="footer">
+							<p:commandButton value="Generate"
+								action="#{controllerBean.generateProducts()}"
+								update="@form :mainPanel:clearGrid" />
+						</f:facet>
+					</p:panelGrid>
+				</h:form>
+				<br />
+				<p:commandButton value="Clear productss"
+					action="#{productBean.clearProducts()}" update="@this" />
+
+			</p:tab>
+
+		</p:accordionPanel>
+		<p:ajaxStatus style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">  
+    <f:facet name="start">  
+        <p:graphicImage value="/images/loading.gif" />  
+    </f:facet>  
+  
+    <f:facet name="complete">  
+        <h:outputText value="" />  
+    </f:facet>  
+</p:ajaxStatus>
+		<h:form id="loginRelated" />
+	</ui:define>
 </ui:composition>

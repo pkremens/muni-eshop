@@ -1,6 +1,7 @@
 package cz.fi.muni.eshop.controller;
 
 import cz.fi.muni.eshop.util.Controller;
+import cz.fi.muni.eshop.util.DataGenerator;
 import cz.fi.muni.eshop.util.Identity;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -16,11 +17,20 @@ public class ControllerBean {
     private Logger log;
     @Inject
     private Identity identity;
+    private Long customersToGenerate = 300L;
+    private Long productsToGenerate = 600L;
+    @Inject
+    private DataGenerator dataGenerator;
 
     public void wipeOutDb() {
         log.info("Deleting all enties from db");
         identity.logOut();
         controller.wipeOutDb();
+    }
+    
+    public void clearOrdersAndInvoices() {
+    	log.info("Deleting orders and invoices");
+    	controller.cleanInvoicesAndOrders();
     }
 
 
@@ -50,6 +60,30 @@ public class ControllerBean {
     public String jmsStoremanString() {
         return String.valueOf(controller.isJmsStoreman());
     }
+
+	public Long getCustomersToGenerate() {
+		return customersToGenerate;
+	}
+
+	public void setCustomersToGenerate(Long customersToGenerate) {
+		this.customersToGenerate = customersToGenerate;
+	}
+
+	public Long getProductsToGenerate() {
+		return productsToGenerate;
+	}
+
+	public void setProductsToGenerate(Long productsToGenerate) {
+		this.productsToGenerate = productsToGenerate;
+	}
     
+    public void generateCustomers() {
+    	log.info("Generating customers: " + customersToGenerate.toString());
+    	dataGenerator.generateCustomers(customersToGenerate);
+    }
     
+    public void generateProducts() {
+    	log.info("Generating products: " + productsToGenerate.toString());
+    	dataGenerator.generateProducts(productsToGenerate, 1000L, 1000L);
+    }
 }

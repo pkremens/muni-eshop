@@ -100,4 +100,8 @@ public class OrderBean {
     public void clearOrders() {
         controller.cleanInvoicesAndOrders();
     }
+    
+    public Long ordersCout() {
+    	return orderManager.getOrderTableCount();
+    }
 }

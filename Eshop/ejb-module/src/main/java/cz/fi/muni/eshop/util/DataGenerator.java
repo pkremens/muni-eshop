@@ -39,15 +39,29 @@ public class DataGenerator {
     @Inject 
     private Logger log;
 
-    // private Random random = new Random();
+    /**
+     * Generate given number of customers. Clears customer table before generating to avoid name collisions.
+     * @param quantity Number of customers to be generated.
+     */
     public void generateCustomers(Long quantity) {
+    	log.info("Clearing all customers and generating new, quantity = " + quantity);
+    	customerManager.clearCustomersTable();
         for (int i = 0; i < quantity; i++) {
             String base = "customer" + i;
             log.info(customerManager.addCustomer(base + "@mail.xx", base, base).toString());
         }
     }
-
+    
+    /**
+     * Generate given number of products. Clears product table before generating to avoid name collisions.
+     * 
+     * @param quantity
+     * @param price
+     * @param stored
+     */
     public void generateProducts(Long quantity, Long price, Long stored) {
+    	log.info("Cleating all products and generating new, quantity = " + quantity);
+    	productManager.clearProductsTable();
         generateProducts(quantity, price, stored, false);
     }
 

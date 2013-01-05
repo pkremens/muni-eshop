@@ -37,11 +37,6 @@ public class InvoiceManager {
     private Logger log;
     @EJB
     private OrderManager orderManager;
-    private static final int MSG_COUNT = 5;
-    @Resource(mappedName = "java:/ConnectionFactory")
-    private ConnectionFactory connectionFactory;
-    @Resource(mappedName = "java:/queue/test")
-    private Queue queue;
     @EJB
     private ProductManager productManager;
 

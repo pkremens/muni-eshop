@@ -34,4 +34,8 @@ public class InvoiceBean {
     public void clearInvoices() {
         invoiceManager.clearInvoiceTable();
     }
+    
+    public Long invoicesCount() {
+    	return invoiceManager.getInvoiceTableCount();
+    }
 }
