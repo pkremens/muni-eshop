@@ -52,7 +52,9 @@ public class ShoppingServlet extends HttpServlet {
         if (!identity.isLoggedIn()) {
             Customer customer = customerManager.getRandomCustomer();
             if (customer == null) {
-                return;
+                String location = request.getContextPath() + "/orders.jsf";
+        response.sendRedirect(location);
+        return ;
             }
             loginBean.setEmail(customer.getEmail());
             loginBean.setPassword(customer.getPassword());
@@ -60,7 +62,9 @@ public class ShoppingServlet extends HttpServlet {
         }
         long count = productManager.getProductTableCount();
         if (count == 0) {
-            return; // TODO sth
+        	String location = request.getContextPath() + "/orders.jsf";
+            response.sendRedirect(location);
+            return ;
         }
         if (count > 5) {
             count = 5;

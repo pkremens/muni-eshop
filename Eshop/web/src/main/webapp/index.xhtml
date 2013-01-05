@@ -14,23 +14,25 @@
                 </f:facet>
 					<h:outputText value="Customer table count: " />
 					<h:outputText value="#{customerBean.customersCount()}" />
-					
+
 					<h:outputText value="Product table count: " />
 					<h:outputText value="#{productBean.productCout()}" />
-					
+
 					<h:outputText value="Order table count: " />
 					<h:outputText value="#{orderBean.ordersCout()}" />
-					
+
 					<h:outputText value="Invoice table count: " />
 					<h:outputText value="#{invoiceBean.invoicesCount()}" />
 					<f:facet name="footer">
-					
-					<p:commandButton value="Wipe out database"
-						action="#{controllerBean.wipeOutDb()}" update="@this :mainPanel:clearGrid" />&#160;
+
+						<p:commandButton value="Wipe out database"
+							action="#{controllerBean.wipeOutDb()}"
+							update="@this :mainPanel:clearGrid" />&#160;
 					
 					<p:commandButton value="Clean Orders"
-						action="#{controllerBean.clearOrdersAndInvoices()}" update="@this :mainPanel:clearGrid" />
-						</f:facet>
+							action="#{controllerBean.clearOrdersAndInvoices()}"
+							update="@this :mainPanel:clearGrid" />
+					</f:facet>
 
 				</p:panelGrid>
 				<br />
@@ -100,15 +102,16 @@
 			</p:tab>
 
 		</p:accordionPanel>
-		<p:ajaxStatus style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">  
-    <f:facet name="start">  
-        <p:graphicImage value="/images/loading.gif" />  
-    </f:facet>  
-  
-    <f:facet name="complete">  
-        <h:outputText value="" />  
-    </f:facet>  
-</p:ajaxStatus>
+		<p:ajaxStatus
+			style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
+			<f:facet name="start">
+				<p:graphicImage value="/images/loading.gif" />
+			</f:facet>
+
+			<f:facet name="complete">
+				<h:outputText value="" />
+			</f:facet>
+		</p:ajaxStatus>
 		<h:form id="loginRelated" />
 	</ui:define>
 </ui:composition>
