@@ -12,6 +12,11 @@ import javax.management.MBeanServerConnection;
 import javax.management.openmbean.CompositeDataSupport;
 import javax.management.ObjectName;
 
+/**
+ *
+ * @author Jan Martiska <jmartiska@redhat.com>, Petr Kremensky <207855@mail.muni.cz>
+ */
+
 public class Measure {
 
     private static final String host = "localhost"; //Get a connection to the JBoss AS MBean server on localhost
