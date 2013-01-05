@@ -25,7 +25,6 @@ import cz.fi.muni.eshop.util.DataGenerator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -54,13 +53,14 @@ public class StoremanMultiOrderTest {
     private Product product;
     @Inject
     private DataGenerator dataGenerator;
-    @EJB
+    @Inject
     private Controller controllerBean;
-    @EJB
+    @Inject
     private InvoiceManager invoiceManager;
-    @EJB
+    @Inject
     private CustomerManager customerManager;
-
+    @Inject
+    private OrderManager orderManager;
 
     @Deployment
     public static Archive<?> createTestArchive() {

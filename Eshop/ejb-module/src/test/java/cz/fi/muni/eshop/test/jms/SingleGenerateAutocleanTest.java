@@ -31,7 +31,6 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -47,7 +46,13 @@ public class SingleGenerateAutocleanTest {
     @Inject
     private DataGenerator dataGenerator;
     @EJB
+    private InvoiceManager invoiceManager;
+    @EJB
     private OrderManager orderManager;
+    @EJB
+    private CustomerManager customerManager;
+    @EJB
+    private ProductManager productManager;
 
     @Deployment
     public static Archive<?> createTestArchive() {

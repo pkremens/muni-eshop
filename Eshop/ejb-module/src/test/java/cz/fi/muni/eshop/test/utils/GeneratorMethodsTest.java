@@ -35,6 +35,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -55,6 +56,8 @@ public class GeneratorMethodsTest {
     private CustomerManager customerManager;
     @EJB
     private ProductManager productManager;
+    @EJB
+    private OrderManager orderManager;
 
     @Deployment
     public static Archive<?> createTestArchive() {

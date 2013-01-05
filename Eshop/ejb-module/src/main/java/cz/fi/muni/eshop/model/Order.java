@@ -93,6 +93,6 @@ public class Order extends OrderRoot implements Serializable {
 
     @Override
     public String toString() {
-        return super.toString() + " Order{" + "orderItems=" + orderItems + ", totalPrice=" + totalPrice + ", invoice=" + invoice.getId() + '}';
+        return super.toString() + " Order{" + "orderItems=" + orderItems + ", totalPrice=" + totalPrice + '}';
     }
 }

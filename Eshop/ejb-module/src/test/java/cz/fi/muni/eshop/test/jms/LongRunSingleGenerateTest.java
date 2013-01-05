@@ -46,20 +46,20 @@ public class LongRunSingleGenerateTest {
     private InvoiceManager invoiceManager;
     @EJB
     private OrderManager orderManager;
-  
+    @EJB
+    private CustomerManager customerManager;
+    @EJB
+    private ProductManager productManager;
+
     @Deployment
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(WebArchive.class, "longrun-test.war").addClasses(Controller.class, InvoiceManager.class, StoremanMDB.class, StoremanMessage.class, OrderRoot.class, OrderManager.class, DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
-    @Before
-    public void storemanCloseOrderTest() {
-        controller.wipeOutDb();
-    }
-
     @Test
-    @Ignore("Too long with nothing new")
+    @Ignore("OK")
     public void testMultiOrderCloseAutoRefill() throws InterruptedException {
+        controller.wipeOutDb();
         dataGenerator.generateCustomers(100L);
         dataGenerator.generateProducts(1000L, 200L, 1000L, true);
         dataGenerator.generateOrders(500L, 5L, true);

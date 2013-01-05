@@ -12,22 +12,28 @@ import java.io.IOException;
  */
 public class PerformanceMeasure {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         Measure measure = null;
         try {
             measure = new Measure();
         } catch (Exception ex) {
             System.out.println(ex.getClass() + " : " + ex.getMessage());
         }
-        try {
-            System.out.println(measure.getFootprint());
-        } catch (Exception ex) {
-            System.out.println(ex.getClass() + " : " + ex.getMessage());
+        while (true) {
+            Thread.sleep(10000);
+            try {
+                System.out.println(measure.getFootprint());
+            } catch (Exception ex) {
+                System.out.println(ex.getClass() + " : " + ex.getMessage());
+            }
         }
-        try {
-            measure.destroy();
-        } catch (Exception ex) {
-            System.out.println(ex.getClass() + " : " + ex.getMessage());
-        }
+//        
+//        }
+//        try {
+//            measure.destroy();
+//        } catch (Exception ex) {
+//            System.out.println(ex.getClass() + " : " + ex.getMessage());
+//        }
+//    
     }
 }

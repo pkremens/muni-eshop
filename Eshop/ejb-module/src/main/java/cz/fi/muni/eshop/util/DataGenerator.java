@@ -36,14 +36,14 @@ public class DataGenerator {
     private ProductManager productManager;
     @EJB
     private OrderManager orderManager;
-    @Inject
+    @Inject 
     private Logger log;
 
     // private Random random = new Random();
     public void generateCustomers(Long quantity) {
         for (int i = 0; i < quantity; i++) {
             String base = "customer" + i;
-            log.info("Generating customer: " + (customerManager.addCustomer(base + "@mail.xx", base, base)).toString());
+            log.info(customerManager.addCustomer(base + "@mail.xx", base, base).toString());
         }
     }
 
@@ -64,9 +64,9 @@ public class DataGenerator {
                 product.setStored(generateLongOneToN(stored));
             }
             product.setProductName(base);
-            log.info("Generating product: " + (productManager.addProduct(product.getProductName(),
+            log.info(productManager.addProduct(product.getProductName(),
                     product.getPrice(), product.getCategory(),
-                    product.getStored(), product.getReserved())).toString());
+                    product.getStored(), product.getReserved()).toString());
         }
     }
 
