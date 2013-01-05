@@ -75,7 +75,7 @@
 				</h:form>
 				<br />
 				<p:commandButton value="Clear customers"
-					action="#{customerBean.clearCustomers()}" update="@this" />
+					action="#{customerBean.clearCustomers()}" update="@this :mainPanel:clearGrid" />
 
 
 			</p:tab>
@@ -97,21 +97,12 @@
 				</h:form>
 				<br />
 				<p:commandButton value="Clear productss"
-					action="#{productBean.clearProducts()}" update="@this" />
+					action="#{productBean.clearProducts()}" update="@this :mainPanel:clearGrid" />
 
 			</p:tab>
 
 		</p:accordionPanel>
-		<p:ajaxStatus
-			style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
-			<f:facet name="start">
-				<p:graphicImage value="/images/loading.gif" />
-			</f:facet>
 
-			<f:facet name="complete">
-				<h:outputText value="" />
-			</f:facet>
-		</p:ajaxStatus>
 		<h:form id="loginRelated" />
 	</ui:define>
 </ui:composition>
