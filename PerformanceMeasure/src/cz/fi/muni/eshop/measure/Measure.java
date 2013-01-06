@@ -14,19 +14,32 @@ import javax.management.ObjectName;
 
 /**
  *
- * @author Jan Martiska <jmartiska@redhat.com>, Petr Kremensky <207855@mail.muni.cz>
+ * @author Petr Kremensky <207855@mail.muni.cz>, Jan Martiska
+ * <jmartiska@redhat.com>,
  */
-
 public class Measure {
 
-    private static final String host = "localhost"; //Get a connection to the JBoss AS MBean server on localhost
-    private static final int port = 9999; // management-native port
-    final MBeanServerConnection connection;
-    JMXConnector jmxConnector;
+    private static final String host = "localhost";
+    private static int port; // management-native port
+    private static String urlString;
+    private final MBeanServerConnection connection;
+    private final JMXConnector jmxConnector;
 
-    public Measure() throws Exception {
-        String urlString =
-                System.getProperty("jmx.service.url", "service:jmx:remoting-jmx://" + host + ":" + port);
+    public Measure(Server server) throws Exception {
+        switch (server) {
+            case JBOSSAS7:
+                port = 9999;
+                urlString = System.getProperty("jmx.service.url", "service:jmx:remoting-jmx://" + host + ":" + port);
+                break;
+            case GLASSFISH3:
+                port = 8686;
+                urlString = "service:jmx:rmi:///jndi/rmi://" + host + ":" + port +"/jmxrmi";
+                break;
+            default:
+                throw new IllegalArgumentException("Unknow type of server");
+        }
+
+
         JMXServiceURL serviceURL = new JMXServiceURL(urlString);
         jmxConnector = JMXConnectorFactory.connect(serviceURL, null);
         connection = jmxConnector.getMBeanServerConnection();
@@ -37,14 +50,11 @@ public class Measure {
     }
 
     public double getFootprint() throws Exception {
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 5; i++) {
             System.out.println("Forcing garbage collection");
             forceGC();
             System.out.println("Forced garbage collection");
-            Thread.sleep(5000);
         }
-        forceGC();
-        Thread.sleep(1000);
         return performOneMeasurement();
     }
 

@@ -30,7 +30,7 @@ public class LoginBean {
 
     // do some data validation before accessing back end
     public void logIn() {
-        log.info("trying to log in: " + "email=" + email + " password="
+        log.fine("trying to log in: " + "email=" + email + " password="
                 + password);
         if (validate()) {
             Customer customer = customerManager.verifyCustomer(email, password);

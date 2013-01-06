@@ -62,13 +62,37 @@ public class OrderManager {
      * @param productsWithQuantity Map of - product_id:count
      * @return newly created order
      */
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Order addOrderWithMap(String email,
             Map<Long, Long> productsWithQuantity) {
         List<OrderItem> orderItems = new ArrayList<OrderItem>();
         for (Long productId : productsWithQuantity.keySet()) {
             orderItems.add(new OrderItem(productManager.getProductById(productId), productsWithQuantity.get(productId)));
         }
-        return manager.addOrder(email, orderItems);
+        Order order = new Order();
+        order.setCreationDate(Calendar.getInstance().getTime());
+        order.setCustomer(customerManager.getCustomerByEmail(email));
+        order.setOrderItems(orderItems);
+        Long price = 0L;
+        for (OrderItem orderItem : orderItems) {
+            price += orderItem.getQuantity()
+                    * orderItem.getProduct().getPrice();
+            productManager.orderProduct(orderItem.getProduct().getId(),
+                    orderItem.getQuantity());
+            em.persist(orderItem);
+        }
+        order.setTotalPrice(price);
+        em.persist(order);
+        log.fine("Making order with id: " + order.getId());
+        if (controller.isStoreman()) {
+            if (controller.isJmsStoreman()) {
+                noticeStoreman(order.getId());
+            } else {
+                log.fine("Directly (no JMS) closing order id: " + order.getId());
+                invoiceManager.closeOrderDirectly(order);
+            }
+        }
+        return order;
     }
     
     /**
@@ -93,7 +117,7 @@ public class OrderManager {
         }
         order.setTotalPrice(price);
         em.persist(order);
-        log.info("Making order with id: " + order.getId());
+        log.fine("Making order with id: " + order.getId());
         if (controller.isStoreman()) {
             if (controller.isJmsStoreman()) {
                 noticeStoreman(order.getId());
@@ -119,7 +143,7 @@ public class OrderManager {
             connection.start();
             MapMessage message = session.createMapMessage();
             message.setStringProperty("type", "CLOSE_ORDER");
-            log.info("Notifing storeman, sending order Id: " + orderId);
+            log.fine("Notifing storeman, sending order Id: " + orderId);
             message.setLongProperty("orderId", orderId);
             messageProducer.send(message);
         } catch (JMSException e) {

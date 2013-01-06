@@ -17,8 +17,8 @@ public class ControllerBean {
     private Logger log;
     @Inject
     private Identity identity;
-    private Long customersToGenerate = 300L;
-    private Long productsToGenerate = 600L;
+    private Long customersToGenerate = 200L;
+    private Long productsToGenerate = 800L;
     @Inject
     private DataGenerator dataGenerator;
 

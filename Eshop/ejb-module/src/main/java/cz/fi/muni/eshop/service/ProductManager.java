@@ -55,7 +55,7 @@ public class ProductManager {
      * @param id
      * @param quantity which will be moved from stored to reserved
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    //@TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void orderProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
         log.fine(product.toString() + " on store: " + product.addStored(id));
@@ -70,7 +70,7 @@ public class ProductManager {
      * @param id 
      * @param quantity to be decreased from reserved
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+   // @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void invoiceProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
 //        if (quantity > product.getReserved()) {

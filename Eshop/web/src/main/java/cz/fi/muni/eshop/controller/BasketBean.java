@@ -58,7 +58,7 @@ public class BasketBean implements Serializable {
     }
 
     public void addToBasket(Product product, Long quantity) {
-        log.info("adding to basket: " + product.toString());
+        log.fine("adding to basket: " + product.toString());
         if (basket.containsKey(product)) {
             productQuantityIncrement(product, quantity);
         } else {

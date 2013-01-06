@@ -1,74 +1,65 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-		xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-	<title>Eshop</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<h:outputStylesheet name="css/table-style.css" />
-</h:head>
-<h:body>
-	<h:form id="navigationMenu">
-		<p:breadCrumb>
-			<p:menuitem update="content" value="Categories" url="/index.jsf" />
-			<p:menuitem update="content" value="Customers" url="/customers.jsf" />
-			<p:menuitem update="content" value="Products" url="/products.jsf" />
-			<p:menuitem update="content" disabled="#{!identity.loggedIn}"
-				value="Basket" url="/basket.jsf" />
-							<p:menuitem update="content" value="Orders" url="/orders.jsf" />
-			<p:menuitem update="content" value="Invoices" url="/invoices.jsf" />
-			<p:menuitem update="content" value="History" disabled="#{!identity.loggedIn}" url="/history.jsf" />
-                        <p:menuitem update="content" value="Shopping" url="/ShoppingServlet" />
-		</p:breadCrumb>
-	</h:form>
-	<h:form id="loginInfo">
-		<h5 align="right">
-			<h:form id="loginForm" rendered="#{not identity.loggedIn}">
-                                <p:growl id="messages" />
-				<h:outputLabel for="email" value="Email: " />
-				<p:inputText id="email" value="#{loginBean.email}" label="Firstname" />&#160;&#160;
+    <h:head>
+        <title>Eshop</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <h:outputStylesheet name="css/table-style.css" />
+    </h:head>
+    <h:body>
+        <h:form id="navigationMenu">
+            <p:breadCrumb>
+                <p:menuitem update="content" value="Categories" url="/index.jsf" />
+                <p:menuitem update="content" value="Customers" url="/customers.jsf" />
+                <p:menuitem update="content" value="Products" url="/products.jsf" />
+                <p:menuitem update="content" disabled="#{!identity.loggedIn}"
+                            value="Basket" url="/basket.jsf" />
+                <p:menuitem update="content" value="Orders" url="/orders.jsf" />
+                <p:menuitem update="content" value="Invoices" url="/invoices.jsf" />
+                <p:menuitem update="content" value="History" disabled="#{!identity.loggedIn}" url="/history.jsf" />
+                <p:menuitem update="content" value="Shopping" url="/ShoppingServlet" />
+            </p:breadCrumb>
+        </h:form>
+        <h:form id="loginInfo">
+            <h5 align="right">
+                <h:form id="loginForm" rendered="#{not identity.loggedIn}">
+                    <p:growl id="messages" />
+                    <h:outputLabel for="email" value="Email: " />
+                    <p:inputText id="email" value="#{loginBean.email}" label="Firstname" />&#160;&#160;
 
-				<h:outputLabel for="password" value="Password: " />
-				<p:password id="password" value="#{loginBean.password}"
-					label="password" />&#160;&#160;
-
-
-				<p:commandButton value="Log in" disabled="#{identity.loggedIn}"
-					update="email password :loginInfo :navigationMenu :loginRelated"
-					actionListener="#{loginBean.logIn()}"
-					styleClass="ui-priority-primary" />
+                    <h:outputLabel for="password" value="Password: " />
+                    <p:password id="password" value="#{loginBean.password}"
+                                label="password" />&#160;&#160;
 
 
-			</h:form>
-			<h:outputLabel value="You are logged as: #{identity.customer.email}"
-				rendered="#{identity.loggedIn}" />
-			&#160;
+                    <p:commandButton value="Log in" disabled="#{identity.loggedIn}"
+                                     update="email password :loginInfo :navigationMenu :loginRelated"
+                                     actionListener="#{loginBean.logIn()}"
+                                     styleClass="ui-priority-primary" />
 
-			<p:commandButton id="logout" value="Logout"
-				action="#{identity.logOut()}"
-				update="loginInfo :navigationMenu :loginRelated"
-				rendered="#{identity.loggedIn}" />
-		</h5>
-	</h:form>
-			<p:ajaxStatus
-			style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
-			<f:facet name="start">
-				<p:graphicImage value="/images/loading.gif" />
-			</f:facet>
 
-			<f:facet name="complete">
-				<h:outputText value="" />
-			</f:facet>
-		</p:ajaxStatus>
-	<div id="content">
-		<ui:insert name="content">
-                    [Template content will be inserted here]
-                </ui:insert>
-	</div>
-	
-</h:body>
+                </h:form>
+                <h:outputLabel value="You are logged as: #{identity.customer.email}"
+                               rendered="#{identity.loggedIn}" />
+                &#160;
+
+                <p:commandButton id="logout" value="Logout"
+                                 action="#{identity.logOut()}"
+                                 update="loginInfo :navigationMenu :loginRelated"
+                                 rendered="#{identity.loggedIn}" />
+            </h5>
+        </h:form>
+
+        <div id="content">
+            <ui:insert name="content">
+                [Template content will be inserted here]
+            </ui:insert>
+        </div>
+
+    </h:body>
 </html>

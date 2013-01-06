@@ -10,14 +10,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import javax.jms.ConnectionFactory;
-import javax.jms.Queue;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -48,7 +45,7 @@ public class InvoiceManager {
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Invoice closeOrder(Long orderId) {
-        log.info("Closing order id: " + orderId);
+        log.fine("Closing order id: " + orderId);
         Invoice invoice = new Invoice();
         Order order = orderManager.getOrderById(orderId);
         List<InvoiceItem> invoiceItems = new ArrayList<InvoiceItem>();
@@ -95,7 +92,6 @@ public class InvoiceManager {
      * @param orderId id of order which should be closed
      * @return invoice of closed order
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Invoice manualCloseOrder(Long orderId) {
         log.fine("Closing order manually id: " + orderId);
         Order order = orderManager.getOrderById(orderId);

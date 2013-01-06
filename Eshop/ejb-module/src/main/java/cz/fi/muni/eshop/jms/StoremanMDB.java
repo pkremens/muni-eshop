@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
@@ -41,7 +42,7 @@ public class StoremanMDB implements MessageListener {
                     case CLOSE_ORDER:
                         long id = msg.getLongProperty("orderId");
                         invoiceManager.closeOrder(id);
-                        log.info("Order closed id: " + id);
+                        log.fine("Order closed id: " + id);
                         break;
                     default:
                         throw new IllegalArgumentException("Recieved unknown storeman message!");

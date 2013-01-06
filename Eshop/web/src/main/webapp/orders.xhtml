@@ -1,76 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	template="/WEB-INF/templates/default.xhtml">
-	<ui:define name="content">
-		<h:form id="generateForm">
-			<p:growl id="messages" />
-			<p:commandButton value="Generate Random" update=":orders @form"
-				actionListener="#{orderBean.generateRanomOrder()}"
-				styleClass="ui-priority-primary" />
-		</h:form>
-		<br />
-		<h:form id="orders">
-			<p:dataTable var="_order" value="#{orderBean.orders}"
-				style="width: 70%" paginator="true" rows="10"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15">
-				<f:facet name="header">  
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+        <h:form id="generateForm">
+            <p:growl id="messages" />
+            <p:commandButton value="Generate Random" update=":orders @form"
+                             actionListener="#{orderBean.generateRanomOrder()}"
+                             styleClass="ui-priority-primary" />
+        </h:form>
+        <br />
+        <h:form id="orders">
+            <p:dataTable var="_order" value="#{orderBean.orders}"
+                         style="width: 70%" paginator="true" rows="10"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+                <f:facet name="header">  
                     Orders
                 </f:facet>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Id" />
-					</f:facet>
-					<h:outputText value="#{_order.id}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Creation date" />
-					</f:facet>
-					<h:outputText value="#{_order.creationDate}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Customer" />
-					</f:facet>
-					<h:outputText value="#{_order.customer.email}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Price" />
-					</f:facet>
-					<h:outputText value="#{_order.totalPrice}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Close" />
-					</f:facet>
-					<p:commandButton update="@this :generateForm"
-						disabled="#{orderBean.isOrderClosed(_order.id)}"
-						value="Close order"
-						action="#{invoiceBean.manualCloseOrder(_order.id)}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Rest url" />
-					</f:facet>
-					<a href="#{request.contextPath}/rest/orders/#{_order.id}">/rest/orders/#{_order.id}</a>
-				</p:column>
-			</p:dataTable>
-		</h:form>
-		<br />
-		<h:form>
-			<p:commandButton value="Clear orders" update=":orders @this"
-				actionListener="#{orderBean.clearOrders()}"
-				styleClass="ui-priority-primary" />
-		</h:form>
-		<h:form id="loginRelated" />
-		<br />		
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id" />
+                    </f:facet>
+                    <h:outputText value="#{_order.id}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Creation date" />
+                    </f:facet>
+                    <h:outputText value="#{_order.creationDate}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Customer" />
+                    </f:facet>
+                    <h:outputText value="#{_order.customer.email}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Price" />
+                    </f:facet>
+                    <h:outputText value="#{_order.totalPrice}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Close" />
+                    </f:facet>
+                    <p:commandButton update="@this :generateForm"
+                                     disabled="#{orderBean.isOrderClosed(_order.id)}"
+                                     value="Close order"
+                                     action="#{invoiceBean.manualCloseOrder(_order.id)}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Rest url" />
+                    </f:facet>
+                    <a href="#{request.contextPath}/rest/orders/#{_order.id}">/rest/orders/#{_order.id}</a>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <br />
+        <h:form>
+            <p:commandButton value="Clear orders" update=":orders @this"
+                             actionListener="#{orderBean.clearOrders()}"
+                             styleClass="ui-priority-primary" />
+        </h:form>
+        <h:form id="loginRelated" />
+        <br />		
         REST URL for all orders: <a
-			href="#{request.contextPath}/rest/orders">/rest/orders</a>
-	</ui:define>
+            href="#{request.contextPath}/rest/orders">/rest/orders</a>
+    </ui:define>
+    <p:ajaxStatus
+        style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
+        <f:facet name="start">
+            <p:graphicImage value="/images/loading.gif" />
+        </f:facet>
+
+        <f:facet name="complete">
+            <h:outputText value="" />
+        </f:facet>
+    </p:ajaxStatus>
 </ui:composition>

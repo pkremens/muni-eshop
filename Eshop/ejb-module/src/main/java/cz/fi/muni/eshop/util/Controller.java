@@ -24,7 +24,7 @@ import javax.inject.Inject;
 @Singleton
 public class Controller {
 
-    private boolean automatiCleanUp = false;
+    private boolean automatiCleanUp = true;
     private boolean storeman = true;
     private boolean jmsStoreman = true;
     @EJB
@@ -54,7 +54,8 @@ public class Controller {
     /**
      * Every minute clean oldest orders together with invoices
      */
-    @Schedule(minute = "*", hour = "*")
+   // @Schedule(minute = "*", hour = "*")
+    @Schedule(minute = "*", hour = "*", second= "10,30,50")
     public void controlData() {
         if (automatiCleanUp) {
             log.info("Cleaning invoices, count=" + invoiceManager.getInvoiceTableCount().toString());

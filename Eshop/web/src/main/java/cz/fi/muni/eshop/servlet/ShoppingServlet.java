@@ -66,8 +66,8 @@ public class ShoppingServlet extends HttpServlet {
             response.sendRedirect(location);
             return ;
         }
-        if (count > 5) {
-            count = 5;
+        if (count > 3) {
+            count = 3;
         }
         for (int i = 0; i < count; i++) {
             // new product object is created in the basket
