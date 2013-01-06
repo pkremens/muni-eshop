@@ -107,3 +107,13 @@ Hibernate ddl possible values:
     create: creates the schema, destroying previous data.
     create-drop: drop the schema at the end of the session.
 
+
+ERROR 1217 (23000): Cannot delete or update a parent row: a foreign key constraint fails
+
+That happens if there are tables with foreign keys references to the table you are trying to drop.
+
+All you need to do is:
+SET FOREIGN_KEY_CHECKS=0
+
+Drop your tables
+SET FOREIGN_KEY_CHECKS=1
