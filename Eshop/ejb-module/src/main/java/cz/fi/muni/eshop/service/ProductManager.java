@@ -49,7 +49,7 @@ public class ProductManager {
         em.persist(product);
         return product;
     }
-
+    
     /**
      * Make this product part of some order = decrease stored, increase reserved
      * @param id

@@ -50,7 +50,7 @@ public class Measure {
     }
 
     public double getFootprint() throws Exception {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 8; i++) {
             System.out.println("Forcing garbage collection");
             forceGC();
             System.out.println("Forced garbage collection");
@@ -83,13 +83,13 @@ public class Measure {
         nonHeapMemory = (CompositeDataSupport) connection.getAttribute(new ObjectName("java.lang:type=Memory"), "NonHeapMemoryUsage");
         Long nonHeapMemoryUsed = (Long) nonHeapMemory.get("used");
 
-        System.out.println("Current Time: " + Calendar.getInstance().getTime());
-        System.out.println("Eden space: " + edenSpaceUsed);
-        System.out.println("Old gen: " + oldGenUsed);
-        System.out.println("Perm gen: " + permGenUsed);
-        System.out.println("Survivor space: " + survivorSpaceUsed);
-        System.out.println("Heap memory: " + heapMemoryUsed);
-        System.out.println("NonHeap memory: " + nonHeapMemoryUsed);
+        System.out.println("Current Time:    " + Calendar.getInstance().getTime() + " kbytes");
+        System.out.println("Eden space:      " + (edenSpaceUsed / 1000) + " kbytes");
+        System.out.println("Old gen:         " + (oldGenUsed / 1000) + " kbytes");
+        System.out.println("Perm gen:        " + (permGenUsed / 1000) + " kbytes");
+        System.out.println("Survivor space:  " + (survivorSpaceUsed / 1000) + " kbytes");
+        System.out.println("Heap memory:     " + (heapMemoryUsed / 1000) + " kbytes");
+        System.out.println("NonHeap memory:  " + (nonHeapMemoryUsed / 1000) + " kbytes");
         Long total = edenSpaceUsed + oldGenUsed + permGenUsed + survivorSpaceUsed;
         System.out.println("***************************************** Measured: $total **************************");
 

@@ -50,7 +50,7 @@ public class InvoiceManager {
         Order order = orderManager.getOrderById(orderId);
         List<InvoiceItem> invoiceItems = new ArrayList<InvoiceItem>();
         for (OrderItem orderItem : order.getOrderItems()) {
-            productManager.invoiceProduct(orderItem.getProduct().getId(), orderItem.getQuantity());
+            //productManager.invoiceProduct(orderItem.getProduct().getId(), orderItem.getQuantity());
             invoiceItems.add(new InvoiceItem(orderItem.getProduct(), orderItem.getQuantity()));
         }
         invoice.setInvoiceItems(invoiceItems);
@@ -74,7 +74,7 @@ public class InvoiceManager {
         Invoice invoice = new Invoice();
         List<InvoiceItem> invoiceItems = new ArrayList<InvoiceItem>();
         for (OrderItem orderItem : order.getOrderItems()) {
-            productManager.invoiceProduct(orderItem.getProduct().getId(), orderItem.getQuantity());
+            //productManager.invoiceProduct(orderItem.getProduct().getId(), orderItem.getQuantity());
             invoiceItems.add(new InvoiceItem(orderItem.getProduct(), orderItem.getQuantity()));
         }
         invoice.setInvoiceItems(invoiceItems);

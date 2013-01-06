@@ -1,5 +1,6 @@
 package cz.fi.muni.eshop.controller;
 
+import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
 import cz.fi.muni.eshop.util.Identity;
@@ -21,6 +22,8 @@ public class ControllerBean {
     private Long productsToGenerate = 800L;
     @Inject
     private DataGenerator dataGenerator;
+    @EJB 
+    private OrderManager orderManager;
 
     public void wipeOutDb() {
         log.info("Deleting all enties from db");
@@ -31,6 +34,7 @@ public class ControllerBean {
     public void clearOrdersAndInvoices() {
     	log.info("Deleting orders and invoices");
     	controller.cleanInvoicesAndOrders();
+        orderManager.clearOrderTable();
     }
 
 

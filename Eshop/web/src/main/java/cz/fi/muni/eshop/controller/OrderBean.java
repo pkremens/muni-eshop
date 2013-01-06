@@ -99,6 +99,7 @@ public class OrderBean {
 
     public void clearOrders() {
         controller.cleanInvoicesAndOrders();
+        orderManager.clearOrderTable();
     }
     
     public Long ordersCout() {

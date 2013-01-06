@@ -21,7 +21,7 @@ import javax.inject.Named;
 public class BasketBean implements Serializable {
 
     @Inject
-    private Logger log;
+    private transient Logger log;
     @EJB
     private OrderManager orderManager;
     @Inject
@@ -46,7 +46,7 @@ public class BasketBean implements Serializable {
         }
         // sending just email and product ids with quantity
         orderManager.addOrderWithMap(identity.getCustomer().getEmail(),
-                productWithQuantity);
+                productWithQuantity, totalPrice);
         clearBasket();
     }
 

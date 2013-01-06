@@ -96,7 +96,7 @@ public class StoremanSingleOrderCloseTest {
             profilesWithQuantity.put(productId, 10L);
         }
 
-        Order order = orderManager.addOrderWithMap("xxxxx@yyyyy.zz", profilesWithQuantity);
+        Order order = orderManager.addOrderWithMap("xxxxx@yyyyy.zz", profilesWithQuantity, 44L);
         log.warning(order.toString());
         Thread.sleep(500);
         Assert.assertEquals(1L,(long) invoiceManager.getInvoiceTableCount());

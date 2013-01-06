@@ -3,6 +3,7 @@ package cz.fi.muni.eshop.service;
 import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
+import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.util.Controller;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -64,24 +65,21 @@ public class OrderManager {
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Order addOrderWithMap(String email,
-            Map<Long, Long> productsWithQuantity) {
+            Map<Long, Long> productsWithQuantity, Long totalPrice) {
         List<OrderItem> orderItems = new ArrayList<OrderItem>();
         for (Long productId : productsWithQuantity.keySet()) {
+
+//            Product product = productManager.getProductById(productId);
+//            THIS LINE WILL TRIGGER DEADLOCK            
+//            product.addReserved(productsWithQuantity.get(productId));
+                        
             orderItems.add(new OrderItem(productManager.getProductById(productId), productsWithQuantity.get(productId)));
         }
         Order order = new Order();
         order.setCreationDate(Calendar.getInstance().getTime());
         order.setCustomer(customerManager.getCustomerByEmail(email));
-        order.setOrderItems(orderItems);
-        Long price = 0L;
-        for (OrderItem orderItem : orderItems) {
-            price += orderItem.getQuantity()
-                    * orderItem.getProduct().getPrice();
-            productManager.orderProduct(orderItem.getProduct().getId(),
-                    orderItem.getQuantity());
-            em.persist(orderItem);
-        }
-        order.setTotalPrice(price);
+        order.setOrderItems(orderItems);        
+        order.setTotalPrice(totalPrice);
         em.persist(order);
         log.fine("Making order with id: " + order.getId());
         if (controller.isStoreman()) {
