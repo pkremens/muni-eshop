@@ -6,16 +6,16 @@ package cz.fi.muni.eshop.model.dao;
 
 import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
+
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
-@XmlRootElement(name="name")
+@XmlRootElement(name = "name")
 public class OrderDao {
 
     private Long id;
@@ -98,10 +98,7 @@ public class OrderDao {
         if (this.orderItems != other.orderItems && (this.orderItems == null || !this.orderItems.equals(other.orderItems))) {
             return false;
         }
-        if (this.totalPrice != other.totalPrice && (this.totalPrice == null || !this.totalPrice.equals(other.totalPrice))) {
-            return false;
-        }
-        return true;
+        return this.totalPrice == other.totalPrice || (this.totalPrice != null && this.totalPrice.equals(other.totalPrice));
     }
 
     @Override

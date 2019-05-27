@@ -2,12 +2,12 @@ package cz.fi.muni.eshop.controller;
 
 import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.service.InvoiceManager;
-import java.util.List;
-import java.util.logging.Logger;
+
 import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import java.util.List;
 
 @Model
 public class InvoiceBean {
@@ -34,8 +34,8 @@ public class InvoiceBean {
     public void clearInvoices() {
         invoiceManager.clearInvoiceTable();
     }
-    
+
     public Long invoicesCount() {
-    	return invoiceManager.getInvoiceTableCount();
+        return invoiceManager.getInvoiceTableCount();
     }
 }

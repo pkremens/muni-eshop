@@ -5,7 +5,6 @@
 package cz.fi.muni.eshop.model.enums;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 public enum Category {

@@ -9,14 +9,14 @@ import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
 import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.model.enums.Category;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 import junit.framework.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 public class EntityValidatorTest {
@@ -55,7 +55,7 @@ public class EntityValidatorTest {
     }
 
     @Test
-    public void orderValidatorTest()  {
+    public void orderValidatorTest() {
         Customer customer = new Customer("test@test.cz", "test", "test");
         Product product = new Product("test", 8L, Category.TYPE1);
         product.setId(3L);
@@ -73,7 +73,7 @@ public class EntityValidatorTest {
     }
 
     @Test
-    public void orderValidatorMissingIdTest()  {
+    public void orderValidatorMissingIdTest() {
         Customer customer = new Customer("test@test.cz", "test", "test");
         Product product = new Product("test", 8L, Category.TYPE1);
         OrderItem line = new OrderItem(product, 5L);

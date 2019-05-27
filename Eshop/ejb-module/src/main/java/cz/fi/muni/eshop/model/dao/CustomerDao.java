@@ -7,15 +7,15 @@ package cz.fi.muni.eshop.model.dao;
 import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.Order;
+
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
-@XmlRootElement(name="customer")
+@XmlRootElement(name = "customer")
 public class CustomerDao {
 
     private Long id;
@@ -113,10 +113,7 @@ public class CustomerDao {
         if (this.orders != other.orders && (this.orders == null || !this.orders.equals(other.orders))) {
             return false;
         }
-        if (this.invoices != other.invoices && (this.invoices == null || !this.invoices.equals(other.invoices))) {
-            return false;
-        }
-        return true;
+        return this.invoices == other.invoices || (this.invoices != null && this.invoices.equals(other.invoices));
     }
 
     @Override

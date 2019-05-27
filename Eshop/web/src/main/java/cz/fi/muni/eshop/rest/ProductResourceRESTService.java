@@ -1,16 +1,11 @@
 package cz.fi.muni.eshop.rest;
 
-import cz.fi.muni.eshop.model.dao.ProductDao;
 import cz.fi.muni.eshop.model.Product;
+import cz.fi.muni.eshop.model.dao.ProductDao;
 import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.util.EntityValidator;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
+
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -24,6 +19,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
 
 @Path("/products")
 @RequestScoped
@@ -72,9 +73,9 @@ public class ProductResourceRESTService {
     @POST
     @Path("/create/{name:[A-Za-z0-9]*}")
     public Response createProduct(@PathParam("name") String name,
-            @QueryParam("price") @DefaultValue("1") Long price,
-            @QueryParam("type") @DefaultValue("1") Integer type,
-            @QueryParam("stored") @DefaultValue("100") Long stored) {
+                                  @QueryParam("price") @DefaultValue("1") Long price,
+                                  @QueryParam("type") @DefaultValue("1") Integer type,
+                                  @QueryParam("stored") @DefaultValue("100") Long stored) {
         Response.ResponseBuilder builder = null;
         Category category;
         switch (type) {

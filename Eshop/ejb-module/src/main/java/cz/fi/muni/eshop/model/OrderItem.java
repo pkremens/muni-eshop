@@ -1,6 +1,5 @@
 package cz.fi.muni.eshop.model;
 
-import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,9 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Entity
@@ -72,10 +71,7 @@ public class OrderItem implements Serializable {
         if (this.product != other.product && (this.product == null || !this.product.equals(other.product))) {
             return false;
         }
-        if (this.quantity != other.quantity && (this.quantity == null || !this.quantity.equals(other.quantity))) {
-            return false;
-        }
-        return true;
+        return this.quantity == other.quantity || (this.quantity != null && this.quantity.equals(other.quantity));
     }
 
     @Override

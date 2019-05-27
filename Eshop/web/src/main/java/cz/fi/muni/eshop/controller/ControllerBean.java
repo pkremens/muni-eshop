@@ -4,10 +4,11 @@ import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
 import cz.fi.muni.eshop.util.Identity;
-import java.util.logging.Logger;
+
 import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
+import java.util.logging.Logger;
 
 @Model
 public class ControllerBean {
@@ -22,7 +23,7 @@ public class ControllerBean {
     private Long productsToGenerate = 800L;
     @Inject
     private DataGenerator dataGenerator;
-    @EJB 
+    @EJB
     private OrderManager orderManager;
 
     public void wipeOutDb() {
@@ -30,10 +31,10 @@ public class ControllerBean {
         identity.logOut();
         controller.wipeOutDb();
     }
-    
+
     public void clearOrdersAndInvoices() {
-    	log.info("Deleting orders and invoices");
-    	controller.cleanInvoicesAndOrders();
+        log.info("Deleting orders and invoices");
+        controller.cleanInvoicesAndOrders();
         orderManager.clearOrderTable();
     }
 
@@ -47,7 +48,7 @@ public class ControllerBean {
         return String.valueOf(controller.isAutoClean());
     }
 
-     public void switchStoreman() {
+    public void switchStoreman() {
         log.info("switching storeman");
         controller.switchStoreman();
     }
@@ -55,8 +56,8 @@ public class ControllerBean {
     public String storemanString() {
         return String.valueOf(controller.isStoreman());
     }
-    
-     public void switchJmsStoreman() {
+
+    public void switchJmsStoreman() {
         log.info("switching JMS storeman");
         controller.switchJmsStoreman();
     }
@@ -65,29 +66,29 @@ public class ControllerBean {
         return String.valueOf(controller.isJmsStoreman());
     }
 
-	public Long getCustomersToGenerate() {
-		return customersToGenerate;
-	}
-
-	public void setCustomersToGenerate(Long customersToGenerate) {
-		this.customersToGenerate = customersToGenerate;
-	}
-
-	public Long getProductsToGenerate() {
-		return productsToGenerate;
-	}
-
-	public void setProductsToGenerate(Long productsToGenerate) {
-		this.productsToGenerate = productsToGenerate;
-	}
-    
-    public void generateCustomers() {
-    	log.info("Generating customers: " + customersToGenerate.toString());
-    	dataGenerator.generateCustomers(customersToGenerate);
+    public Long getCustomersToGenerate() {
+        return customersToGenerate;
     }
-    
+
+    public void setCustomersToGenerate(Long customersToGenerate) {
+        this.customersToGenerate = customersToGenerate;
+    }
+
+    public Long getProductsToGenerate() {
+        return productsToGenerate;
+    }
+
+    public void setProductsToGenerate(Long productsToGenerate) {
+        this.productsToGenerate = productsToGenerate;
+    }
+
+    public void generateCustomers() {
+        log.info("Generating customers: " + customersToGenerate.toString());
+        dataGenerator.generateCustomers(customersToGenerate);
+    }
+
     public void generateProducts() {
-    	log.info("Generating products: " + productsToGenerate.toString());
-    	dataGenerator.generateProducts(productsToGenerate, 1000L, 1000L);
+        log.info("Generating products: " + productsToGenerate.toString());
+        dataGenerator.generateProducts(productsToGenerate, 1000L, 1000L);
     }
 }

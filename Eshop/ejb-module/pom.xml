@@ -14,9 +14,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-       <groupId>cz.fi.mumi</groupId>
-       <artifactId>eshop</artifactId>
-       <version>0.0.2-SNAPSHOT</version>
+        <groupId>cz.fi.mumi</groupId>
+        <artifactId>eshop</artifactId>
+        <version>0.0.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>ejb-module</artifactId>
@@ -37,17 +37,17 @@
             <scope>provided</scope>
         </dependency>
 
-      <!-- Import the JPA API, we use provided scope as the API is included 
-         in JBoss AS 7 -->
+        <!-- Import the JPA API, we use provided scope as the API is included
+           in JBoss AS 7 -->
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.0-api</artifactId>
             <scope>provided</scope>
         </dependency>
 
-      <!-- JSR-303 (Bean Validation) Implementation -->
-      <!-- Provides portable constraints such as @Email -->
-      <!-- Hibernate Validator is shipped in JBoss AS 7 -->
+        <!-- JSR-303 (Bean Validation) Implementation -->
+        <!-- Provides portable constraints such as @Email -->
+        <!-- Hibernate Validator is shipped in JBoss AS 7 -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
@@ -55,25 +55,25 @@
         </dependency>
 
 
-      <!-- Test scope dependencies -->
+        <!-- Test scope dependencies -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
 
-      <!-- Optional, but highly recommended -->
-      <!-- Arquillian allows you to test enterprise code such as EJBs and 
-         Transactional(JTA) JPA from JUnit/TestNG -->
+        <!-- Optional, but highly recommended -->
+        <!-- Arquillian allows you to test enterprise code such as EJBs and
+           Transactional(JTA) JPA from JUnit/TestNG -->
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
             <artifactId>arquillian-junit-container</artifactId>
             <scope>test</scope>
         </dependency>
-      
+
         <dependency>
             <groupId>org.jboss.arquillian.protocol</groupId>
             <artifactId>arquillian-protocol-servlet</artifactId>
-            <scope>test</scope>               
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -96,7 +96,7 @@
                 <artifactId>maven-ejb-plugin</artifactId>
                 <version>${version.ejb.plugin}</version>
                 <configuration>
-               <!-- Tell Maven we are using EJB 3.1 -->
+                    <!-- Tell Maven we are using EJB 3.1 -->
                     <ejbVersion>3.1</ejbVersion>
                 </configuration>
             </plugin>
@@ -105,10 +105,10 @@
 
     <profiles>
         <profile>
-         <!-- The default profile skips all tests, though you can tune it 
-            to run just unit tests based on a custom pattern -->
-         <!-- Seperate profiles are provided for running all tests, including 
-            Arquillian tests that execute in the specified container -->
+            <!-- The default profile skips all tests, though you can tune it
+               to run just unit tests based on a custom pattern -->
+            <!-- Seperate profiles are provided for running all tests, including
+               Arquillian tests that execute in the specified container -->
             <id>noTest</id>
             <build>
                 <plugins>
@@ -125,42 +125,40 @@
 
         <profile>
             <id>arq-jbossas-managed</id>
-			<build>
-                        <plugins>
-                                <plugin>
-                                        <groupId>org.apache.maven.plugins</groupId>
-                                        <artifactId>maven-surefire-plugin</artifactId>
-                                        <configuration>
-                                                <systemPropertyVariables>
-                                                        <arquillian.launch>jbossas-managed</arquillian.launch>
-                                                </systemPropertyVariables>
-                                        </configuration>
-                                </plugin>
-                        </plugins>
-                        </build>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <arquillian.launch>jbossas-managed</arquillian.launch>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
 
-                        <dependencies>
-                                <dependency>
-                                        <groupId>org.jboss.spec</groupId>
-                                        <artifactId>jboss-javaee-6.0</artifactId>
-                                        <version>1.0.0.Final</version>
-                                        <type>pom</type>
-                                        <scope>provided</scope>
-                                </dependency>
-                                <dependency>
-                                        <groupId>org.jboss.as</groupId>
-                                        <artifactId>jboss-as-arquillian-container-managed</artifactId>
-                                        <version>7.2.0.Alpha1-SNAPSHOT</version>
-                                        <scope>test</scope>
-                                </dependency>
-                                <dependency>
-                                        <groupId>org.jboss.arquillian.protocol</groupId>
-                                        <artifactId>arquillian-protocol-servlet</artifactId>
-                                        <scope>test</scope>
-                                </dependency>
-                        </dependencies>
-
-
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.spec</groupId>
+                    <artifactId>jboss-javaee-6.0</artifactId>
+                    <version>1.0.0.Final</version>
+                    <type>pom</type>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.jboss.as</groupId>
+                    <artifactId>jboss-as-arquillian-container-managed</artifactId>
+                    <version>7.2.0.Final</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.jboss.arquillian.protocol</groupId>
+                    <artifactId>arquillian-protocol-servlet</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
 
 
         </profile>

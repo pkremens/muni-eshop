@@ -2,18 +2,17 @@ package cz.fi.muni.eshop.test.basket;
 
 import cz.fi.muni.eshop.model.Product;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.PostConstruct;
-
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
 
 @SessionScoped
 @Named
-public class BasketBean implements Serializable{
+public class BasketBean implements Serializable {
 
     private Map<Product, Long> basket;
     private Long totalPrice;
@@ -42,7 +41,7 @@ public class BasketBean implements Serializable{
         if (maxRemove == 0) {
             // Can not decrease quantity => ignore
         } else {
-            long update = (toRemove > maxRemove) ? maxRemove : toRemove;	// how many will I actually remove
+            long update = (toRemove > maxRemove) ? maxRemove : toRemove;    // how many will I actually remove
             totalPrice -= product.getPrice() * (update);
             long newQuantity = basket.get(product) - update;
             updateInBasket(product, newQuantity);

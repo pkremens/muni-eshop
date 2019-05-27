@@ -1,7 +1,6 @@
 package cz.fi.muni.eshop.test.basket;
 
 
-
 import org.junit.Before;
 
 public class BasketBeanMapTest extends AbstractBasketTest {

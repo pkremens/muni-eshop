@@ -20,8 +20,6 @@ import cz.fi.muni.eshop.test.DummyMDB;
 import cz.fi.muni.eshop.test.TestResources;
 import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
-
-import javax.inject.Inject;
 import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -33,10 +31,10 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
 
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @RunWith(Arquillian.class)
@@ -51,7 +49,7 @@ public class CustomerManagerTest {
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "customer-test.war").addClasses(Controller.class, InvoiceManager.class, DummyMDB.class,OrderManager.class, ProductManager.class, DataGenerator.class, OrderItem.class, Product.class, InvoiceItem.class, OrderRoot.class,Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+        return ShrinkWrap.create(WebArchive.class, "customer-test.war").addClasses(Controller.class, InvoiceManager.class, DummyMDB.class, OrderManager.class, ProductManager.class, DataGenerator.class, OrderItem.class, Product.class, InvoiceItem.class, OrderRoot.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     private void setUp() {
@@ -67,7 +65,7 @@ public class CustomerManagerTest {
     public void getCustomerTableCountTest() {
         generator.generateCustomers(20L);
         Assert.assertEquals(customerManager.getCustomers().size(), (long) customerManager.getCustomerTableCount());
-        Assert.assertEquals(20L, (long)customerManager.getCustomerTableCount());
+        Assert.assertEquals(20L, (long) customerManager.getCustomerTableCount());
     }
 
     @Test
@@ -75,16 +73,16 @@ public class CustomerManagerTest {
         Customer customer = customerManager.addCustomer("customer@customer.xx", "cusName", "cusPas");
         Assert.assertNotNull(customer.getId());
     }
-    
+
     @Test
     public void getCustomerEmails() {
         setUp();
         customerManager.addCustomer("customer@customer.xy", "cusName", "cusPas");
         Assert.assertTrue(customerManager.getCustomerEmails().contains("customer@customer.xy"));
         Assert.assertTrue(customerManager.getCustomerEmails().contains("customer@customer.xx"));
-        Assert.assertTrue(customerManager.getCustomerEmails().size()==2);
-        
-                
+        Assert.assertTrue(customerManager.getCustomerEmails().size() == 2);
+
+
     }
 
     @Test
@@ -111,11 +109,11 @@ public class CustomerManagerTest {
         customer = customerManager.verifyCustomer("xxx@yyyy.zz", "abcd");
         Assert.assertNull(customer);
     }
-    
+
     @Test
     public void customerByEmailCountTest() {
         setUp();
-        Assert.assertEquals(1L,(long) customerManager.getCustomerByEmailCount("customer@customer.xx"));
-        Assert.assertEquals(0L,(long) customerManager.getCustomerByEmailCount("dummy@customer.xx"));
+        Assert.assertEquals(1L, (long) customerManager.getCustomerByEmailCount("customer@customer.xx"));
+        Assert.assertEquals(0L, (long) customerManager.getCustomerByEmailCount("dummy@customer.xx"));
     }
 }

@@ -8,16 +8,16 @@ import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.InvoiceManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
-import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import java.util.logging.Logger;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Startup
@@ -54,8 +54,8 @@ public class Controller {
     /**
      * Every minute clean oldest orders together with invoices
      */
-   // @Schedule(minute = "*", hour = "*")
-    @Schedule(minute = "*", hour = "*", second= "10,30,50")
+    // @Schedule(minute = "*", hour = "*")
+    @Schedule(minute = "*", hour = "*", second = "10,30,50")
     public void controlData() {
         if (automatiCleanUp) {
             log.info("Cleaning invoices, count=" + invoiceManager.getInvoiceTableCount().toString());
@@ -76,7 +76,7 @@ public class Controller {
         log.info("Deleteng all entries from db");
         customerManager.clearCustomersTable();
         productManager.clearProductsTable();
-       
+
     }
 
     /**
@@ -103,7 +103,8 @@ public class Controller {
 
     /**
      * Switch whether storeman should be used
-     * @return 
+     *
+     * @return
      */
     public boolean switchStoreman() {
         storeman = !storeman;
@@ -119,10 +120,11 @@ public class Controller {
         storeman = working;
         log.info("Storeman service was switched to: " + ((storeman) ? "on" : "off"));
     }
-    
+
     /**
      * Switch between JMS storeman and direct storeman
-     * @return 
+     *
+     * @return
      */
     public boolean switchJmsStoreman() {
         jmsStoreman = !jmsStoreman;
@@ -138,10 +140,11 @@ public class Controller {
         jmsStoreman = working;
         log.info("JMS storeman service was switched to: " + ((jmsStoreman) ? "on" : "off"));
     }
-    
+
     /**
      * Return string with current configuration
-     * @return 
+     *
+     * @return
      */
     public String report() {
         return "autoCleanUp=" + ((automatiCleanUp) ? "on" : "off") + " , storeman=" + ((storeman) ? "on" : "off") + " , JMS storeman=" + ((jmsStoreman) ? "on" : "off");

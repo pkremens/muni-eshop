@@ -1,111 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	template="/WEB-INF/templates/default.xhtml">
-	<ui:define name="content">
-		<h:form id="orderDetail">
-			<p:dataTable value="#{orderBean.itemDetails}" var="_item"
-				style="width: 50%" paginator="true" rows="10"
-				rendered="#{orderBean.detail}"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15">
-				<f:facet name="header">
-					<h:outputText
-						value="Details of order with Id: #{orderBean.zoomOrderId}" />
-				</f:facet>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="NAME" />
-					</f:facet>
-					<h:outputText value="#{_item.product.productName}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="COUNT" />
-					</f:facet>
-					<h:outputText value="#{_item.quantity}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="PRICE" />
-					</f:facet>
-					<h:outputText value="#{_item.product.price}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="TOTAL" />
-					</f:facet>
-					<h:outputText value="#{_item.quantity * _item.product.price}" />
-				</p:column>
-			</p:dataTable>
-			<br />
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+        <h:form id="orderDetail">
+            <p:dataTable value="#{orderBean.itemDetails}" var="_item"
+                         style="width: 50%" paginator="true" rows="10"
+                         rendered="#{orderBean.detail}"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+                <f:facet name="header">
+                    <h:outputText
+                            value="Details of order with Id: #{orderBean.zoomOrderId}"/>
+                </f:facet>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="NAME"/>
+                    </f:facet>
+                    <h:outputText value="#{_item.product.productName}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="COUNT"/>
+                    </f:facet>
+                    <h:outputText value="#{_item.quantity}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="PRICE"/>
+                    </f:facet>
+                    <h:outputText value="#{_item.product.price}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="TOTAL"/>
+                    </f:facet>
+                    <h:outputText value="#{_item.quantity * _item.product.price}"/>
+                </p:column>
+            </p:dataTable>
+            <br/>
 
 
-			<p:commandButton id="HideDetailButton" rendered="#{orderBean.detail}"
-				action="#{orderBean.hideDetail()}" update="orderDetail"
-				value="Hide Detail" />
-			<h3>
-				<h:outputText rendered="#{orderBean.detail}"
-					value="Total Price: #{orderBean.totalPrice}" />
-			</h3>
-			<br />
-		</h:form>
+            <p:commandButton id="HideDetailButton" rendered="#{orderBean.detail}"
+                             action="#{orderBean.hideDetail()}" update="orderDetail"
+                             value="Hide Detail"/>
+            <h3>
+                <h:outputText rendered="#{orderBean.detail}"
+                              value="Total Price: #{orderBean.totalPrice}"/>
+            </h3>
+            <br/>
+        </h:form>
 
 
-		<h:form id="loginRelated" rendered="#{identity.loggedIn}" />
+        <h:form id="loginRelated" rendered="#{identity.loggedIn}"/>
 
 
+        <p:dataTable var="_order" value="#{orderBean.customerOrders}"
+                     style="width: 50%" paginator="true" rows="10"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rowsPerPageTemplate="5,10,15">
+            <f:facet name="header">
+                <h:outputText
+                        value="History of orders from: #{identity.customer.name}"/>
+            </f:facet>
 
-		<p:dataTable var="_order" value="#{orderBean.customerOrders}"
-			style="width: 50%" paginator="true" rows="10"
-			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-			rowsPerPageTemplate="5,10,15">
-			<f:facet name="header">
-				<h:outputText
-					value="History of orders from: #{identity.customer.name}" />
-			</f:facet>
-
-			<p:column>
-				<f:facet name="header">
-					<h:outputText value="Id" />
-				</f:facet>
-				<h:outputText value="#{_order.id}" />
-			</p:column>
-			<p:column>
-				<f:facet name="header">
-					<h:outputText value="Creation date" />
-				</f:facet>
-				<h:outputText value="#{_order.creationDate}" />
-			</p:column>
-			<p:column>
-				<f:facet name="header">
-					<h:outputText value="Price" />
-				</f:facet>
-				<h:outputText value="#{_order.totalPrice}" />
-			</p:column>
-			<p:column>
-				<f:facet name="header">
-					<h:outputText value="Action" />
-				</f:facet>
-				<p:commandButton value="Show details"
-					action="#{orderBean.showDetail(_order.id)}" update=":orderDetail" />
-			</p:column>
-		</p:dataTable>
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Id"/>
+                </f:facet>
+                <h:outputText value="#{_order.id}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Creation date"/>
+                </f:facet>
+                <h:outputText value="#{_order.creationDate}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Price"/>
+                </f:facet>
+                <h:outputText value="#{_order.totalPrice}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Action"/>
+                </f:facet>
+                <p:commandButton value="Show details"
+                                 action="#{orderBean.showDetail(_order.id)}" update=":orderDetail"/>
+            </p:column>
+        </p:dataTable>
 
 
-		<h:form />
-                <p:ajaxStatus
-			style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
-			<f:facet name="start">
-				<p:graphicImage value="/images/loading.gif" />
-			</f:facet>
+        <h:form/>
+        <p:ajaxStatus
+                style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
+            <f:facet name="start">
+                <p:graphicImage value="/images/loading.gif"/>
+            </f:facet>
 
-			<f:facet name="complete">
-				<h:outputText value="" />
-			</f:facet>
-		</p:ajaxStatus>
-	</ui:define>
+            <f:facet name="complete">
+                <h:outputText value=""/>
+            </f:facet>
+        </p:ajaxStatus>
+    </ui:define>
 </ui:composition>

@@ -1,19 +1,17 @@
 package cz.fi.muni.eshop.util;
 
-import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.Set;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 public class EntityValidator<T> {
 
     /**
-     *
      * @param entity instance of some entity
      * @return true if and only if the entity is valid
      * @throws InvalidEntryException if there are some constraint violations

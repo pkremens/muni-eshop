@@ -12,61 +12,61 @@
                          rows="10"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15">
-                <f:facet name="header">  
-                    Basket  
+                <f:facet name="header">
+                    Basket
                 </f:facet>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Name" />
+                        <h:outputText value="Name"/>
                     </f:facet>
-                    <h:outputText value="#{_product.productName}" />
+                    <h:outputText value="#{_product.productName}"/>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Price" />
+                        <h:outputText value="Price"/>
                     </f:facet>
-                    <h:outputText value="#{_product.price}" />
+                    <h:outputText value="#{_product.price}"/>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Remove" />
+                        <h:outputText value="Remove"/>
                     </f:facet>
                     <p:commandButton id="removeFromBasketButton" update=":loginRelated"
-                                     action="#{basketBean.removeFromBasker(_product)}" value="Remove" />
+                                     action="#{basketBean.removeFromBasker(_product)}" value="Remove"/>
 
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Action" />
+                        <h:outputText value="Action"/>
                     </f:facet>
                     <p:commandButton id="removeFive" value="-5"
                                      action="#{basketBean.productQuantityDecrement(_product,5)}"
-                                     update="basketProductQuantity prodtotprice :loginRelated:totalPriceOutput" />
+                                     update="basketProductQuantity prodtotprice :loginRelated:totalPriceOutput"/>
                     <p:commandButton id="removeOne" value="-1"
                                      action="#{basketBean.productQuantityDecrement(_product,1)}"
-                                     update="basketProductQuantity prodtotprice :loginRelated:totalPriceOutput" />
+                                     update="basketProductQuantity prodtotprice :loginRelated:totalPriceOutput"/>
                     <p:commandButton id="addOne" value="+1"
                                      action="#{basketBean.productQuantityIncrement(_product,1)}"
-                                     update="basketProductQuantity prodtotprice :loginRelated:totalPriceOutput" />
+                                     update="basketProductQuantity prodtotprice :loginRelated:totalPriceOutput"/>
                     <p:commandButton id="addFive" value="+5"
                                      action="#{basketBean.productQuantityIncrement(_product,5)}"
-                                     update="basketProductQuantity prodtotprice :loginRelated:totalPriceOutput" />
+                                     update="basketProductQuantity prodtotprice :loginRelated:totalPriceOutput"/>
                 </p:column>
 
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="In basket" />
+                        <h:outputText value="In basket"/>
                     </f:facet>
 
                     <h:outputText id="basketProductQuantity"
-                                  value="#{basketBean.getQuantityOfProduct(_product)}" />
+                                  value="#{basketBean.getQuantityOfProduct(_product)}"/>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Products price" />
+                        <h:outputText value="Products price"/>
                     </f:facet>
                     <h:outputText id="prodtotprice"
-                                  value="#{_product.price * basketBean.getQuantityOfProduct(_product)}" />
+                                  value="#{_product.price * basketBean.getQuantityOfProduct(_product)}"/>
 
                 </p:column>
             </p:dataTable>
@@ -74,25 +74,25 @@
                 <p>
                     TOTAL PRICE:
                     <h:outputLabel id="totalPriceOutput"
-                                   value="#{basketBean.totalPrice}" />
+                                   value="#{basketBean.totalPrice}"/>
                 </p>
             </h3>
             <p:commandButton id="clearBasketButton"
                              action="#{basketBean.clearBasket()}" value="Clear basket"
-                             disabled="#{isBasketEmpty}" update=":loginRelated totalPriceOutput" />
+                             disabled="#{isBasketEmpty}" update=":loginRelated totalPriceOutput"/>
             &#160;&#160;
             <p:commandButton id="finishOrderButton"
                              action="#{basketBean.makeOrder()}" value="Finish Order"
-                             disabled="#{isBasketEmpty}" update=":loginRelated totalPriceOutput" />&#160;&#160;
+                             disabled="#{isBasketEmpty}" update=":loginRelated totalPriceOutput"/>&#160;&#160;
         </h:form>
         <p:ajaxStatus
-            style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
+                style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
             <f:facet name="start">
-                <p:graphicImage value="/images/loading.gif" />
+                <p:graphicImage value="/images/loading.gif"/>
             </f:facet>
 
             <f:facet name="complete">
-                <h:outputText value="" />
+                <h:outputText value=""/>
             </f:facet>
         </p:ajaxStatus>
 

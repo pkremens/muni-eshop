@@ -6,18 +6,18 @@ import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
 import cz.fi.muni.eshop.util.EntityValidator;
 import cz.fi.muni.eshop.util.Identity;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
+
 import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Model

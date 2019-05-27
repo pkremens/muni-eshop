@@ -5,13 +5,13 @@
 package cz.fi.muni.eshop.model.dao;
 
 import cz.fi.muni.eshop.model.Customer;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
-@XmlRootElement(name="customer")
+@XmlRootElement(name = "customer")
 public class CustomerLiteDao {
 
     private Long id;
@@ -79,10 +79,7 @@ public class CustomerLiteDao {
         if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
             return false;
         }
-        if ((this.password == null) ? (other.password != null) : !this.password.equals(other.password)) {
-            return false;
-        }
-        return true;
+        return (this.password == null) ? (other.password == null) : this.password.equals(other.password);
     }
 
     @Override
@@ -100,5 +97,5 @@ public class CustomerLiteDao {
         return "CustomerLiteDao{" + "id=" + id + ", email=" + email + ", name=" + name + ", password=" + password + '}';
     }
 
-   
+
 }

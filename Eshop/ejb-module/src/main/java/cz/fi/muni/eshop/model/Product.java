@@ -1,7 +1,7 @@
 package cz.fi.muni.eshop.model;
 
 import cz.fi.muni.eshop.model.enums.Category;
-import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,9 +13,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Entity
@@ -136,10 +136,7 @@ public class Product implements Serializable {
         if (this.stored != other.stored && (this.stored == null || !this.stored.equals(other.stored))) {
             return false;
         }
-        if (this.reserved != other.reserved && (this.reserved == null || !this.reserved.equals(other.reserved))) {
-            return false;
-        }
-        return true;
+        return this.reserved == other.reserved || (this.reserved != null && this.reserved.equals(other.reserved));
     }
 
     @Override

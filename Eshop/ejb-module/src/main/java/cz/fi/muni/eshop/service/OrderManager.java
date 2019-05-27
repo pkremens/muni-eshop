@@ -3,14 +3,9 @@ package cz.fi.muni.eshop.service;
 import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
-import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.util.Controller;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
+import org.hibernate.Hibernate;
+
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -28,10 +23,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import org.hibernate.Hibernate;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Stateless
@@ -59,26 +58,27 @@ public class OrderManager {
 
     /**
      * Create new order with email and Map - product_id:count
-     * @param email of customer making the order
+     *
+     * @param email                of customer making the order
      * @param productsWithQuantity Map of - product_id:count
      * @return newly created order
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Order addOrderWithMap(String email,
-            Map<Long, Long> productsWithQuantity, Long totalPrice) {
+                                 Map<Long, Long> productsWithQuantity, Long totalPrice) {
         List<OrderItem> orderItems = new ArrayList<OrderItem>();
         for (Long productId : productsWithQuantity.keySet()) {
 
 //            Product product = productManager.getProductById(productId);
 //            THIS LINE WILL TRIGGER DEADLOCK            
 //            product.addReserved(productsWithQuantity.get(productId));
-                        
+
             orderItems.add(new OrderItem(productManager.getProductById(productId), productsWithQuantity.get(productId)));
         }
         Order order = new Order();
         order.setCreationDate(Calendar.getInstance().getTime());
         order.setCustomer(customerManager.getCustomerByEmail(email));
-        order.setOrderItems(orderItems);        
+        order.setOrderItems(orderItems);
         order.setTotalPrice(totalPrice);
         em.persist(order);
         log.fine("Making order with id: " + order.getId());
@@ -92,10 +92,11 @@ public class OrderManager {
         }
         return order;
     }
-    
+
     /**
      * Create new order with email and List of order items
-     * @param email of customer making the order
+     *
+     * @param email      of customer making the order
      * @param orderItems List of order items
      * @return newly created order
      */
@@ -126,9 +127,10 @@ public class OrderManager {
         }
         return order;
     }
-    
+
     /**
      * Use this method to send message with order id to JMS queue
+     *
      * @param orderId id of order to be closed
      */
     private void noticeStoreman(Long orderId) {
@@ -212,9 +214,10 @@ public class OrderManager {
             em.remove(em.find(Order.class, orderId));
         }
     }
-    
+
     /**
      * Get all orders with lazily loaded order items
+     *
      * @return list of orders
      */
     public List<Order> getWholeOrders() {
@@ -224,9 +227,10 @@ public class OrderManager {
         }
         return orders;
     }
-    
+
     /**
      * Get order with lazily loaded order items
+     *
      * @param id of order to be found
      * @return order with given id
      */

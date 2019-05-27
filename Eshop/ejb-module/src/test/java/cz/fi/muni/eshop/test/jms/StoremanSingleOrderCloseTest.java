@@ -21,12 +21,6 @@ import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.test.TestResources;
 import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-import javax.inject.Inject;
 import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -35,12 +29,17 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @RunWith(Arquillian.class)
@@ -83,7 +82,7 @@ public class StoremanSingleOrderCloseTest {
         Order order = orderManager.addOrder("xxxxx@yyyyy.zz", orderItems);
         log.warning(order.toString());
         Thread.sleep(500);
-        Assert.assertEquals(1L,(long) invoiceManager.getInvoiceTableCount());
+        Assert.assertEquals(1L, (long) invoiceManager.getInvoiceTableCount());
     }
 
     @Test
@@ -99,7 +98,7 @@ public class StoremanSingleOrderCloseTest {
         Order order = orderManager.addOrderWithMap("xxxxx@yyyyy.zz", profilesWithQuantity, 44L);
         log.warning(order.toString());
         Thread.sleep(500);
-        Assert.assertEquals(1L,(long) invoiceManager.getInvoiceTableCount());
+        Assert.assertEquals(1L, (long) invoiceManager.getInvoiceTableCount());
     }
 
     @Test
@@ -113,6 +112,6 @@ public class StoremanSingleOrderCloseTest {
         Order order = orderManager.addOrder("xxxxx@yyyyy.zz", orderItems);
         log.warning(order.toString());
         Thread.sleep(500); // check storeman
-        Assert.assertEquals(1L,(long) invoiceManager.getInvoiceTableCount());
+        Assert.assertEquals(1L, (long) invoiceManager.getInvoiceTableCount());
     }
 }

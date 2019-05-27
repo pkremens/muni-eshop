@@ -20,9 +20,6 @@ import cz.fi.muni.eshop.test.DummyMDB;
 import cz.fi.muni.eshop.test.TestResources;
 import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
-
-import java.util.logging.Logger;
-import javax.inject.Inject;
 import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -34,8 +31,10 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
+import java.util.logging.Logger;
+
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @RunWith(Arquillian.class)
@@ -94,11 +93,11 @@ public class ProductManagerTest {
         Assert.assertEquals(productManager.getProducts().size(), (long) productManager.getProductTableCount());
         Assert.assertEquals(20L, (long) productManager.getProductTableCount());
     }
-    
-        @Test
+
+    @Test
     public void productByNameCountTest() {
         setUp();
-        Assert.assertEquals(1L,(long) productManager.getProductByNameCount("name"));
-        Assert.assertEquals(0L,(long) productManager.getProductByNameCount("dummy"));
+        Assert.assertEquals(1L, (long) productManager.getProductByNameCount("name"));
+        Assert.assertEquals(0L, (long) productManager.getProductByNameCount("dummy"));
     }
 }

@@ -9,12 +9,7 @@ import cz.fi.muni.eshop.model.dao.CustomerDao;
 import cz.fi.muni.eshop.model.dao.CustomerLiteDao;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.util.EntityValidator;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
+
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -27,9 +22,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Path("/customers")
@@ -45,8 +45,8 @@ public class CustomerResourceRESTService {
     @POST     // no needs for regex, validator ensures that email has correct format
     @Path("/create/{email:.*}")
     public Response createCustomer(@PathParam("email") String email,
-            @QueryParam("name") String name,
-            @QueryParam("password") String password) {
+                                   @QueryParam("name") String name,
+                                   @QueryParam("password") String password) {
         Response.ResponseBuilder builder = null;
 
         Customer customer = new Customer(email, name, password);

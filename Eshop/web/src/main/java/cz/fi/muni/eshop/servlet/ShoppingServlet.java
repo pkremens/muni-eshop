@@ -7,7 +7,7 @@ import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.util.Identity;
-import java.io.IOException;
+
 import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -15,9 +15,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
- *
  * @author pkremens
  */
 @WebServlet(name = "ShoppingServlet", urlPatterns = {"/ShoppingServlet"})
@@ -41,10 +41,10 @@ public class ShoppingServlet extends HttpServlet {
      * <code>GET</code> and
      * <code>POST</code> methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -53,8 +53,8 @@ public class ShoppingServlet extends HttpServlet {
             Customer customer = customerManager.getRandomCustomer();
             if (customer == null) {
                 String location = request.getContextPath() + "/orders.jsf";
-        response.sendRedirect(location);
-        return ;
+                response.sendRedirect(location);
+                return;
             }
             loginBean.setEmail(customer.getEmail());
             loginBean.setPassword(customer.getPassword());
@@ -62,9 +62,9 @@ public class ShoppingServlet extends HttpServlet {
         }
         long count = productManager.getProductTableCount();
         if (count == 0) {
-        	String location = request.getContextPath() + "/orders.jsf";
+            String location = request.getContextPath() + "/orders.jsf";
             response.sendRedirect(location);
-            return ;
+            return;
         }
         if (count > 3) {
             count = 3;
@@ -75,20 +75,21 @@ public class ShoppingServlet extends HttpServlet {
         }
         basketBean.makeOrder();
         loginBean.logOut();
-                String location = request.getContextPath() + "/orders.jsf";
+        String location = request.getContextPath() + "/orders.jsf";
         response.sendRedirect(location);
 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP
      * <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -100,10 +101,10 @@ public class ShoppingServlet extends HttpServlet {
      * Handles the HTTP
      * <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

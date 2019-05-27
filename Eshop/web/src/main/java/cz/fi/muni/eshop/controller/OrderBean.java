@@ -7,13 +7,14 @@ import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
 import cz.fi.muni.eshop.util.Identity;
-import java.util.List;
-import java.util.logging.Logger;
+
 import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import java.util.List;
+import java.util.logging.Logger;
 
 @Model
 public class OrderBean {
@@ -34,6 +35,7 @@ public class OrderBean {
     public List<Order> getCustomerOrders() {
         return customerManager.getCustomerOrders(identity.getEmail());
     }
+
     private boolean detail = false; // Show order detail
     private Long zoomOrderId = null;
     private Long totalPrice = 0L;
@@ -101,8 +103,8 @@ public class OrderBean {
         controller.cleanInvoicesAndOrders();
         orderManager.clearOrderTable();
     }
-    
+
     public Long ordersCout() {
-    	return orderManager.getOrderTableCount();
+        return orderManager.getOrderTableCount();
     }
 }

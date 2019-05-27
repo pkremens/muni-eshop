@@ -11,18 +11,18 @@ import cz.fi.muni.eshop.model.enums.Category;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.service.ProductManager;
+
+import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @RequestScoped
@@ -36,37 +36,38 @@ public class DataGenerator {
     private ProductManager productManager;
     @EJB
     private OrderManager orderManager;
-    @Inject 
+    @Inject
     private Logger log;
 
     /**
      * Generate given number of customers. Clears customer table before generating to avoid name collisions.
+     *
      * @param quantity Number of customers to be generated.
      */
     public void generateCustomers(Long quantity) {
-    	log.info("Clearing all customers and generating new, quantity = " + quantity);
-    	customerManager.clearCustomersTable();
+        log.info("Clearing all customers and generating new, quantity = " + quantity);
+        customerManager.clearCustomersTable();
         for (int i = 0; i < quantity; i++) {
             String base = "customer" + i;
             log.info(customerManager.addCustomer(base + "@mail.xx", base, base).toString());
         }
     }
-    
+
     /**
      * Generate given number of products. Clears product table before generating to avoid name collisions.
-     * 
+     *
      * @param quantity
      * @param price
      * @param stored
      */
     public void generateProducts(Long quantity, Long price, Long stored) {
-    	log.info("Cleating all products and generating new, quantity = " + quantity);
-    	productManager.clearProductsTable();
+        log.info("Cleating all products and generating new, quantity = " + quantity);
+        productManager.clearProductsTable();
         generateProducts(quantity, price, stored, false);
     }
 
     public void generateProducts(Long quantity, Long price, Long stored,
-            boolean randomStored) {
+                                 boolean randomStored) {
         for (int i = 0; i < quantity; i++) {
             String base = "product" + i;
             Product product = new Product();
@@ -121,13 +122,13 @@ public class DataGenerator {
      * that we have OrderItems generated we can create new Order using
      * OrderManager.
      *
-     * @param quantity how many orders we want to generate
-     * @param itemCount how many items will be in each of order
+     * @param quantity    how many orders we want to generate
+     * @param itemCount   how many items will be in each of order
      * @param randomItems whether can number of items differ between orders (max
-     * itemCount)
+     *                    itemCount)
      */
     public void generateOrders(long quantity, long itemCount,
-            boolean randomItems) {
+                               boolean randomItems) {
         List<String> emails = customerManager.getCustomerEmails();
         if (emails.isEmpty()) {
             throw new NullPointerException("There are customers registered, cannot generate random order. Create some customer first.");

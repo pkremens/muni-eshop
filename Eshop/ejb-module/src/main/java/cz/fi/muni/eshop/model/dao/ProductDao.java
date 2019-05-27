@@ -6,13 +6,13 @@ package cz.fi.muni.eshop.model.dao;
 
 import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.model.enums.Category;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
-@XmlRootElement(name="product")
+@XmlRootElement(name = "product")
 public class ProductDao {
 
     private Long id;
@@ -106,10 +106,7 @@ public class ProductDao {
         if (this.stored != other.stored && (this.stored == null || !this.stored.equals(other.stored))) {
             return false;
         }
-        if (this.reserved != other.reserved && (this.reserved == null || !this.reserved.equals(other.reserved))) {
-            return false;
-        }
-        return true;
+        return this.reserved == other.reserved || (this.reserved != null && this.reserved.equals(other.reserved));
     }
 
     @Override

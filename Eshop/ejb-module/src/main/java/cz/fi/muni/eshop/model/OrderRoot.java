@@ -4,7 +4,6 @@
  */
 package cz.fi.muni.eshop.model;
 
-import java.util.Date;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,9 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.util.Date;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @MappedSuperclass
@@ -75,10 +74,7 @@ public class OrderRoot {
         if (this.customer != other.customer && (this.customer == null || !this.customer.equals(other.customer))) {
             return false;
         }
-        if (this.creationDate != other.creationDate && (this.creationDate == null || !this.creationDate.equals(other.creationDate))) {
-            return false;
-        }
-        return true;
+        return this.creationDate == other.creationDate || (this.creationDate != null && this.creationDate.equals(other.creationDate));
     }
 
     @Override

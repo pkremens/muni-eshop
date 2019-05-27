@@ -4,17 +4,16 @@
  */
 package cz.fi.muni.eshop.model;
 
-import java.io.Serializable;
-import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.io.Serializable;
+import java.util.List;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Entity
@@ -56,10 +55,7 @@ public class Invoice extends OrderRoot implements Serializable {
         }
         final Invoice other = (Invoice) obj;
         super.equals(obj);
-        if (this.order != other.order && (this.order == null || !this.order.equals(other.order))) {
-            return false;
-        }
-        return true;
+        return this.order == other.order || (this.order != null && this.order.equals(other.order));
     }
 
     @Override

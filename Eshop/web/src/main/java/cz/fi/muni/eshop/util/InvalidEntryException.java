@@ -3,7 +3,6 @@ package cz.fi.muni.eshop.util;
 import java.util.List;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 public class InvalidEntryException extends Exception {

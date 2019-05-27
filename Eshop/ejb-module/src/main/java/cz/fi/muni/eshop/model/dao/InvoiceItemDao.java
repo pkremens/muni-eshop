@@ -5,13 +5,13 @@
 package cz.fi.muni.eshop.model.dao;
 
 import cz.fi.muni.eshop.model.InvoiceItem;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
-@XmlRootElement(name="invoice-item")
+@XmlRootElement(name = "invoice-item")
 public class InvoiceItemDao {
 
     private Long id;
@@ -66,10 +66,7 @@ public class InvoiceItemDao {
         if (this.product != other.product && (this.product == null || !this.product.equals(other.product))) {
             return false;
         }
-        if (this.quantity != other.quantity && (this.quantity == null || !this.quantity.equals(other.quantity))) {
-            return false;
-        }
-        return true;
+        return this.quantity == other.quantity || (this.quantity != null && this.quantity.equals(other.quantity));
     }
 
     @Override
@@ -86,5 +83,5 @@ public class InvoiceItemDao {
         return "InvoiceItemDao{" + "id=" + id + ", product=" + product + ", quantity=" + quantity + '}';
     }
 
-    
+
 }

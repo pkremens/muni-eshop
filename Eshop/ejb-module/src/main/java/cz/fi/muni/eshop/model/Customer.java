@@ -4,8 +4,6 @@
  */
 package cz.fi.muni.eshop.model;
 
-import java.io.Serializable;
-import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class Customer implements Serializable {
@@ -125,10 +125,7 @@ public class Customer implements Serializable {
         if (this.order != other.order && (this.order == null || !this.order.equals(other.order))) {
             return false;
         }
-        if (this.invoice != other.invoice && (this.invoice == null || !this.invoice.equals(other.invoice))) {
-            return false;
-        }
-        return true;
+        return this.invoice == other.invoice || (this.invoice != null && this.invoice.equals(other.invoice));
     }
 
     @Override

@@ -12,7 +12,6 @@ import org.junit.After;
 import org.junit.Test;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 public abstract class AbstractBasketTest {
@@ -30,7 +29,7 @@ public abstract class AbstractBasketTest {
         product.setId(15L);
         basket.addToBasket(product);
         for (long i = 5; i < 10; i++) {
-            product = new Product("name" + i, i,Category.TYPE2);
+            product = new Product("name" + i, i, Category.TYPE2);
             product.setId(i);
             basket.addToBasket(product);
         }

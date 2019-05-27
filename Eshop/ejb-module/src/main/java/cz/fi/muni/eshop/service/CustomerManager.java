@@ -3,9 +3,8 @@ package cz.fi.muni.eshop.service;
 import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.Order;
-import java.util.List;
-import java.util.Random;
-import java.util.logging.Logger;
+import org.hibernate.Hibernate;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -17,10 +16,11 @@ import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
-import org.hibernate.Hibernate;
+import java.util.List;
+import java.util.Random;
+import java.util.logging.Logger;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Stateless
@@ -33,7 +33,8 @@ public class CustomerManager {
 
     /**
      * Add new customer to DB
-     * @param email 
+     *
+     * @param email
      * @param name
      * @param password
      * @return instance of new created customer
@@ -51,8 +52,9 @@ public class CustomerManager {
 
     /**
      * Update customers name
+     *
      * @param email
-     * @param name 
+     * @param name
      */
     public void updateCustomerName(String email, String name) {
         log.finer("Updating customer: email=" + email + " name=" + name);
@@ -88,16 +90,18 @@ public class CustomerManager {
 
     /**
      * Return customer with given id
+     *
      * @param id
      * @return customer with given id
      */
     public Customer getCustomerById(Long id) {
-        log.fine("Find customer by id: " + id); 
+        log.fine("Find customer by id: " + id);
         return em.find(Customer.class, id);
     }
 
     /**
      * Find customer by email
+     *
      * @param email
      * @return customer with given email
      */
@@ -112,6 +116,7 @@ public class CustomerManager {
 
     /**
      * Get all customers
+     *
      * @return all customers in DB
      */
     public List<Customer> getCustomers() {
@@ -125,6 +130,7 @@ public class CustomerManager {
 
     /**
      * Return id's of all customers
+     *
      * @return list of customers id's
      */
     public List<Long> getCustomerIds() {
@@ -141,6 +147,7 @@ public class CustomerManager {
 
     /**
      * Get all emails
+     *
      * @return list of all emails
      */
     public List<String> getCustomerEmails() {
@@ -157,6 +164,7 @@ public class CustomerManager {
 
     /**
      * Get count of customers in DB
+     *
      * @return count of customers in DB
      */
     public Long getCustomerTableCount() {
@@ -171,6 +179,7 @@ public class CustomerManager {
 
     /**
      * Get number of customers with given email
+     *
      * @param email
      * @return number of customers with given email
      */
@@ -195,6 +204,7 @@ public class CustomerManager {
 
     /**
      * Delete customer
+     *
      * @param email of customer to be deleted
      */
     public void deleteCustomer(String email) {
@@ -204,6 +214,7 @@ public class CustomerManager {
 
     /**
      * Get random customer
+     *
      * @return random instance of customer from DB
      */
     public Customer getRandomCustomer() {

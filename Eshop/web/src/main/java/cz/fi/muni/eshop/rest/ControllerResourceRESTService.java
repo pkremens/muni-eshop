@@ -2,9 +2,7 @@ package cz.fi.muni.eshop.rest;
 
 import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
+
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -13,9 +11,11 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Path("/controller")
@@ -35,7 +35,7 @@ public class ControllerResourceRESTService {
     public Response setStoremanService(@PathParam("bool") Long bool) {
         Response.ResponseBuilder builder = null;
         log.info("Setting storeman service to: " + ((bool == 1) ? "on" : "off"));
-        controller.setStoreman((bool == 1) ? true : false);
+        controller.setStoreman(bool == 1);
         builder = Response.ok();
         return builder.build();
     }
@@ -46,7 +46,7 @@ public class ControllerResourceRESTService {
     public Response setAutocleanService(@PathParam("bool") Long bool) {
         Response.ResponseBuilder builder = null;
         log.info("Setting autoclean service to: " + ((bool == 1) ? "on" : "off"));
-        controller.setAutoClean((bool == 1) ? true : false);
+        controller.setAutoClean(bool == 1);
         builder = Response.ok();
         return builder.build();
     }
@@ -56,7 +56,7 @@ public class ControllerResourceRESTService {
     public Response setJmsStoremanService(@PathParam("bool") Long bool) {
         Response.ResponseBuilder builder = null;
         log.info("Setting jms storeman service to: " + ((bool == 1) ? "on" : "off"));
-        controller.setJmsStoreman((bool == 1) ? true : false);
+        controller.setJmsStoreman(bool == 1);
         builder = Response.ok();
         return builder.build();
     }

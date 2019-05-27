@@ -3,6 +3,11 @@ package cz.fi.muni.eshop.controller;
 import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.service.OrderManager;
 import cz.fi.muni.eshop.util.Identity;
+
+import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,10 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
 
 @SessionScoped
 @Named

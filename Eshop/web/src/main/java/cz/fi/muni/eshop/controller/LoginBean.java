@@ -4,14 +4,15 @@ import cz.fi.muni.eshop.model.Customer;
 import cz.fi.muni.eshop.service.CustomerManager;
 import cz.fi.muni.eshop.util.EntityValidator;
 import cz.fi.muni.eshop.util.Identity;
-import java.util.Set;
-import java.util.logging.Logger;
+
 import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
+import java.util.Set;
+import java.util.logging.Logger;
 
 @Model
 public class LoginBean {

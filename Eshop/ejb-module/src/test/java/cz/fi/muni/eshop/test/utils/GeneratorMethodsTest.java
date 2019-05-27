@@ -5,9 +5,9 @@
 package cz.fi.muni.eshop.test.utils;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
+
 import cz.fi.muni.eshop.jms.StoremanMDB;
 import cz.fi.muni.eshop.jms.StoremanMessage;
 import cz.fi.muni.eshop.model.Customer;
@@ -25,8 +25,6 @@ import cz.fi.muni.eshop.service.ProductManager;
 import cz.fi.muni.eshop.test.TestResources;
 import cz.fi.muni.eshop.util.Controller;
 import cz.fi.muni.eshop.util.DataGenerator;
-import javax.ejb.EJB;
-import javax.inject.Inject;
 import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -35,9 +33,11 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import javax.ejb.EJB;
+import javax.inject.Inject;
 
 /**
  *
@@ -79,7 +79,7 @@ public class GeneratorMethodsTest {
     }
 
     @Test
-   public void generateRandomCustomerTest() {
+    public void generateRandomCustomerTest() {
         for (int i = 0; i < 10; i++) {
             dataGenerator.generateRandomCustomer();
         }

@@ -2,9 +2,7 @@ package cz.fi.muni.eshop.service;
 
 import cz.fi.muni.eshop.model.Product;
 import cz.fi.muni.eshop.model.enums.Category;
-import java.util.List;
-import java.util.Random;
-import java.util.logging.Logger;
+
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -16,9 +14,11 @@ import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
+import java.util.List;
+import java.util.Random;
+import java.util.logging.Logger;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Stateless
@@ -31,17 +31,18 @@ public class ProductManager {
 
     /**
      * Create new product
-     * @param name 
-     * @param price 
+     *
+     * @param name
+     * @param price
      * @param category
      * @param stored
      * @param reserved
      * @return instance of newly created product
      */
     public Product addProduct(String name, Long price, Category category,
-            Long stored, Long reserved) {
+                              Long stored, Long reserved) {
         if (getProductByNameCount(name) == 1) {
-            log.warning("Product with name=" + name + " is already registered " + Exception.class.getName().toString());
+            log.warning("Product with name=" + name + " is already registered " + Exception.class.getName());
             return null;
         }
         Product product = new Product(name, price, category, stored, reserved);
@@ -49,9 +50,10 @@ public class ProductManager {
         em.persist(product);
         return product;
     }
-    
+
     /**
      * Make this product part of some order = decrease stored, increase reserved
+     *
      * @param id
      * @param quantity which will be moved from stored to reserved
      */
@@ -63,14 +65,15 @@ public class ProductManager {
             product.addStored(1000L);
         }
         em.merge(product);
-        }
-    
+    }
+
     /**
      * Make this product part of some invoice = decrease reserved
-     * @param id 
+     *
+     * @param id
      * @param quantity to be decreased from reserved
      */
-   // @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    // @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void invoiceProduct(Long id, Long quantity) {
         Product product = em.find(Product.class, id);
 //        if (quantity > product.getReserved()) {
@@ -144,8 +147,8 @@ public class ProductManager {
             em.remove(product);
         }
     }
-    
-    
+
+
     public Product getRandomProduct() {
         List<Product> products = getProducts();
         Random random = new Random();
@@ -156,11 +159,12 @@ public class ProductManager {
         Product product = getProductByName(name);
         em.remove(product);
     }
-    
+
     /**
      * Get number of products with given name
+     *
      * @param name
-     * @return 
+     * @return
      */
     public Long getProductByNameCount(String name) {
         log.fine("Get product: " + name + " count in table");
@@ -170,7 +174,7 @@ public class ProductManager {
         criteria.select(cb.count(product)).where(cb.equal(product.get("name"), name));
         return em.createQuery(criteria).getSingleResult().longValue();
     }
-    
+
     /**
      * Set reserved=0 for all products in DB
      */

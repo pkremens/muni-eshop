@@ -6,16 +6,16 @@ package cz.fi.muni.eshop.model.dao;
 
 import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.InvoiceItem;
+
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
-@XmlRootElement(name="invoice")
+@XmlRootElement(name = "invoice")
 public class InvoiceDao {
 
     private Long id;
@@ -98,10 +98,7 @@ public class InvoiceDao {
         if (this.invoiceItems != other.invoiceItems && (this.invoiceItems == null || !this.invoiceItems.equals(other.invoiceItems))) {
             return false;
         }
-        if (this.order != other.order && (this.order == null || !this.order.equals(other.order))) {
-            return false;
-        }
-        return true;
+        return this.order == other.order || (this.order != null && this.order.equals(other.order));
     }
 
     @Override
@@ -120,5 +117,5 @@ public class InvoiceDao {
         return "InvoiceDao{" + "id=" + id + ", customer=" + customer + ", creationDate=" + creationDate + ", invoiceItems=" + invoiceItems + ", order=" + order + '}';
     }
 
-    
+
 }

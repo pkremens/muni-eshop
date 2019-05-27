@@ -4,12 +4,8 @@ import cz.fi.muni.eshop.model.Invoice;
 import cz.fi.muni.eshop.model.InvoiceItem;
 import cz.fi.muni.eshop.model.Order;
 import cz.fi.muni.eshop.model.OrderItem;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
+import org.hibernate.Hibernate;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -19,10 +15,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import org.hibernate.Hibernate;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Stateless
@@ -157,6 +157,7 @@ public class InvoiceManager {
     }
 
     // can not use Ids as they are in root table: IllegalArgumentException: SingularAttribute  named id and of type java.lang.Long is not present
+
     /**
      * Use to get all invoices with lazily loaded invoice items
      *
@@ -173,6 +174,7 @@ public class InvoiceManager {
 
     /**
      * Get invoice with lazily loaded items
+     *
      * @param id of invoice to be fetched
      * @return invoice
      */

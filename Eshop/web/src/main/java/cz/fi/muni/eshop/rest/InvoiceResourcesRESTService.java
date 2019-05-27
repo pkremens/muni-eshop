@@ -1,13 +1,9 @@
 package cz.fi.muni.eshop.rest;
 
 import cz.fi.muni.eshop.model.Invoice;
-import cz.fi.muni.eshop.model.dao.CustomerDao;
-import cz.fi.muni.eshop.model.dao.CustomerLiteDao;
 import cz.fi.muni.eshop.model.dao.InvoiceDao;
 import cz.fi.muni.eshop.service.InvoiceManager;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
+
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -16,9 +12,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
- *
  * @author Petr Kremensky <207855@mail.muni.cz>
  */
 @Path("/invoices")
