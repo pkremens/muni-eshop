@@ -20,3 +20,36 @@ web/nb-configuration.xml
 /Eshop/ejb-module/.settings/
 /Eshop/web/.settings/
 /Eshop/.settings/
+
+# temp files
+*~
+# ignore .svn metadata files
+.svn
+# ignore Maven generated target folders
+~
+target
+*.log
+# maven versions plugin
+pom.xml.versionsBackup
+# ignore eclipse files
+.project
+.classpath
+.settings
+.metadata
+.checkstyle
+# ignore IDEA files
+*.iml
+*.ipr
+*.iws
+.idea
+# ignore NetBeans files
+nbactions.xml
+nb-configuration.xml
+catalog.xml
+# vim files
+*.swp
+/.gitk-tmp.*
+# hprof dumps
+/*.hprof
+# ignore java crashes
+hs_err_pid*.log
