@@ -26,8 +26,8 @@
     <container qualifier="jbossas-managed" default="true">
         <!-- If you want to use the JBOSS_HOME environment variable, just delete the jbossHome property -->
         <configuration>
-            <property name="jbossHome">/home/pkremens/devel/jboss-as-7.2.0.Final/build/target/jboss-as-7.2.0.Final
-            </property>
+            <property name="jbossHome">/home/pkremens/devel/jboss-as-7.2.0.Final/build/target/jboss-as-7.2.0.Final</property>
+            <property name="serverConfig">standalone-full.xml</property>
         </configuration>
     </container>
 

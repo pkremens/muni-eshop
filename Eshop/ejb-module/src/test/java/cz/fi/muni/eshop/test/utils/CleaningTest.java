@@ -60,7 +60,15 @@ public class CleaningTest {
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "products-test.war").addClasses(StoremanMDB.class, Controller.class, InvoiceManager.class, StoremanMessage.class, OrderRoot.class, OrderManager.class, DataGenerator.class, ProductManager.class, OrderItem.class, Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class, Category.class, CustomerManager.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+        return ShrinkWrap.create(WebArchive.class, "products-test.war")
+                .addClasses(StoremanMDB.class, Controller.class, InvoiceManager.class, StoremanMessage.class,
+                        OrderRoot.class, OrderManager.class, DataGenerator.class, ProductManager.class, OrderItem.class,
+                        Product.class, InvoiceItem.class, Invoice.class, Order.class, Customer.class, TestResources.class,
+                        Category.class, CustomerManager.class)
+                .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                // Deploy our test datasource
+                .addAsWebInfResource("eshop-test-ds.xml");
     }
 
     @Before
